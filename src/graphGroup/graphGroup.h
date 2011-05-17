@@ -18,9 +18,6 @@ using namespace std;
 #include "edgeGroup.h"
 #include "match.h"
 
-const int InfinitySymbol = -1;
-const string FourMinusIS = "  ";
-
 class graphGroup
 {
   
@@ -116,23 +113,6 @@ class graphGroup
   vector< path > tryJourneys(vector< int > journeysNum);  //const but not (things are changed but are changed back)
   
 };
-
-//read functions:
-///graph readers:
-void readGraph(basicEdgeGroup & inputGroup);
-void readGraphFromFile(basicEdgeGroup & inputGroup);
-void generateGraph(basicEdgeGroup & randomGraph, int n, int type, int style);
-void readGraphs(vector< basicEdgeGroup > & inputGroups);
-void generateGraphs(vector< basicEdgeGroup > & randomGraphs, int n, int type, int style);
-void exportGraph(basicEdgeGroup& outputGroup);
-///journey readers:
-void readJourneys(vector< journeyInfo > & journeysInformation);
-void readJourneysFromFile(vector< journeyInfo > & journeysInformation);
-void generateJourneys(vector< journeyInfo > & journeysInformation, int n);
-void generateJourneys(vector< journeyInfo > & journeysInformation, int n);
-///random number generators
-int randomGenerator(int randMax);
-int randomWeight(int min, int max);
 
 //Catalysts to the groupDijkstras function
 void checkOverlap(vector< vector< path > > & groupings, vector< vector< path > > & newGroupings, path & subset, int ngIndex);

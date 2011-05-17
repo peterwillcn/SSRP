@@ -21,6 +21,7 @@ using namespace std;
 #include "edgeGroup.h"
 #include "graphGroup.h"
 #include "sHeuristics.h"
+#include "ioFunctions.h"
 #include "FWGroup.h"
 
 //returns the index of (the first instance of)"key" in v, 
@@ -37,7 +38,7 @@ int find_in_vector(const vector<int>& v, int key){
       
 int main()
 {
-  
+
   char usersAnswer;
   int testNumber;
   vector< graphGroup > mainGraphs;

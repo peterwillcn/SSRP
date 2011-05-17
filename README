@@ -1,8 +1,17 @@
 This Version:
 
-    - Separated the sources into a tree directory structure and updated the makefile accordingly.
+    -   Separated the sources into a tree directory structure and updated the
+        makefile accordingly.
 
 Todo:
 
-    - Figure out which files need to be rewritten and which are fine.
-    - Go though the dependencies and rebuild the makefile based on includes statements. (makedepend can do this)
+    -   Figure out which files need to be rewritten and which are fine.
+    -   Go though the dependencies and rebuild the makefile based on includes
+        statements. (makedepend can do this)
+    -   Split up the graphGroup module into seperate modules.
+    -   Replace journeyGroup with vector<journey>
+
+Splitting up graphGroup:
+
+    -   Take out input/output operations and wrap them into a seperate module.
+    -   

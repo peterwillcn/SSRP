@@ -9,6 +9,8 @@ using namespace std;
 
 #include "basicStructures.h"
 
+const string InfinitySymbol = "∞";
+
 ///
 ///intWInf member functions
 ///
@@ -24,9 +26,9 @@ using namespace std;
 //
 //O(1)
 intWInf::intWInf()
-  :internalInfinity(true), internalInt(0)
+:internalInfinity(true), internalInt(0)
 {
-  
+    
 }
 
 //intWInf::intWInf()
@@ -40,9 +42,9 @@ intWInf::intWInf()
 //
 //O(1)
 intWInf::intWInf(intWInf const & newIntWInf)
-  :internalInfinity(newIntWInf.isInfinity()), internalInt(newIntWInf.value())
+:internalInfinity(newIntWInf.isInfinity()), internalInt(newIntWInf.value())
 {
-  
+    
 }
 
 //intWInf::intWInf()
@@ -56,9 +58,9 @@ intWInf::intWInf(intWInf const & newIntWInf)
 //
 //O(1)
 intWInf::intWInf(int newInt)
-  :internalInfinity(false), internalInt(newInt)
+:internalInfinity(false), internalInt(newInt)
 {
-  
+    
 }
 
 //intWInf::intWInf()
@@ -73,9 +75,9 @@ intWInf::intWInf(int newInt)
 //
 //O(1)
 intWInf::intWInf(bool inf, int value)
-  :internalInfinity(inf), internalInt(value)
+:internalInfinity(inf), internalInt(value)
 {
-  
+    
 }
 
 //intWInf::isInfinity()
@@ -91,9 +93,9 @@ intWInf::intWInf(bool inf, int value)
 //O(1)
 bool intWInf::isInfinity() const
 {
-  
-  return internalInfinity;
-  
+    
+    return internalInfinity;
+    
 }
 
 //intWInf::value()
@@ -108,9 +110,9 @@ bool intWInf::isInfinity() const
 //O(1)
 int intWInf::value() const
 {
-  
-  return internalInt;
-  
+    
+    return internalInt;
+    
 }
 
 //intWInf::operator==()
@@ -126,18 +128,18 @@ int intWInf::value() const
 //O(1)
 bool intWInf::operator==(intWInf const & other) const
 {
-  
-  bool answer = false;
-  
-  if(((isInfinity() == true)           //if( ( (this is infinity)
-     &&(other.isInfinity() == true))     //and (other is infinity))
-     ||((isInfinity() == false)         //or ( (this is not infinity)
-	&&(other.isInfinity() == false)  //and (other is not infinity)
-	&&(value() == other.value())))   //and (values are equal)))
+    
+    bool answer = false;
+    
+    if(((isInfinity() == true)           //if( ( (this is infinity)
+    &&(other.isInfinity() == true))     //and (other is infinity))
+    ||((isInfinity() == false)         //or ( (this is not infinity)
+    &&(other.isInfinity() == false)  //and (other is not infinity)
+    &&(value() == other.value())))   //and (values are equal)))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //intWInf::operator=()
@@ -152,12 +154,12 @@ bool intWInf::operator==(intWInf const & other) const
 //O(1)
 void intWInf::operator=(intWInf const & other)
 {
-  
-  if(other.isInfinity() == true)
-    setValue();
-  else
-    setValue(other.value());
-  
+    
+    if(other.isInfinity() == true)
+        setValue();
+    else
+        setValue(other.value());
+    
 }
 
 //intWInf::operator+=()
@@ -172,13 +174,13 @@ void intWInf::operator=(intWInf const & other)
 //O(1)
 void intWInf::operator+=(intWInf const & other)
 {
-  
-  if(other.isInfinity() == true
-     ||isInfinity() == true)
-    setValue();
-  else
-    setValue(value() + other.value());
-  
+    
+    if(other.isInfinity() == true
+        ||isInfinity() == true)
+        setValue();
+    else
+        setValue(value() + other.value());
+    
 }
 
 //intWInf::operator>()
@@ -194,16 +196,16 @@ void intWInf::operator+=(intWInf const & other)
 //O(1)
 bool intWInf::operator>(intWInf const & other) const
 {
-  
-  bool answer = false;
-  
-  if((other.isInfinity() == false)    //if( (other is not infinity)
-     &&((isInfinity() == true)        //and ( (this is infinity)
-	||(value() > other.value())))    //or (this > other)))
+    
+    bool answer = false;
+    
+    if((other.isInfinity() == false)    //if( (other is not infinity)
+    &&((isInfinity() == true)        //and ( (this is infinity)
+    ||(value() > other.value())))    //or (this > other)))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //intWInf::operator>=()
@@ -219,15 +221,15 @@ bool intWInf::operator>(intWInf const & other) const
 //O(1)
 bool intWInf::operator>=(intWInf const & other) const
 {
-  
-  bool answer = false;
-  
-  if((*this > other)
-     ||(*this == other))
-    answer = true;
-  
-  return answer;
-  
+    
+    bool answer = false;
+    
+    if((*this > other)
+        ||(*this == other))
+        answer = true;
+    
+    return answer;
+    
 }
 
 //intWInf::operator<()
@@ -243,16 +245,16 @@ bool intWInf::operator>=(intWInf const & other) const
 //O(1)
 bool intWInf::operator<(intWInf const & other) const
 {
-  
-  bool answer = false;
-  
-  if((isInfinity() == false)          //if( (this is not infinity)
-     &&((other.isInfinity() == true)  //and ( (other is infinity)
-	||(value() < other.value())))    //or (this < other)))
+    
+    bool answer = false;
+    
+    if((isInfinity() == false)          //if( (this is not infinity)
+    &&((other.isInfinity() == true)  //and ( (other is infinity)
+    ||(value() < other.value())))    //or (this < other)))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //intWInf::operator<=()
@@ -268,15 +270,15 @@ bool intWInf::operator<(intWInf const & other) const
 //O(1)
 bool intWInf::operator<=(intWInf const & other) const
 {
-  
-  bool answer = false;
-  
-  if((*this < other)
-     ||(*this == other))
-    answer = true;
-  
-  return answer;
-  
+    
+    bool answer = false;
+    
+    if((*this < other)
+        ||(*this == other))
+        answer = true;
+    
+    return answer;
+    
 }
 
 //intWInf::operator+()
@@ -291,15 +293,15 @@ bool intWInf::operator<=(intWInf const & other) const
 //O(1)
 intWInf intWInf::operator+(intWInf const & other) const
 {
-  
-  intWInf answer(true, 0);
-
-  if((isInfinity() == false)
-     &&(other.isInfinity() == false))
-    answer.setValue(value() + other.value());
-  
-  return answer;
-  
+    
+    intWInf answer(true, 0);
+    
+    if((isInfinity() == false)
+        &&(other.isInfinity() == false))
+        answer.setValue(value() + other.value());
+    
+    return answer;
+    
 }
 
 //intWInf::operator==()
@@ -315,15 +317,15 @@ intWInf intWInf::operator+(intWInf const & other) const
 //O(1)
 bool intWInf::operator==(int const & other) const
 {
-  
-  bool answer = false;
-  
-  if((isInfinity() == false)           //if( (this is infinity)
-     &&(value() == other))             //and (values are equal))
+    
+    bool answer = false;
+    
+    if((isInfinity() == false)           //if( (this is infinity)
+    &&(value() == other))             //and (values are equal))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //intWInf::operator=()
@@ -338,9 +340,9 @@ bool intWInf::operator==(int const & other) const
 //O(1)
 void intWInf::operator=(int const & other)
 {
-  
-  setValue(other);
-  
+    
+    setValue(other);
+    
 }
 
 //intWInf::operator+=()
@@ -355,10 +357,10 @@ void intWInf::operator=(int const & other)
 //O(1)
 void intWInf::operator+=(int const & other)
 {
-  
-  if(isInfinity() == false)
-    setValue(value() + other);
-  
+    
+    if(isInfinity() == false)
+        setValue(value() + other);
+    
 }
 
 //intWInf::operator>()
@@ -374,15 +376,15 @@ void intWInf::operator+=(int const & other)
 //O(1)
 bool intWInf::operator>(int const & other) const
 {
-  
-  bool answer = false;
-  
-  if((isInfinity() == true)       //if( (this is infinity)
-     ||(value() > other))  //or (this > other))
+    
+    bool answer = false;
+    
+    if((isInfinity() == true)       //if( (this is infinity)
+    ||(value() > other))  //or (this > other))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //intWInf::operator>=()
@@ -398,15 +400,15 @@ bool intWInf::operator>(int const & other) const
 //O(1)
 bool intWInf::operator>=(int const & other) const
 {
-  
-  bool answer = false;
-  
-  if((*this > other)
-     ||(*this == other))
-    answer = true;
-  
-  return answer;
-  
+    
+    bool answer = false;
+    
+    if((*this > other)
+        ||(*this == other))
+        answer = true;
+    
+    return answer;
+    
 }
 
 //intWInf::operator<()
@@ -422,15 +424,15 @@ bool intWInf::operator>=(int const & other) const
 //O(1)
 bool intWInf::operator<(int const & other) const
 {
-  
-  bool answer = false;
-  
-  if((isInfinity() == false)  //if( (this is not infinity)
-     &&(value() < other))     //and (this < other))
+    
+    bool answer = false;
+    
+    if((isInfinity() == false)  //if( (this is not infinity)
+    &&(value() < other))     //and (this < other))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //intWInf::operator<=()
@@ -446,15 +448,15 @@ bool intWInf::operator<(int const & other) const
 //O(1)
 bool intWInf::operator<=(int const & other) const
 {
-  
-  bool answer = false;
-  
-  if((*this < other)
-     ||(*this == other))
-    answer = true;
-  
-  return answer;
-  
+    
+    bool answer = false;
+    
+    if((*this < other)
+        ||(*this == other))
+        answer = true;
+    
+    return answer;
+    
 }
 
 //intWInf::operator+()
@@ -469,14 +471,14 @@ bool intWInf::operator<=(int const & other) const
 //O(1)
 intWInf intWInf::operator+(int const & other) const
 {
-  
-  intWInf answer(true, 0);
-
-  if(isInfinity() == false)
-    answer.setValue(value() + other);
-  
-  return answer;
-  
+    
+    intWInf answer(true, 0);
+    
+    if(isInfinity() == false)
+        answer.setValue(value() + other);
+    
+    return answer;
+    
 }
 
 //intWInf::setValue()
@@ -491,10 +493,10 @@ intWInf intWInf::operator+(int const & other) const
 //O(1)
 void intWInf::setValue()
 {
-  
-  internalInfinity = true;
-  internalInt = 0;
-  
+    
+    internalInfinity = true;
+    internalInt = 0;
+    
 }
 
 //intWInf::setValue()
@@ -509,10 +511,10 @@ void intWInf::setValue()
 //O(1)
 void intWInf::setValue(int newValue)
 {
-  
-  internalInfinity = false;
-  internalInt = newValue;
-  
+    
+    internalInfinity = false;
+    internalInt = newValue;
+    
 }
 
 ///
@@ -530,9 +532,9 @@ void intWInf::setValue(int newValue)
 //
 //O(1)
 floatWInf::floatWInf()
-  :internalInfinity(true), internalFloat(0)
+:internalInfinity(true), internalFloat(0)
 {
-  
+    
 }
 
 //floatWInf::floatWInf()
@@ -546,9 +548,9 @@ floatWInf::floatWInf()
 //
 //O(1)
 floatWInf::floatWInf(floatWInf const & newFloatWInf)
-  :internalInfinity(newFloatWInf.isInfinity()), internalFloat(newFloatWInf.value())
+:internalInfinity(newFloatWInf.isInfinity()), internalFloat(newFloatWInf.value())
 {
-  
+    
 }
 
 //floatWInf::floatWInf()
@@ -562,9 +564,9 @@ floatWInf::floatWInf(floatWInf const & newFloatWInf)
 //
 //O(1)
 floatWInf::floatWInf(float newFloat)
-  :internalInfinity(false), internalFloat(newFloat)
+:internalInfinity(false), internalFloat(newFloat)
 {
-  
+    
 }
 
 //floatWInf::floatWInf()
@@ -579,9 +581,9 @@ floatWInf::floatWInf(float newFloat)
 //
 //O(1)
 floatWInf::floatWInf(bool inf, float value)
-  :internalInfinity(inf), internalFloat(value)
+:internalInfinity(inf), internalFloat(value)
 {
-  
+    
 }
 
 //floatWInf::isInfinity()
@@ -597,9 +599,9 @@ floatWInf::floatWInf(bool inf, float value)
 //O(1)
 bool floatWInf::isInfinity() const
 {
-  
-  return internalInfinity;
-  
+    
+    return internalInfinity;
+    
 }
 
 //floatWInf::value()
@@ -614,9 +616,9 @@ bool floatWInf::isInfinity() const
 //O(1)
 float floatWInf::value() const
 {
-  
-  return internalFloat;
-  
+    
+    return internalFloat;
+    
 }
 
 //floatWInf::operator==()
@@ -632,20 +634,20 @@ float floatWInf::value() const
 //O(1)
 bool floatWInf::operator==(floatWInf const & other) const
 {
-  
-  float acceptableDifference = .0005;
-  bool answer = false;
-  
-  if(((isInfinity() == true)           //if( ( (this is infinity)
-     &&(other.isInfinity() == true))     //and (other is infinity))
-     ||((isInfinity() == false)         //or ( (this is not infinity)
-	&&(other.isInfinity() == false)  //and (other is not infinity)
-	                                 //and (values are equal)))
-	&&(abs(value() - other.value()) < acceptableDifference)))
+    
+    float acceptableDifference = .0005;
+    bool answer = false;
+    
+    if(((isInfinity() == true)           //if( ( (this is infinity)
+    &&(other.isInfinity() == true))     //and (other is infinity))
+    ||((isInfinity() == false)         //or ( (this is not infinity)
+    &&(other.isInfinity() == false)  //and (other is not infinity)
+    //and (values are equal)))
+    &&(abs(value() - other.value()) < acceptableDifference)))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //floatWInf::operator=()
@@ -660,12 +662,12 @@ bool floatWInf::operator==(floatWInf const & other) const
 //O(1)
 void floatWInf::operator=(floatWInf const & other)
 {
-  
-  if(other.isInfinity() == true)
-    setValue();
-  else
-    setValue(other.value());
-  
+    
+    if(other.isInfinity() == true)
+        setValue();
+    else
+        setValue(other.value());
+    
 }
 
 //floatWInf::operator+=()
@@ -680,13 +682,13 @@ void floatWInf::operator=(floatWInf const & other)
 //O(1)
 void floatWInf::operator+=(floatWInf const & other)
 {
-  
-  if((other.isInfinity() == true)
-     ||(isInfinity() == true))
-    setValue();
-  else
-    setValue(value() + other.value());
-  
+    
+    if((other.isInfinity() == true)
+        ||(isInfinity() == true))
+        setValue();
+    else
+        setValue(value() + other.value());
+    
 }
 
 //floatWInf::operator>()
@@ -702,16 +704,16 @@ void floatWInf::operator+=(floatWInf const & other)
 //O(1)
 bool floatWInf::operator>(floatWInf const & other) const
 {
-  
-  bool answer = false;
-  
-  if((other.isInfinity() == false)    //if( (other is not infinity)
-     &&((isInfinity() == true)        //and ( (this is infinity)
-	||(value() > other.value())))    //or (this > other)))
+    
+    bool answer = false;
+    
+    if((other.isInfinity() == false)    //if( (other is not infinity)
+    &&((isInfinity() == true)        //and ( (this is infinity)
+    ||(value() > other.value())))    //or (this > other)))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //floatWInf::operator>=()
@@ -727,15 +729,15 @@ bool floatWInf::operator>(floatWInf const & other) const
 //O(1)
 bool floatWInf::operator>=(floatWInf const & other) const
 {
-  
-  bool answer = false;
-  
-  if((*this > other)
-     ||(*this == other))
-    answer = true;
-  
-  return answer;
-  
+    
+    bool answer = false;
+    
+    if((*this > other)
+        ||(*this == other))
+        answer = true;
+    
+    return answer;
+    
 }
 
 //floatWInf::operator<()
@@ -751,16 +753,16 @@ bool floatWInf::operator>=(floatWInf const & other) const
 //O(1)
 bool floatWInf::operator<(floatWInf const & other) const
 {
-  
-  bool answer = false;
-  
-  if((isInfinity() == false)          //if( (this is not infinity)
-     &&((other.isInfinity() == true)  //and ( (other is infinity)
-	||(value() < other.value())))    //or (this < other)))
+    
+    bool answer = false;
+    
+    if((isInfinity() == false)          //if( (this is not infinity)
+    &&((other.isInfinity() == true)  //and ( (other is infinity)
+    ||(value() < other.value())))    //or (this < other)))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //floatWInf::operator<=()
@@ -776,15 +778,15 @@ bool floatWInf::operator<(floatWInf const & other) const
 //O(1)
 bool floatWInf::operator<=(floatWInf const & other) const
 {
-  
-  bool answer = false;
-  
-  if((*this < other)
-     ||(*this == other))
-    answer = true;
-  
-  return answer;
-  
+    
+    bool answer = false;
+    
+    if((*this < other)
+        ||(*this == other))
+        answer = true;
+    
+    return answer;
+    
 }
 
 //floatWInf::operator+()
@@ -799,15 +801,15 @@ bool floatWInf::operator<=(floatWInf const & other) const
 //O(1)
 floatWInf floatWInf::operator+(floatWInf const & other) const
 {
-  
-  floatWInf answer(true, 0);
-
-  if((isInfinity() == false)
-     &&(other.isInfinity() == false))
-    answer.setValue(value() + other.value());
-  
-  return answer;
-  
+    
+    floatWInf answer(true, 0);
+    
+    if((isInfinity() == false)
+        &&(other.isInfinity() == false))
+        answer.setValue(value() + other.value());
+    
+    return answer;
+    
 }
 
 //floatWInf::operator-()
@@ -822,15 +824,15 @@ floatWInf floatWInf::operator+(floatWInf const & other) const
 //O(1)
 floatWInf floatWInf::operator-(floatWInf const & other) const
 {
-  
-  floatWInf answer(true, 0);
-
-  if((isInfinity() == false)
-     &&(other.isInfinity() == false))
-    answer.setValue(value() - other.value());
-  
-  return answer;
-  
+    
+    floatWInf answer(true, 0);
+    
+    if((isInfinity() == false)
+        &&(other.isInfinity() == false))
+        answer.setValue(value() - other.value());
+    
+    return answer;
+    
 }
 
 //floatWInf::operator==()
@@ -846,17 +848,17 @@ floatWInf floatWInf::operator-(floatWInf const & other) const
 //O(1)
 bool floatWInf::operator==(float const & other) const
 {
-  
-  float acceptableDifference = .0005;
-  bool answer = false;
-  
-  if((isInfinity() == false)  //if( (this is not infinity)
-	                      //and (values are equal)))
-	&&(abs(value() - other) < acceptableDifference))
+    
+    float acceptableDifference = .0005;
+    bool answer = false;
+    
+    if((isInfinity() == false)  //if( (this is not infinity)
+                            //and (values are equal)))
+        &&(abs(value() - other) < acceptableDifference))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //floatWInf::operator=()
@@ -871,9 +873,9 @@ bool floatWInf::operator==(float const & other) const
 //O(1)
 void floatWInf::operator=(float const & other)
 {
-  
+    
     setValue(other);
-  
+    
 }
 
 //floatWInf::operator+=()
@@ -888,10 +890,10 @@ void floatWInf::operator=(float const & other)
 //O(1)
 void floatWInf::operator+=(float const & other)
 {
-  
-  if(isInfinity() == false)
-    setValue(value() + other);
-  
+    
+    if(isInfinity() == false)
+        setValue(value() + other);
+    
 }
 
 //floatWInf::operator>()
@@ -907,15 +909,15 @@ void floatWInf::operator+=(float const & other)
 //O(1)
 bool floatWInf::operator>(float const & other) const
 {
-  
-  bool answer = false;
-  
-  if((isInfinity() == true)  //if( (this is infinity)
+    
+    bool answer = false;
+    
+    if((isInfinity() == true)  //if( (this is infinity)
     ||(value() > other))      //or (this > other))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //floatWInf::operator>=()
@@ -931,15 +933,15 @@ bool floatWInf::operator>(float const & other) const
 //O(1)
 bool floatWInf::operator>=(float const & other) const
 {
-  
-  bool answer = false;
-  
-  if((*this > other)
-     ||(*this == other))
-    answer = true;
-  
-  return answer;
-  
+    
+    bool answer = false;
+    
+    if((*this > other)
+        ||(*this == other))
+        answer = true;
+    
+    return answer;
+    
 }
 
 //floatWInf::operator<()
@@ -955,15 +957,15 @@ bool floatWInf::operator>=(float const & other) const
 //O(1)
 bool floatWInf::operator<(float const & other) const
 {
-  
-  bool answer = false;
-  
-  if((isInfinity() == false)  //if( (this is not infinity)
-     &&(value() < other))     //and (this < other))
+    
+    bool answer = false;
+    
+    if((isInfinity() == false)  //if( (this is not infinity)
+    &&(value() < other))     //and (this < other))
     answer = true;
-  
-  return answer;
-  
+    
+    return answer;
+    
 }
 
 //floatWInf::operator<=()
@@ -979,15 +981,15 @@ bool floatWInf::operator<(float const & other) const
 //O(1)
 bool floatWInf::operator<=(float const & other) const
 {
-  
-  bool answer = false;
-  
-  if((*this < other)
-     ||(*this == other))
-    answer = true;
-  
-  return answer;
-  
+    
+    bool answer = false;
+    
+    if((*this < other)
+        ||(*this == other))
+        answer = true;
+    
+    return answer;
+    
 }
 
 //floatWInf::operator+()
@@ -1002,14 +1004,14 @@ bool floatWInf::operator<=(float const & other) const
 //O(1)
 floatWInf floatWInf::operator+(float const & other) const
 {
-  
-  floatWInf answer(true, 0);
-
-  if(isInfinity() == false)
-    answer.setValue(value() + other);
-  
-  return answer;
-  
+    
+    floatWInf answer(true, 0);
+    
+    if(isInfinity() == false)
+        answer.setValue(value() + other);
+    
+    return answer;
+    
 }
 
 //floatWInf::operator/()
@@ -1024,26 +1026,34 @@ floatWInf floatWInf::operator+(float const & other) const
 //O(1)
 floatWInf floatWInf::operator/(float const & other) const
 {
-  
-  floatWInf answer(true, 0);
-
-  if(isInfinity() == false && other != 0)
-    answer.setValue(value() / other);
-  
-  return answer;
-  
+    
+    floatWInf answer(true, 0);
+    
+    if(isInfinity() == false && other != 0)
+        answer.setValue(value() / other);
+    
+    return answer;
+    
 }
 
 //extraction operator
 //pre- noe
 //post- outputs value to the ostream.  If the value is infinity, outputs *
-ostream& operator<<(ostream& fout, const floatWInf& obj){
-  if(obj.isInfinity())
-    fout << '*';
-  else
-    fout << obj.value();
 
-  return fout;
+ostream& operator<<(ostream& fout, const intWInf& obj) {
+    if(obj.isInfinity())
+        fout << InfinitySymbol;
+    else
+        fout << obj.value();
+    return fout;
+}
+
+ostream& operator<<(ostream& fout, const floatWInf& obj){
+    if(obj.isInfinity())
+        fout << InfinitySymbol;
+    else
+        fout << obj.value();
+    return fout;
 }
 
 //floatWInf::setValue()
@@ -1058,10 +1068,10 @@ ostream& operator<<(ostream& fout, const floatWInf& obj){
 //O(1)
 void floatWInf::setValue()
 {
-  
-  internalInfinity = true;
-  internalFloat = 0;
-  
+    
+    internalInfinity = true;
+    internalFloat = 0;
+    
 }
 
 //floatWInf::setValue()
@@ -1076,10 +1086,10 @@ void floatWInf::setValue()
 //O(1)
 void floatWInf::setValue(float newFloat)
 {
-  
-  internalInfinity = false;
-  internalFloat = newFloat;
-  
+    
+    internalInfinity = false;
+    internalFloat = newFloat;
+    
 }
 
 //abs()
@@ -1094,10 +1104,10 @@ void floatWInf::setValue(float newFloat)
 //O(1)
 float abs(float value)
 {
-  
-  if(value >= 0)
-    return value;
-  else
-    return (float)(-1)*value;
-  
+    
+    if(value >= 0)
+        return value;
+    else
+        return (float)(-1)*value;
+    
 }

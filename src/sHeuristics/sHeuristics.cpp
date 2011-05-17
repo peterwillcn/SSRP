@@ -13,6 +13,7 @@ using namespace std;
 #include "journeyInfo.h"
 #include "graphGroup.h"
 #include "sHeuristics.h"
+#include "rand.h"
 
 ///
 ///sHeuristicInfo member functions

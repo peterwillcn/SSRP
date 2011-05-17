@@ -20,7 +20,9 @@ Includes	= \
 	-I$(SrcDir)/edgeGroup \
 	-I$(SrcDir)/graphGroup \
 	-I$(SrcDir)/journey \
-	-I$(SrcDir)/sHeuristics
+	-I$(SrcDir)/sHeuristics \
+	-I$(SrcDir)/rand \
+	-I$(SrcDir)/ioFunctions
 
 CXX		= g++
 CXXFLAGS	= -g $(Includes)
@@ -38,7 +40,9 @@ OBJS =	$(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/edgeGroup/edgeGroup.o \
 	$(SrcDir)/graphGroup/graphGroup.o \
 	$(SrcDir)/journey/journey.o \
-	$(SrcDir)/sHeuristics/sHeuristics.o
+	$(SrcDir)/sHeuristics/sHeuristics.o \
+	$(SrcDir)/rand/rand.o \
+	$(SrcDir)/ioFunctions/ioFunctions.o
 
 EXE =	graph
 
@@ -191,3 +195,19 @@ $(SrcDir)/match/match.o: \
 $(SrcDir)/match/match.cpp:
 
 $(SrcDir)/match/match.h:
+
+$(SrcDir)/ioFunctions/ioFunctions.o: \
+	$(SrcDir)/ioFunctions/ioFunctions.cpp \
+	$(SrcDir)/ioFunctions/ioFunctions.h
+
+$(SrcDir)/ioFunctions/ioFunctions.h:
+
+$(SrcDir)/ioFunctions/ioFunctions.cpp:
+
+$(SrcDir)/rand/rand.o: \
+	$(SrcDir)/rand/rand.h \
+	$(SrcDir)/rand/rand.cpp
+
+$(SrcDir)/rand/rand.h:
+
+$(SrcDir)/rand/rand.cpp:
