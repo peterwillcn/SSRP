@@ -1,0 +1,10 @@
+#!/bin/bash
+
+usage="finder [options] keyword"
+
+if [ -z $1 ]
+    then
+        echo $usage
+    else
+        grep $1 `find . | grep "\.cpp" ; find . | grep "\.h"`
+    fi
