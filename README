@@ -1,12 +1,3 @@
-This Version:
-
-    -   Split off graphGroup's input and output functions into a new module.
-    -   Split off the random number generator functions into a new module.
-    -   Changed the string representation of infinity to the unicode character
-        for infinity, rather than -1.
-    -   Separated the sources into a tree directory structure and updated the
-        makefile accordingly.
-
 Todo:
 
     -   Figure out which files need to be rewritten and which are fine.
@@ -14,3 +5,18 @@ Todo:
         statements. (makedepend can do this)
     -   Split up the graphGroup module into seperate modules. (on-going)
     -   Replace journeyGroup with vector<journey>
+
+Changes:
+
+Version 0.02:
+
+    - Reformated the makefiles to use makedepend.
+
+Version 0.01:
+
+    -   Split off graphGroup's input and output functions into a new module.
+    -   Split off the random number generator functions into a new module.
+    -   Changed the string representation of infinity to the unicode character
+        for infinity, rather than -1.
+    -   Separated the sources into a tree directory structure and updated the
+        makefile accordingly.

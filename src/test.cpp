@@ -5,6 +5,8 @@
 
 #include <vector>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include <fstream>
 #include <string>
 
@@ -52,23 +54,13 @@ int main()
   bool graphFlag;
   bool testFlag;
   ofstream fout;
-  string fileName = "D000.txt";
+  string fileName;
   
-  cout << "What number file (D###.txt) should be used? (do not include zero's) ";
+  cout << "What number file (D###.txt) should be used? ";
   cin >> testNumber;
-  if(testNumber < 10)
-      fileName[3] = testNumber + '0';
-  else if(testNumber < 100)
-    {
-      fileName[2] = (testNumber / 10) + '0';
-      fileName[3] = (testNumber % 10) + '0';
-    }
-  else
-    {
-      fileName[1] = (testNumber / 100) + '0';
-      fileName[2] = (testNumber / 10) + '0';
-      fileName[3] = (testNumber % 10) + '0';
-    }
+  ostringstream s;
+  s << "D" << setfill('0') << setw(3) << testNumber << ".txt";
+  fileName = s.str();
   
   fout.open(fileName.data(), fstream::app);
   
