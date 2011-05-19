@@ -1134,18 +1134,58 @@ bool getChoice(string prompt) {
 }
 
 void dumpGraph(const graphGroup& g) {
-    cout << "Dumping graph to graph.dot\n";
     ofstream fout("graph.dot");
     fout << "graph G {\n\tgraph [ rankdir = \"LR\" ];\n";
+
+    vector<string> colors;
+    vector<path> paths = g.returnSharedPaths();
+
+    colors.push_back("red");
+    colors.push_back("blue");
+    colors.push_back("green");
+    colors.push_back("yellow");
+    colors.push_back("purple");
+    colors.push_back("darkorange");
+    colors.push_back("khaki");
+    colors.push_back("magenta");
+    colors.push_back("orange");
+    colors.push_back("orange");
+    colors.push_back("gold");
+    colors.push_back("orchid");
 
     for(int i = 0; i < g.returnN(); i++)
     {
         for(int j = 0; j < g.returnN(); j++)
         {
             if(g.totalEdgeCost(i, j).isInfinity() != true) {
-                if(i < j)
-                    fout << "\t" << i << " -- " << j
-                         << " [ label = \"" << g.totalEdgeCost(i, j).value() << "\" ];\n";
+                if(i < j) {
+                    cout << "i: " << i << " j: " << j << endl;
+                    fout << "\t" << i << " -- " << j << " ";
+                    fout << " [ ";
+                    fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
+                    bool edgeUsed = false;
+                    vector<string> edgeColors;
+                    for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
+                        cout << paths[i].actualPath().size() << endl;
+                        for(int pathPart = 1; pathPart < paths[i].actualPath().size(); pathPart++) {
+                            //cout << "pathNum: " << pathNum << " pathPart: " << pathPart << endl;
+                            if (paths[pathNum].actualPath()[pathPart] == j &&
+                                paths[pathNum].actualPath()[pathPart-1] == i) {
+                                cout << "Path Found from " << i << " to " << j << "\n";
+                                edgeColors.push_back(colors[pathNum]);
+                                edgeUsed = true;
+                            }
+                        }
+                    }
+                    if(edgeUsed) {
+                        fout << "color=\"";
+                        for(int i = 0; i < edgeColors.size(); i++) {
+                            fout << edgeColors[i] << ":";
+                        }
+                        fout << "\" ";
+                    }
+                    fout << "];\n";
+                }
             }
         }
     }
@@ -1155,6 +1195,7 @@ void dumpGraph(const graphGroup& g) {
 
     string cmd = "dot -Tpdf -o graph.pdf graph.dot";
     system(cmd.data());
+    //system("rm graph.dot");
     
 }
 // zfj ->

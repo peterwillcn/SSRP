@@ -493,7 +493,9 @@ int main()
 	final_paths = mainGraphs[i].returnSharedPaths();
 	final_costs = mainGraphs[i].returnSharedCosts();
 	bool nash_equilibrium = true;
-	
+
+    dumpGraph(mainGraphs[i]);
+
     for(int j = 0; j < mainGraphs[i].numJourneys(); j++){
         path new_path;
         mainGraphs[i].removeJourney(j);

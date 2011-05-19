@@ -95,8 +95,6 @@ void graphGroup::printGraph() const
     }
     cout << endl;
 
-    dumpGraph(*this);
-
     }
 
 
