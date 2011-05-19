@@ -295,7 +295,7 @@ int main()
     //************************************************************************//
     //*********************************TEST***********************************//
     //************************************************************************//
-    
+    /*
     cout << "\n************************************************************************\n"
          << "*********************************TEST***********************************\n"
          << "************************************************************************\n\n\n";
@@ -428,7 +428,15 @@ int main()
 			    mainGraphs[k].backtrackPaths(listsOfJourneys[k], dijkstraGroups[backtrackGroupVertices[i]], vertices);
 			}
 		      else
-			mainGraphs[k].backtrackPaths(listsOfJourneys[k], dijkstraGroups[backtrackGroupVertices[0]], vertices);
+                        /*
+                        cout << k << endl;
+                        cout << dijkstraGroups.size() << endl;
+                        cout << mainGraphs.size() << endl;
+                        cout << listsOfJourneys.size() << endl;
+                        cout << backtrackGroupVertices.size() << endl;
+                        * /
+			//mainGraphs[k].backtrackPaths(listsOfJourneys[k], dijkstraGroups[backtrackGroupVertices[0]], vertices);
+                        mainGraphs[k].backtrackPaths(listsOfJourneys[k], dijkstraGroups[0], vertices);
 		    }
 		  else
 		    {
@@ -474,7 +482,7 @@ int main()
     cout << "\n************************************************************************\n"
          << "*********************************TEST***********************************\n"
          << "************************************************************************\n\n\n";
-    
+    */
     //************************************************************************//
     //*********************************TEST***********************************//
     //************************************************************************//

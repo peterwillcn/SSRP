@@ -108,9 +108,21 @@ src/match/match.o: src/journeyGroup/journeyGroup.h src/journey/journey.h
 src/match/match.o: src/edgeGroup/edgeGroup.h src/edge/edge.h
 src/ioFunctions/ioFunctions.o: src/basicEdgeGroup/basicEdgeGroup.h
 src/ioFunctions/ioFunctions.o: src/basicStructures/basicStructures.h
+src/ioFunctions/ioFunctions.o: src/graphGroup/graphGroup.h
+src/ioFunctions/ioFunctions.o: src/vertex/vertex.h src/path/path.h
 src/ioFunctions/ioFunctions.o: src/journeyInfo/journeyInfo.h
+src/ioFunctions/ioFunctions.o: src/journeyGroup/journeyGroup.h
+src/ioFunctions/ioFunctions.o: src/journey/journey.h
+src/ioFunctions/ioFunctions.o: src/edgeGroup/edgeGroup.h src/edge/edge.h
+src/ioFunctions/ioFunctions.o: src/match/match.h
 src/ioFunctions/ioFunctions.o: src/ioFunctions/ioFunctions.h
 src/ioFunctions/ioFunctions.o: src/basicEdgeGroup/basicEdgeGroup.h
 src/ioFunctions/ioFunctions.o: src/basicStructures/basicStructures.h
-src/ioFunctions/ioFunctions.o: src/journeyInfo/journeyInfo.h src/rand/rand.h
+src/ioFunctions/ioFunctions.o: src/graphGroup/graphGroup.h
+src/ioFunctions/ioFunctions.o: src/vertex/vertex.h src/path/path.h
+src/ioFunctions/ioFunctions.o: src/journeyInfo/journeyInfo.h
+src/ioFunctions/ioFunctions.o: src/journeyGroup/journeyGroup.h
+src/ioFunctions/ioFunctions.o: src/journey/journey.h
+src/ioFunctions/ioFunctions.o: src/edgeGroup/edgeGroup.h src/edge/edge.h
+src/ioFunctions/ioFunctions.o: src/match/match.h src/rand/rand.h
 src/rand/rand.o: src/rand/rand.h

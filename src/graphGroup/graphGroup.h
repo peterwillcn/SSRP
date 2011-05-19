@@ -47,8 +47,14 @@ class graphGroup
   void printJourneyCost(int journeyNum) const;  //shared & single costs && saving of journeyNum 
   
   //group accessor member func's
+
+  // returns the number of vertices
   int returnN() const;
+
+  
   int numJourneys() const;
+
+  
   basicEdgeGroup returnGraph() const;
   
   //journey-dependent member func's
