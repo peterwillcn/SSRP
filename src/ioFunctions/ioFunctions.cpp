@@ -1135,7 +1135,7 @@ bool getChoice(string prompt) {
 
 void dumpGraph(const graphGroup& g) {
     ofstream fout("graph.dot");
-    fout << "graph G {\n\tgraph [ rankdir = \"LR\" ];\n";
+    fout << "graph G {\n\tgraph [ rankdir = \"LR\" bgcolor=\"#808080\" ];\n";
 
     vector<string> colors;
     vector<path> paths = g.returnSharedPaths();
@@ -1159,19 +1159,15 @@ void dumpGraph(const graphGroup& g) {
         {
             if(g.totalEdgeCost(i, j).isInfinity() != true) {
                 if(i < j) {
-                    cout << "i: " << i << " j: " << j << endl;
                     fout << "\t" << i << " -- " << j << " ";
                     fout << " [ ";
                     fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
                     bool edgeUsed = false;
                     vector<string> edgeColors;
                     for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
-                        cout << paths[i].actualPath().size() << endl;
-                        for(int pathPart = 1; pathPart < paths[i].actualPath().size(); pathPart++) {
-                            //cout << "pathNum: " << pathNum << " pathPart: " << pathPart << endl;
+                        for(int pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
                             if (paths[pathNum].actualPath()[pathPart] == j &&
                                 paths[pathNum].actualPath()[pathPart-1] == i) {
-                                cout << "Path Found from " << i << " to " << j << "\n";
                                 edgeColors.push_back(colors[pathNum]);
                                 edgeUsed = true;
                             }
@@ -1180,7 +1176,9 @@ void dumpGraph(const graphGroup& g) {
                     if(edgeUsed) {
                         fout << "color=\"";
                         for(int i = 0; i < edgeColors.size(); i++) {
-                            fout << edgeColors[i] << ":";
+                            fout << edgeColors[i];
+                            if(i < edgeColors.size()-1)
+                                fout << ":";
                         }
                         fout << "\" ";
                     }
