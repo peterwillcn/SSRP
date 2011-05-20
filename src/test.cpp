@@ -259,8 +259,7 @@ int main() {
         final_costs = mainGraphs[graphNum].returnSharedCosts();
         bool nash_equilibrium = true;
 
-        if(printGraphInfo || debug)
-            dumpGraph(mainGraphs[graphNum]);
+        dumpGraph(mainGraphs[graphNum]);
 
         for(int j = 0; j < mainGraphs[graphNum].numJourneys(); j++){
             path new_path;

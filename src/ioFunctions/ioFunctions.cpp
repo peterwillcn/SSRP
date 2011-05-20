@@ -98,30 +98,41 @@ void readGraphFromFile(basicEdgeGroup & inputGroup)
 //post:
 // -inputGroup has been set randomly with user selected properties
 void generateGraph(basicEdgeGroup & randomGraph) {
-    output("Types:", "");
-    output("\t1 - finite weights");
-    output("\t2 - some random infinite weights");
-    output("\t3 - limited directional movement");
-    output("\t4 - highway system");
-    output("\t5 - threaded grid");
-    int type = inputInt("Which type is the graph?");
-    switch(type) {
-        case 1:
-            generateFiniteWeightedGraph(randomGraph);
-            break;
-        case 2:
-            generateInfiniteWeigtedGraph(randomGraph);
-            break;
-        case 3:
-            generateLimitedDirectionalGraph(randomGraph);
-            break;
-        case 4:
-            generateHighwaySystem(randomGraph);
-            break;
-        case 5:
-            generateThreadedGrid(randomGraph);
-            break;
-    }
+    bool repeat = false;
+    do {
+        repeat = false;
+        output("Types:", "");
+        output("\t1 - finite weights");
+        output("\t2 - some random infinite weights");
+        output("\t3 - limited directional movement");
+        output("\t4 - highway system");
+        output("\t5 - threaded grid");
+        output("\t6 - sparse graph");
+        int type = inputInt("Which type is the graph?");
+        switch(type) {
+            case 1:
+                generateFiniteWeightedGraph(randomGraph);
+                break;
+            case 2:
+                generateInfiniteWeigtedGraph(randomGraph);
+                break;
+            case 3:
+                generateLimitedDirectionalGraph(randomGraph);
+                break;
+            case 4:
+                generateHighwaySystem(randomGraph);
+                break;
+            case 5:
+                generateThreadedGrid(randomGraph);
+                break;
+            case 6:
+                generateSparseGraph(randomGraph);
+                break;
+            default:
+                output("Invalid Choice.");
+                repeat = true;
+        }
+    } while(repeat);
 }
 
 //            exportGraph()
@@ -342,7 +353,7 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
 
     //add random infinite edges if needed
     
-    int infinitePercent = 100 - inputInt("What percent of the graph should be connected? (1 - 100)");
+    int infinitePercent = inputInt("What percent of the graph should be connected? (1 - 100)");
 
     int numberInfiniteEdges = (numberVertices * (numberVertices-1) * infinitePercent)/100;
 
@@ -560,8 +571,54 @@ void generateThreadedGrid(basicEdgeGroup& randomGraph) {
 */
 }
 
-void generateSparseGraph(basicEdgeGroup& randomGraph) {
-    
+void generateSparseGraph(basicEdgeGroup& graph) {
+
+    int numberVertices = inputInt("How many vertices are there?");
+    bool directed = getChoice("Is the graph directed?");
+    int minWeight = inputInt("What is the minimum weight?");
+    int maxWeight = inputInt("what is the maximum weight?");
+    bool undirected = not(directed);
+
+    graph.setN(numberVertices);
+    vector<int> copy(0);
+    for(int i = 0; i < numberVertices; i++)
+        copy.push_back(i);
+
+    for(int i = 0; i < numberVertices; i++)
+        graph.addEdge(i, i, 0);
+
+    const vector<int> vertices = copy;
+
+    vector<int> randomVertices;
+    for(int i = 0; i < vertices.size(); i++) {
+        int rand = randomGenerator(copy.size()-1);
+        randomVertices.push_back(copy[rand]);
+        copy.erase(copy.begin()+rand);
+    }
+
+    for(int i = 1; i < vertices.size(); i++) {
+        int j = randomGenerator(i-1);
+        int weight = randomWeight(minWeight, maxWeight);
+
+        graph.addEdge(randomVertices[j], randomVertices[i], weight);
+        if(undirected)
+            graph.addEdge(randomVertices[i], randomVertices[j], weight);
+    }
+
+    int numberEdges = numberVertices*0.20;
+    for(; numberEdges > 0; numberEdges--) {
+        int i, j;
+        i = j = 0;
+        while(i == j || not(graph.cost(i,j).isInfinity())) {
+            i = randomGenerator(numberVertices-1);
+            j = randomGenerator(numberVertices-1);
+        }
+        int weight = randomWeight(minWeight, maxWeight);
+
+        graph.addEdge(i, j, weight);
+        if(undirected)
+            graph.addEdge(j, i, weight);
+    }
 }
 
 //readJourneys()
@@ -787,7 +844,6 @@ bool getChoice(string prompt) {
 ///     ps2              PostScript for PDF
 ///     svg              Scalable Vector Graphics
 ///     svgz             ...
-///     wbmp             Wireless BitMap format
 ///
 /// For a full list see:
 ///     http://www.graphviz.org/content/output-formats
@@ -806,8 +862,9 @@ void dumpGraph(const graphGroup& g) {
     config2 << graphNum+1;
     config2.close();
 
-    ofstream fout("graph.dot");
-    fout << "graph G {\n\tgraph [ rankdir = \"LR\" bgcolor=\"#808080\" ];\n";
+    ofstream fout(".graph.dot");
+    //fout << "graph G {\n\tgraph [ rankdir = \"LR\" bgcolor=\"#808080\" ];\n";
+    fout << "graph G {\n\tgraph [ bgcolor=\"#808080\" ];\n";
 
     vector<string> colors;
     vector<path> paths = g.returnSharedPaths();
@@ -817,13 +874,7 @@ void dumpGraph(const graphGroup& g) {
     colors.push_back("green");
     colors.push_back("yellow");
     colors.push_back("purple");
-    colors.push_back("darkorange");
-    colors.push_back("khaki");
-    colors.push_back("magenta");
     colors.push_back("orange");
-    colors.push_back("orange");
-    colors.push_back("gold");
-    colors.push_back("orchid");
 
     for(int i = 0; i < g.returnN(); i++) {
         for(int j = i; j < g.returnN(); j++) {
@@ -832,6 +883,7 @@ void dumpGraph(const graphGroup& g) {
                     fout << "\t" << i << " -- " << j << " ";
                     fout << " [ ";
                     fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
+                    fout << "len = " << g.totalEdgeCost(i, j).value() << ".0 ";
                     bool edgeUsed = false;
                     vector<string> edgeColors;
                     for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
@@ -840,7 +892,7 @@ void dumpGraph(const graphGroup& g) {
                                 paths[pathNum].actualPath()[pathPart-1] == i) ||
                                 (paths[pathNum].actualPath()[pathPart] == i &&
                                 paths[pathNum].actualPath()[pathPart-1] == j)) {
-                                edgeColors.push_back(colors[pathNum]);
+                                edgeColors.push_back(colors[pathNum%colors.size()]);
                                 edgeUsed = true;
                             }
                         }
@@ -864,8 +916,8 @@ void dumpGraph(const graphGroup& g) {
     fout.close();
 
     string cmd = graphvizCmd  + " -T" + graphFormat +
-        " -o graph" + str(graphNum) + "." + graphFormat + " graph.dot";
+        " -o graph" + str(graphNum) + "." + graphFormat + " .graph.dot";
     system(cmd.data());
-    //system("rm graph.dot");
+    //system("rm .graph.dot");
 
 }

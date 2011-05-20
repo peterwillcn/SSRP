@@ -30,6 +30,8 @@ void generateHighwaySystem(basicEdgeGroup& randomGraph);
 void generateThreadedGrid(basicEdgeGroup& randomGraph);
 void generateSparseGraph(basicEdgeGroup& randomGraph);
 
+bool findUnconnectedSets(const basicEdgeGroup&);
+
 // <- zfj
 int inputInt(const string& prompt);
 
