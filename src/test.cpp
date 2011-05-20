@@ -28,7 +28,8 @@ using namespace std;
 
 //returns the index of (the first instance of)"key" in v, 
 // or -1 if it's not there
-int find_in_vector(const vector<int>& v, int key){
+template<typename t>
+int find_in_vector(const vector<t>& v, t key){
   for(int i = 0; i < v.size(); i++){
     if(v[i] == key)
       return i;
@@ -42,7 +43,6 @@ int main()
 {
 
   char usersAnswer;
-  int testNumber;
   vector< graphGroup > mainGraphs;
   vector< vector< journeyInfo > > listsOfJourneys;
   vector< basicEdgeGroup > basicGraphs;
@@ -56,11 +56,7 @@ int main()
   ofstream fout;
   string fileName;
   
-  cout << "What number file (D###.txt) should be used? ";
-  cin >> testNumber;
-  ostringstream s;
-  s << "D" << setfill('0') << setw(3) << testNumber << ".txt";
-  fileName = s.str();
+  getInput(fileName, "What output file should be used? ");
   
   fout.open(fileName.data(), fstream::app);
   
