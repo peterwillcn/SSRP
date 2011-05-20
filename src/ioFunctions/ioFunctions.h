@@ -24,13 +24,23 @@ void readJourneysFromFile(vector< journeyInfo > & journeysInformation);
 void generateJourneys(vector< journeyInfo > & journeysInformation, int n);
 
 // <- zfj
-int getInput(int&, string prompt);
+int inputInt(const string& prompt);
 
-string getInput(string&, string prompt);
+string inputString(const string& prompt);
+
+string str(int);
+
+string str(float);
+
+string str(double);
+
+string str(floatWInf);
+
+void output(const string&, const string& suffix = "\n");
 
 bool getChoice(string prompt);
 
-void dumpGraph(const graphGroup&);
+void dumpGraph(const graphGroup&, int graphNum);
 // zfj ->
 
 #endif

@@ -9,7 +9,7 @@ using namespace std;
 
 #include "basicStructures.h"
 
-const string InfinitySymbol = "∞";
+const string InfinitySymbol = "*";
 
 ///
 ///intWInf member functions

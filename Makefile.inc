@@ -4,6 +4,7 @@ SrcDir	= src
 
 CXX	= g++
 CXXFLAGS = -g $(Includes)
+#CXXFLAGS = -g -DDEBUG $(Includes)
 
 # Makedepend
 DEP = makedepend
@@ -24,7 +25,8 @@ Includes = \
 	-I$(SrcDir)/journey \
 	-I$(SrcDir)/sHeuristics \
 	-I$(SrcDir)/rand \
-	-I$(SrcDir)/ioFunctions
+	-I$(SrcDir)/ioFunctions \
+        -I$(SrcDir)/debug
 
 OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/edge/edge.o \
@@ -73,4 +75,5 @@ SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/ioFunctions/ioFunctions.h \
 	$(SrcDir)/ioFunctions/ioFunctions.cpp \
 	$(SrcDir)/rand/rand.h \
-	$(SrcDir)/rand/rand.cpp
+	$(SrcDir)/rand/rand.cpp \
+        $(SrcDir)/debug/debug.h

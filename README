@@ -1,12 +1,15 @@
-Todo:
-
-    -   Figure out which files need to be rewritten and which are fine.
-    -   Go though the dependencies and rebuild the makefile based on includes
-        statements. (makedepend can do this)
-    -   Split up the graphGroup module into seperate modules. (on-going)
-    -   Replace journeyGroup with vector<journey>
-
 Changes:
+
+Version 0.03:
+
+    -   Added more input/ouptput functions
+    -   Cleaned up the main function in test.cpp
+        We should probably write our own one of these.
+    -   Added debugging at compile time.
+        To use it, enable the -DDEBUG option to g++,
+        or just change CXXFLAGS in Makefile.inc
+    -   Added the ability to print graphs in pdf format.
+        The format can be changed by changing the graphFormat option in ioFunctions.cpp
 
 Version 0.02:
 
