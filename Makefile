@@ -16,7 +16,7 @@ clean:
 	rm -f $(OBJS)
 
 realclean: clean
-	rm -f $(EXE)
+	rm -f $(EXE) Makefile.dep
 	rm -f `find . | grep "\.*~"`
 
 Makefile.dep: $(SRCS)

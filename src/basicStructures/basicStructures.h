@@ -108,4 +108,6 @@ float abs(float value);
 ostream& operator<<(ostream& fout, const intWInf& obj);
 ostream& operator<<(ostream& fout, const floatWInf& obj);
 
+extern const floatWInf infinity;  //float used to hold infinity
+
 # endif

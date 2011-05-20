@@ -259,7 +259,7 @@ floatWInf basicEdgeGroup::cost(int i, int j) const
 //O(1)
 void basicEdgeGroup::addEdge(int i, int j, floatWInf weight)
 {
-  
+
   group[i][j] = weight;
   
 }

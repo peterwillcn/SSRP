@@ -22,7 +22,6 @@ using namespace std;
 #include "journeyGroup.h"
 #include "edgeGroup.h"
 #include "graphGroup.h"
-#include "sHeuristics.h"
 #include "ioFunctions.h"
 #include "FWGroup.h"
 #include "debug.h"
@@ -61,8 +60,6 @@ int main() {
     vector< vector< floatWInf > > minSavings;
     vector< vector< floatWInf > > maxSavings;
     vector< vector< floatWInf > > averageSavings;
-    vector< int > equalCounter;
-    equalCounter.resize(totalsHeuristicNumber, 0);
     string fileName;
 
     output(welcomeHeader);
@@ -263,7 +260,7 @@ int main() {
         bool nash_equilibrium = true;
 
         if(printGraphInfo || debug)
-            dumpGraph(mainGraphs[graphNum], graphNum);
+            dumpGraph(mainGraphs[graphNum]);
 
         for(int j = 0; j < mainGraphs[graphNum].numJourneys(); j++){
             path new_path;

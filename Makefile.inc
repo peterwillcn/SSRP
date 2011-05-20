@@ -23,7 +23,6 @@ Includes = \
 	-I$(SrcDir)/edgeGroup \
 	-I$(SrcDir)/graphGroup \
 	-I$(SrcDir)/journey \
-	-I$(SrcDir)/sHeuristics \
 	-I$(SrcDir)/rand \
 	-I$(SrcDir)/ioFunctions \
         -I$(SrcDir)/debug
@@ -41,13 +40,10 @@ OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/edgeGroup/edgeGroup.o \
 	$(SrcDir)/graphGroup/graphGroup.o \
 	$(SrcDir)/journey/journey.o \
-	$(SrcDir)/sHeuristics/sHeuristics.o \
 	$(SrcDir)/rand/rand.o \
 	$(SrcDir)/ioFunctions/ioFunctions.o
 
 SRCS =	$(SrcDir)/test.cpp \
-	$(SrcDir)/sHeuristics/sHeuristics.h \
-	$(SrcDir)/sHeuristics/sHeuristics.cpp \
 	$(SrcDir)/FWGroup/FWGroup.cpp \
 	$(SrcDir)/FWGroup/FWGroup.h \
 	$(SrcDir)/graphGroup/graphGroup.cpp \

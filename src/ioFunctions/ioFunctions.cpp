@@ -24,40 +24,8 @@ const bool NO = false;
 void readGraph(basicEdgeGroup & inputGroup)
 {
 
-    bool usersAnswer;  //holds user's answer
-    int n;  //number of vertices
-    int type;  //type of graph
-    int style;  //style of graph
-    int numberOfInfiniteEdges;  //holds number of infinite edges
-    int numberOfJourneys;  //holds number of journeys
-
-    usersAnswer = getChoice("Generate a random graph? ");
-    if(usersAnswer)
-    {
-        cout << endl << "Types: " << endl
-        << "0 - finite weights" << endl
-        << "1 - some random infinite weights - Style: # of infinite weights < (n - 2)" << endl
-        << "2 - limited directional movement" << endl
-        << "3 - highway system" << endl
-        << "4 - threaded grid" << endl;
-        cout << endl;
-        type = inputInt("What is the type of the graph? ");
-        n = inputInt("How many vertices? ");
-        if(type == 1)
-        {
-            style = inputInt("What is the style of the graph? ");
-            while(type == 1 && style > n)
-            {
-                cout << endl;
-                ostringstream s;
-                s << "Too many edges. Use less than " << n - 2 << "edges. Style: ";
-                style = inputInt(s.str());
-            }
-        }
-        else
-            style = 0;
-        cout << endl;
-        generateGraph(inputGroup, n, type, style);
+    if(getChoice("Generate a random graph? ")) {
+        generateGraph(inputGroup);
     }
     else
         readGraphFromFile(inputGroup);
@@ -107,17 +75,17 @@ void readGraphFromFile(basicEdgeGroup & inputGroup)
     inputGroup.setStyle(0);
 
     //read in graph info
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < n; j++)
-        {
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
             fin >> tempWeight;
             if(tempWeight == infinitySymbol)
                 inputGroup.addEdge(i, j, infiniteWeight);
             else
                 inputGroup.addEdge(i, j, tempWeight);
         }
+    }
 
-        fin.close();
+    fin.close();
 
 }
 
@@ -129,349 +97,31 @@ void readGraphFromFile(basicEdgeGroup & inputGroup)
 //
 //post:
 // -inputGroup has been set randomly with user selected properties
-void generateGraph(basicEdgeGroup & randomGraph, int n, int type, int style)
-{
-
-    char usersAnswer;
-    bool directed;  //true if graph is directed
-    int numOfRanges;  //number Of ranges
-    vector< vector< int > > ranges;  //holds ranges
-    vector< int > vertexList;  //holds list of unused vertices
-    vector< int > whichRange;  //holds which vertex goes in which range
-    whichRange.resize(n);
-    int tempValue;  //temporarily holds value for different jobs
-    int rangeIncrement;  //how many vertices are in each range
-    int currentRange;  //which range is being used currently
-    int limitedback;  //how far backward
-    int limitedforward;  //how far forward
-    int highway; //how many vertices in highway
-    int levels; //how many levels there are
-    int jumping; //how many levels a vertex can jump
-    int perLevel; //how many vertices on each level
-    int currentLevel1; //which level is currently being looked at
-    int currentLevel2; //which level is currently being looked at
-    int levelDifference; //difference between currentLevels
-    int i;  //i and j used for infinite edge finding and checking
-    int j;
-    int numberOfEdgesLeft;  //holds countdown for adding infinite edges
-    floatWInf infiniteWeight(true, 0);  //float used to hold infinity
-
-    randomGraph.setN(n);
-
-    if((type == 0) || (type == 1))  //finite weights or some random infinite weights
-    {
-        //read in information
-        cout << "Directed or Undirected? (d/u) ";
-        cin >> usersAnswer;
-        if(usersAnswer == 'd')
-            directed = true;
-        else
-            directed = false;
-
-        cout << "Multiple ranges? (y/n) ";
-        cin >> usersAnswer;
-        if(usersAnswer == 'y')
-        {
-            cout << "How many ranges? (>0) ";
-            cin >> numOfRanges;
-        }
-        else
-            numOfRanges = 1;
-
-        ranges.resize(numOfRanges);
-        for(int m = 0; m < numOfRanges; m++)
-        {
-            ranges[m].resize(2); //first is min, second is max
-            cout << "What is min of range " << m << "? ";
-            cin >> tempValue;
-            ranges[m][0] = tempValue;
-            cout << "What is max of range " << m << "? ";
-            cin >> tempValue;
-            ranges[m][1] = tempValue;
-        }
-
-        //begin work
-        if(directed == true)  //directed graph
-        for(int k = 0; k < n; k++)
-            if(numOfRanges == 1) //only one range
-            for(int l = 0; l < n; l++)
-                //select random weights
-            if(k == l)
-                randomGraph.addEdge(k, l, 0);
-            else
-                randomGraph.addEdge(k, l, randomWeight(ranges[0][0], ranges[0][1]));
-            else  //multiple ranges
-            {
-                //select order for vertices
-                vertexList.resize(n);
-                for(int l = 0; l < n; l++)
-                    vertexList[l] = l;
-
-                //set random ranges (whichRange at the end of the loop has all vertices listed in a random order)
-                    for(int l = 0; l < n; l++)
-                    {
-                        tempValue = randomWeight(0, vertexList.size());
-                        whichRange[l] = vertexList[tempValue];
-                        vertexList[tempValue] = vertexList[vertexList.size() - 1];
-                        vertexList.resize(vertexList.size() - 1);
-                    }
-
-                    //select random weights
-                    rangeIncrement = n / numOfRanges;
-                    for(int l = 0; l < n; l++)
-                    {
-                        if(k == whichRange[l])
-                            randomGraph.addEdge(k, whichRange[l], 0);
-                        else
-                        {
-                            currentRange = l / rangeIncrement;
-                            if(currentRange > numOfRanges)
-                                currentRange = numOfRanges;
-
-                            randomGraph.addEdge(k, whichRange[l], randomWeight(ranges[currentRange][0], ranges[currentRange][1]));
-                        }
-                    }
-            }
-            else //undirected graph
-        for(int k = 0; k < n; k++)
-            if(numOfRanges == 1) //only one range
-            for(int l = k; l < n; l++)
-                //select random weights
-            if(k == l)
-                randomGraph.addEdge(k, l, 0);
-            else
-            {
-                tempValue = randomWeight(ranges[0][0], ranges[0][1]);
-                randomGraph.addEdge(k, l, tempValue);
-                randomGraph.addEdge(l, k, tempValue);
-            }
-            else  //multiple ranges
-            {
-                //select order for vertices
-                vertexList.resize(n - k);
-                whichRange.resize(n - k);
-                for(int l = 0; l < vertexList.size(); l++)
-                    vertexList[l] = n - l - 1;
-
-                //set random ranges (whichRange at the end of the loop has all vertices listed in a random order)
-                    for(int l = 0; l < whichRange.size(); l++)
-                    {
-                        tempValue = randomWeight(0, vertexList.size());
-                        whichRange[l] = vertexList[tempValue];
-                        vertexList[tempValue] = vertexList[vertexList.size() - 1];
-                        vertexList.resize(vertexList.size() - 1);
-                    }
-
-                    //select random weights
-                    rangeIncrement = (n - k - 1) / numOfRanges; //rangeIncrement of those edges that have not been weighted yet
-                    if(rangeIncrement <= 0)  //watch that divide by zero
-                rangeIncrement = 1;
-                for(int l = 0; l < whichRange.size(); l++)
-                {
-                    if(k == whichRange[l])
-                        randomGraph.addEdge(k, whichRange[l], 0);
-                    else
-                    {
-                        currentRange = l / rangeIncrement;
-                        if(currentRange >= numOfRanges)
-                            currentRange = numOfRanges - 1;
-
-                        tempValue = randomWeight(ranges[currentRange][0], ranges[currentRange][1]);
-                        randomGraph.addEdge(k, whichRange[l], tempValue);
-                        randomGraph.addEdge(whichRange[l], k, tempValue);
-                    }
-                }
-            }
-
-            if(type == 1)  //add random infinite edges if needed
-        {
-            numberOfEdgesLeft = style;
-
-            //select random infinite edges
-            while(numberOfEdgesLeft > 0)
-            {
-                i = randomWeight(0, n);
-                j = randomWeight(0, n);
-                if((i != j)
-                    &&(randomGraph.cost(i, j).isInfinity() == false))
-                {
-                    if(directed == true)  //directed graph
-                    randomGraph.addEdge(i, j, infiniteWeight);
-                    else  //undirected graph
-                {
-                    randomGraph.addEdge(i, j, infiniteWeight);
-                    randomGraph.addEdge(j, i, infiniteWeight);
-                }
-
-                numberOfEdgesLeft--;
-                }
-            }
-        }
+void generateGraph(basicEdgeGroup & randomGraph) {
+    output("Types:", "");
+    output("\t1 - finite weights");
+    output("\t2 - some random infinite weights");
+    output("\t3 - limited directional movement");
+    output("\t4 - highway system");
+    output("\t5 - threaded grid");
+    int type = inputInt("Which type is the graph?");
+    switch(type) {
+        case 1:
+            generateFiniteWeightedGraph(randomGraph);
+            break;
+        case 2:
+            generateInfiniteWeigtedGraph(randomGraph);
+            break;
+        case 3:
+            generateLimitedDirectionalGraph(randomGraph);
+            break;
+        case 4:
+            generateHighwaySystem(randomGraph);
+            break;
+        case 5:
+            generateThreadedGrid(randomGraph);
+            break;
     }
-    else if(type == 2)  //limited directional movement
-    {
-        //read in information
-        cout << "Directed or Undirected? (d/u) ";
-        cin >> usersAnswer;
-        if(usersAnswer == 'd')
-            directed = true;
-        else
-            directed = false;
-
-        if(directed == true)
-        {
-            cout << "How far backward? (> -1) ";
-            cin >> limitedback;
-        }
-        else
-            limitedback = 0;
-        cout << "How far forward? (> 0) ";
-        cin >> limitedforward;
-
-        ranges.resize(1);
-        ranges[0].resize(2);
-        cout << "What is minimum weight? ";
-        cin >> tempValue;
-        ranges[0][0] = tempValue;
-        cout << "What is maximum weight? ";
-        cin >> tempValue;
-        ranges[0][1] = tempValue;
-
-        //begin work
-        for(int k = 0; k < n; k++)
-            if(directed == true) //directed graph
-        for(int l = 0; l < n; l++)
-            //select random weights
-        if(k == l)
-            randomGraph.addEdge(k, l, 0);
-        else if((k - limitedback <= l) && (k + limitedforward >= l))
-            randomGraph.addEdge(k, l, randomWeight(ranges[0][0], ranges[0][1]));
-        else
-            randomGraph.addEdge(k, l, infiniteWeight);
-        else //undirected graph
-        for(int l = k; l < n; l++)
-            //select random weights
-        if(k == l)
-            randomGraph.addEdge(k, l, 0);
-        else if((k - limitedback <= l) && (k + limitedforward >= l)) //k and l are connected
-            {
-                tempValue = randomWeight(ranges[0][0], ranges[0][1]);
-                randomGraph.addEdge(k, l, tempValue);
-                randomGraph.addEdge(l, k, tempValue);
-            }
-            else  //k and l are not connected
-            {
-                randomGraph.addEdge(k, l, infiniteWeight);
-                randomGraph.addEdge(l, k, infiniteWeight);
-            }
-    }
-    else if(type == 3)  //highway system
-    {
-        //read in information
-        cout << "All highways are undirected." << endl;
-        cout << "How many vertices are in the highway? (They will be vertices 0 through (the number given - 1) ";
-        cin >> highway;
-
-        ranges.resize(2);
-        ranges[0].resize(2);
-        ranges[1].resize(2);
-        cout << "What is the minimum weight between two highway vertices? ";
-        cin >> tempValue;
-        ranges[0][0] = tempValue;
-        cout << "What is the maximum weight between two highway vertices? ";
-        cin >> tempValue;
-        ranges[0][1] = tempValue;
-        cout << "What is the minimum weight between a highway vertex and a non-highway vertex? ";
-        cin >> tempValue;
-        ranges[1][0] = tempValue;
-        cout << "What is the maximum weight between a highway vertex and a non-highway vertex? ";
-        cin >> tempValue;
-        ranges[1][1] = tempValue;
-
-        //begin work
-        for(int k = 0; k < highway; k++)
-        {
-            randomGraph.addEdge(k, k, 0);
-
-            //select weights for edges along highway
-            if(k < highway - 1) //to keep intra-highway ranges within the highway only
-            {
-                tempValue = randomWeight(ranges[0][0], ranges[0][1]);
-                randomGraph.addEdge(k, k + 1, tempValue);
-                randomGraph.addEdge(k + 1, k, tempValue);
-            }
-
-            //select weights for edges not along highway
-            for(int l = highway; l < n; l++)
-            {
-                tempValue = randomWeight(ranges[1][0], ranges[1][1]);
-                randomGraph.addEdge(k, l, tempValue);
-                randomGraph.addEdge(l, k, tempValue);
-            }
-        }
-    }
-    else if(type == 4)  //threaded grid
-    {
-        //read in work
-        cout << "All threaded grids are undirected." << endl;
-        cout << "How many levels? (number per level is equal for all levels) ";
-        cin >> levels;
-        cout << "How many levels can a vertices connect to above or below? (>0) ";
-        cin >> jumping;
-        perLevel = n / levels;
-
-        ranges.resize(jumping + 1);
-        ranges[0].resize(2);
-        cout << "What is the minimum weight between vertices on the same level? ";
-        cin >> tempValue;
-        ranges[0][0] = tempValue;
-        cout << "What is the maximum weight between vertices on the same level? ";
-        cin >> tempValue;
-        ranges[0][1] = tempValue;
-
-        for(int i = 1; i < jumping + 1; i++)
-        {
-            cout << "What is the minimum weight between vertices " << i << " level(s) distant? ";
-            cin >> tempValue;
-            ranges[i][0] = tempValue;
-            cout << "What is the maximum weight between vertices " << i << " level(s) distant? ";
-            cin >> tempValue;
-            ranges[i][1] = tempValue;
-        }
-
-        //begin work
-        for(int k = 0; k < n; k++)
-            for(int l = k; l < n; l++)
-            {
-                //select random weights for:
-                if(k == l)  //same vertex
-            randomGraph.addEdge(k, l, 0);
-        else if(k / perLevel == l / perLevel) //same level
-            {
-                tempValue = randomWeight(ranges[0][0], ranges[0][1]);
-                randomGraph.addEdge(k, l, tempValue);
-                randomGraph.addEdge(l, k, tempValue);
-            }
-            else //different levels
-            {
-                currentLevel1 = k / perLevel;
-                currentLevel2 = l / perLevel;
-                if(currentLevel1 >= levels)
-                    currentLevel1--;
-                if(currentLevel2 >= levels)
-                    currentLevel2--;
-
-                levelDifference = abs(currentLevel1 - currentLevel2);
-                if(levelDifference <= jumping)
-                {
-                    tempValue = randomWeight(ranges[levelDifference][0], ranges[levelDifference][1]);
-                    randomGraph.addEdge(k, l, tempValue);
-                    randomGraph.addEdge(l, k, tempValue);
-                }
-            }
-            }
-    }
-
 }
 
 //            exportGraph()
@@ -511,45 +161,11 @@ void exportGraph(basicEdgeGroup& outputGroup){
 //post:
 // -inputGroups has been set by user
 //
-void readGraphs(vector< basicEdgeGroup > & inputGroups)
-{
-
-    //char usersAnswer;  //holds user's answer
-    int numVertices;  //number of vertices
-    int type;  //type of graph
-    int infiniteWeights;  // Infinite Weights in graph
-    int numberOfInfiniteEdges;  //holds number of infinite edges
-    int numberOfJourneys;  //holds number of journeys
-
-    int numGraphs = inputInt("How many graphs?");
+void readGraphs(vector< basicEdgeGroup > & inputGroups) {
+    int numGraphs = inputInt("How many graphs are there?");
     inputGroups.resize(numGraphs);
-
-    if(getChoice("Generate graphs randomly?")) {
-        output("Types:", "");
-        output("\t0 - finite weights");
-        output("\t1 - some random infinite weights");
-        output("\t2 - limited directional movement");
-        output("\t3 - highway system");
-        output("\t4 - threaded grid");
-        type = inputInt("What is the type of the graph?");
-        numVertices = inputInt("How many vertices?");
-        if(type == 1) {
-            do {
-                infiniteWeights = inputInt("How many infinite weights are there?");
-                if(infiniteWeights >= numVertices-2)
-                    output("Too many infinite weights. Use less than " + str(numVertices-2) + " weights.");
-            } while(infiniteWeights >= numVertices-2);
-        }
-        else
-            infiniteWeights = 0;
-
-
-        generateGraphs(inputGroups, numVertices, type, infiniteWeights);
-    }
-    else
-        for(int i = 0; i < numGraphs; i++)
-            readGraphFromFile(inputGroups[i]);
-
+    for(int i = 0; i < inputGroups.size(); i++)
+        generateGraphs(inputGroups);
 }
 
 //generateGraphs
@@ -560,356 +176,392 @@ void readGraphs(vector< basicEdgeGroup > & inputGroups)
 //
 //post:
 // -inputGroup has been set randomly with user selected properties
-void generateGraphs(vector< basicEdgeGroup > & randomGraphs,
-                    int numberVertices,
-                    int type,
-                    int infiniteWeights) {
+void generateGraphs(vector< basicEdgeGroup > & randomGraphs) {
+    for(int i = 0; i < randomGraphs.size(); i++)
+        generateGraph(randomGraphs[i]);
+}
 
-    //char usersAnswer;
-    bool directed;  //true if graph is directed
-    int numOfRanges;  //number of ranges
-    vector< vector< int > > ranges;  //holds ranges
-    vector< int > vertexList;  //holds list of unused vertices
-    vector< int > whichRange;  //holds which vertex goes in which range
-    whichRange.resize(numberVertices);
-    int tempValue;  //temporarily holds value for different jobs
-    int rangeIncrement;  //how many vertices are in each range
-    int currentRange;  //which range is being used currently
-    int limitedback;  //how far backward
-    int limitedforward;  //how far forward
-    int highway; //how many vertices in highway
-    int levels; //how many levels there are
-    int jumping; //how many levels a vertex can jump
-    int perLevel; //how many vertices on each level
-    int currentLevel1; //which level is currently being looked at
-    int currentLevel2; //which level is currently being looked at
-    int levelDifference; //difference between currentLevels
-    int i;  //i and j used for infinite edge finding and checking
-    int j;
-    int numberOfEdgesLeft;  //holds countdown for adding infinite edges
-    const floatWInf infinity(true, 0);  //float used to hold infinity
+void generateFiniteWeightedGraph(basicEdgeGroup& randomGraph) {
+    //finite weights
 
-    srand(time(0));
+    int numberVertices = inputInt("How many vertices does the graph have?");
+    randomGraph.setN(numberVertices);
 
-    if((type == 0) || (type == 1)) {
-        //finite weights or some random infinite weights
-
-        // read in information
-        directed = getChoice("Is the graph directed?");
-
-        if(getChoice("Should the graph use multiple ranges?")) {
-            numOfRanges = inputInt("How many ranges?");
-        }
-        else
-            numOfRanges = 1;
-
-        ranges.resize(numOfRanges);
-        for(int m = 0; m < numOfRanges; m++)
-        {
-            ranges[m].resize(2); //first is min, second is max
-            ranges[m][0] = inputInt("What is min of range "+str(m)+"?");
-            ranges[m][1] = inputInt("What is max of range "+str(m)+"?");
-        }
+    int numOfRanges;
+    if(getChoice("Should the graph have multiple ranges?"))
+        numOfRanges = inputInt("How many ranges?");
+    else
+        numOfRanges = 1;
+    
+    vector<vector<int> > ranges(numOfRanges);
+    for(int m = 0; m < ranges.size(); m++) {
+        ranges[m].resize(2);
+        //first is min, second is max
+        ranges[m][0] = inputInt("What is min of range "+str(m)+"?");
+        ranges[m][1] = inputInt("What is max of range "+str(m)+"?");
     }
-    else if(type == 2) {
-        //limited directional movement
-
-        //read in information
-        directed = getChoice("Is the graph directed?");
-
-        if(directed)
-            limitedback = inputInt("How far backward?");
-        else
-            limitedback = 0;
-
-        limitedforward = inputInt("How far forward?");
-
-        ranges.resize(1);
-        ranges[0].resize(2);
-        ranges[0][0] = inputInt("What is Minimum weight?");
-        ranges[0][1] = inputInt("What is Maximum weight?");
-    }
-    else if(type == 3)  //highway system
-    {
-        //read in information
-        output("All highways are undirected.");
-        highway = inputInt("How many vertices are in the highway?");
-        output("The highway vertices will be those labelled starting with 0.");
-
-        ranges.resize(2);
-        ranges[0].resize(2);
-        ranges[1].resize(2);
-        ranges[0][0] = inputInt("What is the Minimum weight between two highway vertices?");
-        ranges[0][1] = inputInt("What is the Maximum weight between two highway vertices?");
-        ranges[1][0] = inputInt("What is the Minimum weight between a highway vertex and a non-highway vertex?");
-        ranges[1][1] = inputInt("What is the Maximum weight between a highway vertex and a non-highway vertex?");
-    }
-    else if(type == 4)  //threaded grid
-    {
-        //read in work
-        output("All threaded grids are undirected.");
-        levels = inputInt("How many levels?");
-        jumping = inputInt("How many levels can a vertices jump to above or below?");
-
-        perLevel = numberVertices / levels;
-
-        ranges.resize(jumping + 1);
-        ranges[0].resize(2);
-        ranges[0][0] = inputInt("What is the Minimum weight between vertices on the same level?");
-        ranges[0][1] = inputInt("What is the Maximum weight between vertices on the same level?");
-
-        for(int i = 1; i < jumping + 1; i++) {
-            ranges[i][0] =
-                inputInt("What is the minimum weight between vertices "+str(i)+" level(s) distant?");
-            ranges[i][1] =
-                inputInt("What is the maximum weight between vertices "+str(i)+" level(s) distant?");
-        }
-    }
-
-    for(int g = 0; g < randomGraphs.size(); g++) {
-        randomGraphs[g].setN(numberVertices);
-
-        if((type == 0) || (type == 1)) {
-            //finite weights or some random infinite weights
-
-            //begin work
-            if(directed == true) {
-                //directed graph
-                for(int k = 0; k < numberVertices; k++) {
-                    if(numOfRanges == 1) {
-                        //only one range
-                        for(int l = 0; l < numberVertices; l++) {
-                            //select random weights
-                            if(k == l) {
-                                randomGraphs[g].addEdge(k, l, 0);
-                            }
-                            else {
-                                randomGraphs[g].addEdge(k, l, randomWeight(ranges[0][0], ranges[0][1]));
-                            }
-                        }
-                    }
-                    else {
-                        //multiple ranges
-                        //select order for vertices
-                        vertexList.resize(numberVertices);
-                        for(int l = 0; l < numberVertices; l++) {
-                            vertexList[l] = l;
-                        }
-
-                        //set random ranges (whichRange at the end of the loop has all vertices listed in a random order)
-                        for(int l = 0; l < numberVertices; l++) {
-                            tempValue = randomWeight(0, vertexList.size());
-                            whichRange[l] = vertexList[tempValue];
-                            vertexList[tempValue] = vertexList[vertexList.size() - 1];
-                            vertexList.resize(vertexList.size() - 1);
-                        }
-
-                        //select random weights
-                        rangeIncrement = numberVertices / numOfRanges;
-                        for(int l = 0; l < numberVertices; l++) {
-                            if(k == whichRange[l]) {
-                                randomGraphs[g].addEdge(k, whichRange[l], 0);
-                            }
-                            else {
-                                currentRange = l / rangeIncrement;
-                                if(currentRange > numOfRanges) {
-                                    currentRange = numOfRanges;
-                                }
-                                randomGraphs[g].addEdge(k, whichRange[l], randomWeight(ranges[currentRange][0], ranges[currentRange][1]));
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                //undirected graph
-                for(int k = 0; k < numberVertices; k++) {
-                    if(numOfRanges == 1) {
-                        //only one range
-                        for(int l = k; l < numberVertices; l++) {
-                            //select random weights
-                            if(k == l) {
-                                randomGraphs[g].addEdge(k, l, 0);
-                            }
-                            else {
-                                tempValue = randomWeight(ranges[0][0], ranges[0][1]);
-                                randomGraphs[g].addEdge(k, l, tempValue);
-                                randomGraphs[g].addEdge(l, k, tempValue);
-                            }
-                        }
-                    }
-                    else {
-                        //multiple ranges
-                        //select order for vertices
-                        vertexList.resize(numberVertices - k);
-                        whichRange.resize(numberVertices - k);
-                        for(int l = 0; l < vertexList.size(); l++) {
-                            vertexList[l] = numberVertices - l - 1;
-                        }
-
-                        //set random ranges
-                        for(int l = 0; l < whichRange.size(); l++) {
-                            tempValue = randomWeight(0, vertexList.size());
-                            whichRange[l] = vertexList[tempValue];
-                            vertexList[tempValue] = vertexList[vertexList.size() - 1];
-                            vertexList.resize(vertexList.size() - 1);
-                        }
-                        // whichRange has all vertices listed in a random order
-
-                        //select random weights
-                        //rangeIncrement of those edges that have not been weighted yet
-                        rangeIncrement = (numberVertices - k - 1) / numOfRanges;
-                        if(rangeIncrement <= 0) {
-                            //watch that divide by zero
-                            rangeIncrement = 1;
-                        }
-
-                        for(int l = 0; l < whichRange.size(); l++) {
-                            if(k == whichRange[l]) {
-                                randomGraphs[g].addEdge(k, whichRange[l], 0);
-                            }
-                            else {
-                                currentRange = l / rangeIncrement;
-                                if(currentRange >= numOfRanges) {
-                                    currentRange = numOfRanges - 1;
-                                }
-                                tempValue = randomWeight(ranges[currentRange][0], ranges[currentRange][1]);
-                                randomGraphs[g].addEdge(k, whichRange[l], tempValue);
-                                randomGraphs[g].addEdge(whichRange[l], k, tempValue);
-                            }
-                        }
-                    }
-                }
-
-                if(type == 1) {
-                    //add random infinite edges if needed
-
-                    //select random infinite edges
-                    for(numberOfEdgesLeft = infiniteWeights;
-                        numberOfEdgesLeft > 0;
-                        numberOfEdgesLeft--) {
-                        i = j = 0;
-                        while(i == j || randomGraphs[g].cost(i, j).isInfinity()) {
-                            i = randomGenerator(numberVertices-1);
-                            j = randomGenerator(numberVertices-1);
-                        }
-                        if(directed == true) {
-                            //directed graph
-                            randomGraphs[g].addEdge(i, j, infinity);
-                        }
-                        else {
-                            //undirected graph
-                            randomGraphs[g].addEdge(i, j, infinity);
-                            randomGraphs[g].addEdge(j, i, infinity);
-                        }
-                    }
+    
+    //begin work
+    bool directed = getChoice("Is the graph directed?");
+    bool undirected = not(directed);
+    
+    for(int k = 0; k < numberVertices; k++) {
+        if(numOfRanges == 1) {
+            //only one range
+            for(int l = 0; l < numberVertices; l++) {
+                //select random weights
+                if(k == l)
+                    randomGraph.addEdge(k, l, 0);
+                else {
+                    int tempValue = randomWeight(ranges[0][0], ranges[0][1]);
+                    randomGraph.addEdge(k, l, tempValue);
+                    if(undirected)
+                        randomGraph.addEdge(l, k, tempValue);
                 }
             }
         }
-        else if(type == 2) {
-            //limited directional movement
+        else {
+            //multiple ranges
 
-            //begin work
-            for(int k = 0; k < numberVertices; k++) {
-                if(directed == true) {
-                    //directed graph
-                    for(int l = 0; l < numberVertices; l++) {
-                        //select random weights
-                        if(k == l) {
-                            randomGraphs[g].addEdge(k, l, 0);
-                        }
-                        else if((k - limitedback <= l) && (k + limitedforward >= l)) {
-                            randomGraphs[g].addEdge(k, l, randomWeight(ranges[0][0], ranges[0][1]));
-                        }
-                        else {
-                            randomGraphs[g].addEdge(k, l, infinity);
-                        }
-                    }
+            //select order for vertices
+            vector<int> vertexList(numberVertices);
+            vector<int> whichRange(numberVertices);
+
+            // !! vertex list is backwards !!
+            for(int l = 0; l < numberVertices; l++)
+                vertexList[l] = numberVertices - l - 1;
+
+            //set random ranges (whichRange at the end of the loop has all vertices listed in a random order)
+            for(int l = 0; l < whichRange.size(); l++) {
+                int tempValue = randomGenerator(vertexList.size()-1);
+                whichRange[l] = vertexList[tempValue];
+                vertexList[tempValue] = vertexList[vertexList.size() - 1];
+                vertexList.resize(vertexList.size() - 1);
+            }
+
+            //select random weights
+            //rangeIncrement of those edges that have not been weighted yet
+            int rangeIncrement = (numberVertices - k - 1) / numOfRanges;
+            if(rangeIncrement <= 0) // watch divide by zero
+                rangeIncrement = 1;
+            for(int l = 0; l < numberVertices; l++) {
+                if(k == whichRange[l])
+                    randomGraph.addEdge(k, whichRange[l], 0);
+                else {
+                    int currentRange = l / rangeIncrement;
+                    if(currentRange > numOfRanges)
+                        currentRange = numOfRanges - 1;
+                    int tempValue = randomWeight(ranges[currentRange][0], ranges[currentRange][1]);
+                    randomGraph.addEdge(k, whichRange[l], tempValue);
+                    if(undirected)
+                        randomGraph.addEdge(whichRange[l], k, tempValue);
+                }
+            }
+        }
+    }
+}
+
+void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
+    // some random infinite weights
+
+    int numberVertices = inputInt("How many vertices does the graph have?");
+    randomGraph.setN(numberVertices);
+
+    int numOfRanges;
+    if(getChoice("Should the graph have multiple ranges?"))
+        numOfRanges = inputInt("How many ranges?");
+    else
+        numOfRanges = 1;
+
+    vector<vector<int> > ranges(numOfRanges);
+    for(int m = 0; m < ranges.size(); m++) {
+        ranges[m].resize(2);
+        //first is min, second is max
+        ranges[m][0] = inputInt("What is min of range "+str(m)+"?");
+        ranges[m][1] = inputInt("What is max of range "+str(m)+"?");
+    }
+
+    //begin work
+    bool directed = getChoice("Is the graph directed?");
+    bool undirected = not(directed);
+
+    for(int k = 0; k < numberVertices; k++) {
+        if(numOfRanges == 1) {
+            //only one range
+            for(int l = 0; l < numberVertices; l++) {
+                //select random weights
+                if(k == l)
+                    randomGraph.addEdge(k, l, 0);
+                else {
+                    int tempValue = randomWeight(ranges[0][0], ranges[0][1]);
+                    randomGraph.addEdge(k, l, tempValue);
+                    if(undirected)
+                        randomGraph.addEdge(l, k, tempValue);
+                }
+            }
+        }
+        else {
+            //multiple ranges
+
+            //select order for vertices
+            vector<int> vertexList(numberVertices);
+            vector<int> whichRange(numberVertices);
+
+            // !! vertex list is backwards !!
+            for(int l = 0; l < numberVertices; l++)
+                vertexList[l] = numberVertices - l - 1;
+
+            //set random ranges (whichRange at the end of the loop has all vertices listed in a random order)
+            for(int l = 0; l < whichRange.size(); l++) {
+                int tempValue = randomGenerator(vertexList.size()-1);
+                whichRange[l] = vertexList[tempValue];
+                vertexList[tempValue] = vertexList[vertexList.size() - 1];
+                vertexList.resize(vertexList.size() - 1);
+            }
+
+            //select random weights
+            //rangeIncrement of those edges that have not been weighted yet
+            int rangeIncrement = (numberVertices - k - 1) / numOfRanges;
+            if(rangeIncrement <= 0) // watch divide by zero
+                rangeIncrement = 1;
+            for(int l = 0; l < numberVertices; l++) {
+                if(k == whichRange[l])
+                    randomGraph.addEdge(k, whichRange[l], 0);
+                else {
+                    int currentRange = l / rangeIncrement;
+                    if(currentRange > numOfRanges)
+                        currentRange = numOfRanges - 1;
+                    int tempValue = randomWeight(ranges[currentRange][0], ranges[currentRange][1]);
+                    randomGraph.addEdge(k, whichRange[l], tempValue);
+                    if(undirected)
+                        randomGraph.addEdge(whichRange[l], k, tempValue);
+                }
+            }
+        }
+    }
+
+    //add random infinite edges if needed
+    
+    int infinitePercent = 100 - inputInt("What percent of the graph should be connected? (1 - 100)");
+
+    int numberInfiniteEdges = (numberVertices * (numberVertices-1) * infinitePercent)/100;
+
+    vector<pair<int, int> > notInfinity;
+    for(int i = 0; i < numberVertices; i++) {
+        for(int j = 0; j < numberVertices; j++) {
+            if(i != j)
+                notInfinity.push_back(pair<int,int>(i,j));
+        }
+    }
+
+    //select random infinite edges
+    for(int numberOfEdgesLeft = numberInfiniteEdges; numberOfEdgesLeft > 0; numberOfEdgesLeft--) {
+        int r = randomGenerator(notInfinity.size()-1);
+        randomGraph.addEdge(notInfinity[r].first, notInfinity[r].second, infinity);
+        if(undirected)
+            randomGraph.addEdge(notInfinity[r].second, notInfinity[r].first, infinity);
+        notInfinity.erase(notInfinity.begin()+r);
+    }
+}
+
+void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
+    //limited directional movement
+/*
+    int numberVertices = inputInt("How many vertices does the graph have?");
+
+    //read in information
+    directed = getChoice("Is the graph directed?");
+
+    if(directed)
+        limitedback = inputInt("How far backward?");
+    else
+        limitedback = 0;
+    
+    limitedforward = inputInt("How far forward?");
+    
+    ranges.resize(1);
+    ranges[0].resize(2);
+    ranges[0][0] = inputInt("What is Minimum weight?");
+    ranges[0][1] = inputInt("What is Maximum weight?");
+
+    //read in information
+    cout << "Directed or Undirected? (d/u) ";
+    cin >> usersAnswer;
+    if(usersAnswer == 'd')
+        directed = true;
+    else
+        directed = false;
+    
+    if(directed == true)
+    {
+        cout << "How far backward? (> -1) ";
+        cin >> limitedback;
+    }
+    else
+        limitedback = 0;
+    cout << "How far forward? (> 0) ";
+    cin >> limitedforward;
+    
+    ranges.resize(1);
+    ranges[0].resize(2);
+    cout << "What is minimum weight? ";
+    cin >> tempValue;
+    ranges[0][0] = tempValue;
+    cout << "What is maximum weight? ";
+    cin >> tempValue;
+    ranges[0][1] = tempValue;
+    
+    //begin work
+    for(int k = 0; k < n; k++){
+        if(directed == true) {
+            //directed graph
+            for(int l = 0; l < n; l++) {
+                //select random weights
+                if(k == l)
+                    randomGraph.addEdge(k, l, 0);
+                else if((k - limitedback <= l) && (k + limitedforward >= l))
+                    randomGraph.addEdge(k, l, randomWeight(ranges[0][0], ranges[0][1]));
+                else
+                    randomGraph.addEdge(k, l, infiniteWeight);
+            }
+        }
+        else {
+            //undirected graph
+            for(int l = k; l < n; l++) {
+                //select random weights
+                if(k == l)
+                    randomGraph.addEdge(k, l, 0);
+                else if((k - limitedback <= l) && (k + limitedforward >= l)) {
+                    //k and l are connected
+                    tempValue = randomWeight(ranges[0][0], ranges[0][1]);
+                    randomGraph.addEdge(k, l, tempValue);
+                    randomGraph.addEdge(l, k, tempValue);
                 }
                 else {
-                    //undirected graph
-                    for(int l = k; l < numberVertices; l++) {
-                        //select random weights
-                        if(k == l) {
-                            randomGraphs[g].addEdge(k, l, 0);
-                        }
-                        else if((k - limitedback <= l) && (k + limitedforward >= l)) {
-                            //k and l are connected
-                            tempValue = randomWeight(ranges[0][0], ranges[0][1]);
-                            randomGraphs[g].addEdge(k, l, tempValue);
-                            randomGraphs[g].addEdge(l, k, tempValue);
-                        }
-                        else {
-                            //k and l are not connected
-                            randomGraphs[g].addEdge(k, l, infinity);
-                            randomGraphs[g].addEdge(l, k, infinity);
-                        }
-                    }
-                }
-            }
-        }
-        else if(type == 3) {
-            //highway system
-
-            //begin work
-            for(int k = 0; k < highway; k++) {
-                randomGraphs[g].addEdge(k, k, 0);
-
-                //select weights for edges along highway
-                if(k < highway - 1) {
-                    //to keep intra-highway ranges within the highway only
-                    tempValue = randomWeight(ranges[0][0], ranges[0][1]);
-                    randomGraphs[g].addEdge(k, k + 1, tempValue);
-                    randomGraphs[g].addEdge(k + 1, k, tempValue);
-                }
-
-                //select weights for edges not along highway
-                for(int l = highway; l < numberVertices; l++) {
-                    tempValue = randomWeight(ranges[1][0], ranges[1][1]);
-                    randomGraphs[g].addEdge(k, l, tempValue);
-                    randomGraphs[g].addEdge(l, k, tempValue);
-                }
-            }
-        }
-        else if(type == 4) {
-            //threaded grid
-
-            //begin work
-            for(int k = 0; k < numberVertices; k++) {
-                for(int l = k; l < numberVertices; l++) {
-                    //select random weights for:
-                    if(k == l) {
-                        //same vertex
-                        randomGraphs[g].addEdge(k, l, 0);
-                    }
-                    else if(k / perLevel == l / perLevel) {
-                        //same level
-                        tempValue = randomWeight(ranges[0][0], ranges[0][1]);
-                        randomGraphs[g].addEdge(k, l, tempValue);
-                        randomGraphs[g].addEdge(l, k, tempValue);
-                    }
-                    else {
-                        //different levels
-                        currentLevel1 = k / perLevel;
-                        currentLevel2 = l / perLevel;
-                        if(currentLevel1 >= levels) {
-                            currentLevel1--;
-                        }
-                        if(currentLevel2 >= levels) {
-                            currentLevel2--;
-                        }
-
-                        levelDifference = abs(currentLevel1 - currentLevel2);
-                        if(levelDifference <= jumping) {
-                            tempValue = randomWeight(ranges[levelDifference][0], ranges[levelDifference][1]);
-                            randomGraphs[g].addEdge(k, l, tempValue);
-                            randomGraphs[g].addEdge(l, k, tempValue);
-                        }
-                    }
+                    //k and l are not connected
+                    randomGraph.addEdge(k, l, infiniteWeight);
+                    randomGraph.addEdge(l, k, infiniteWeight);
                 }
             }
         }
     }
+*/
+}
+
+void generateHighwaySystem(basicEdgeGroup& randomGraph) {
+/*
+    int numberVertices = inputInt("How many vertices does the graph have?");
+
+    //highway system
+    
+    //read in information
+    cout << "All highways are undirected." << endl;
+    cout << "How many vertices are in the highway? (They will be vertices 0 through (the number given - 1) ";
+    cin >> highway;
+    
+    ranges.resize(2);
+    ranges[0].resize(2);
+    ranges[1].resize(2);
+    cout << "What is the minimum weight between two highway vertices? ";
+    cin >> tempValue;
+    ranges[0][0] = tempValue;
+    cout << "What is the maximum weight between two highway vertices? ";
+    cin >> tempValue;
+    ranges[0][1] = tempValue;
+    cout << "What is the minimum weight between a highway vertex and a non-highway vertex? ";
+    cin >> tempValue;
+    ranges[1][0] = tempValue;
+    cout << "What is the maximum weight between a highway vertex and a non-highway vertex? ";
+    cin >> tempValue;
+    ranges[1][1] = tempValue;
+    
+    //begin work
+    for(int k = 0; k < highway; k++) {
+        randomGraph.addEdge(k, k, 0);
+        
+        //select weights for edges along highway
+        if(k < highway - 1) {
+            //to keep intra-highway ranges within the highway only
+            tempValue = randomWeight(ranges[0][0], ranges[0][1]);
+            randomGraph.addEdge(k, k + 1, tempValue);
+            randomGraph.addEdge(k + 1, k, tempValue);
+        }
+        
+        //select weights for edges not along highway
+        for(int l = highway; l < n; l++) {
+            tempValue = randomWeight(ranges[1][0], ranges[1][1]);
+            randomGraph.addEdge(k, l, tempValue);
+            randomGraph.addEdge(l, k, tempValue);
+        }
+    }
+*/
+}
+
+void generateThreadedGrid(basicEdgeGroup& randomGraph) {
+/*
+    int numberVertices = inputInt("How many vertices does the graph have?");
+
+    //read in work
+    cout << "All threaded grids are undirected." << endl;
+    cout << "How many levels? (number per level is equal for all levels) ";
+    cin >> levels;
+    cout << "How many levels can a vertices connect to above or below? (>0) ";
+    cin >> jumping;
+    perLevel = n / levels;
+    
+    ranges.resize(jumping + 1);
+    ranges[0].resize(2);
+    cout << "What is the minimum weight between vertices on the same level? ";
+    cin >> tempValue;
+    ranges[0][0] = tempValue;
+    cout << "What is the maximum weight between vertices on the same level? ";
+    cin >> tempValue;
+    ranges[0][1] = tempValue;
+    
+    for(int i = 1; i < jumping + 1; i++) {
+        cout << "What is the minimum weight between vertices " << i << " level(s) distant? ";
+        cin >> tempValue;
+        ranges[i][0] = tempValue;
+        cout << "What is the maximum weight between vertices " << i << " level(s) distant? ";
+        cin >> tempValue;
+        ranges[i][1] = tempValue;
+    }
+    
+    //begin work
+    for(int k = 0; k < n; k++) {
+        for(int l = k; l < n; l++) {
+            //select random weights for:
+            if(k == l)  //same vertex
+                randomGraph.addEdge(k, l, 0);
+            else if(k / perLevel == l / perLevel) {
+                //same level
+                tempValue = randomWeight(ranges[0][0], ranges[0][1]);
+                randomGraph.addEdge(k, l, tempValue);
+                randomGraph.addEdge(l, k, tempValue);
+            }
+            else {
+                //different levels
+                currentLevel1 = k / perLevel;
+                currentLevel2 = l / perLevel;
+                if(currentLevel1 >= levels)
+                    currentLevel1--;
+                if(currentLevel2 >= levels)
+                    currentLevel2--;
+                
+                levelDifference = abs(currentLevel1 - currentLevel2);
+                if(levelDifference <= jumping) {
+                    tempValue = randomWeight(ranges[levelDifference][0], ranges[levelDifference][1]);
+                    randomGraph.addEdge(k, l, tempValue);
+                    randomGraph.addEdge(l, k, tempValue);
+                }
+            }
+        }
+    }
+*/
+}
+
+void generateSparseGraph(basicEdgeGroup& randomGraph) {
+    
 }
 
 //readJourneys()
@@ -1037,8 +689,9 @@ void generateJourneys(vector< journeyInfo > & journeysInformation, int n)
 
     for(int i = 0; i < journeysInformation.size(); i++)
     {
-        journeysInformation[i].setSource(0);
-        randomNumber = randomWeight(0, vertices.size());
+        int randomNumber = randomGenerator(vertices.size()-1);
+        journeysInformation[i].setSource(randomNumber);
+        randomNumber = randomGenerator(vertices.size()-1);
         journeysInformation[i].setDestination(vertices[randomNumber]);
         vertices[randomNumber] = vertices[vertices.size() - 1];
         vertices.resize(vertices.size() - 1);
@@ -1144,7 +797,15 @@ const string graphvizCmd = "dot";
 
 // Dumps a graph to a file named "graph.dot"
 // Then runs graphviz on the file to produce an output file.
-void dumpGraph(const graphGroup& g, int graphNum) {
+void dumpGraph(const graphGroup& g) {
+
+    ifstream config1(".graphConfig");
+    int graphNum; config1 >> graphNum;
+    config1.close();
+    ofstream config2(".graphConfig");
+    config2 << graphNum+1;
+    config2.close();
+
     ofstream fout("graph.dot");
     fout << "graph G {\n\tgraph [ rankdir = \"LR\" bgcolor=\"#808080\" ];\n";
 
@@ -1164,11 +825,9 @@ void dumpGraph(const graphGroup& g, int graphNum) {
     colors.push_back("gold");
     colors.push_back("orchid");
 
-    for(int i = 0; i < g.returnN(); i++)
-    {
-        for(int j = 0; j < g.returnN(); j++)
-        {
-            if(g.totalEdgeCost(i, j).isInfinity() != true) {
+    for(int i = 0; i < g.returnN(); i++) {
+        for(int j = i; j < g.returnN(); j++) {
+            if(not(g.totalEdgeCost(i, j).isInfinity())) {
                 if(i < j) {
                     fout << "\t" << i << " -- " << j << " ";
                     fout << " [ ";
@@ -1177,8 +836,10 @@ void dumpGraph(const graphGroup& g, int graphNum) {
                     vector<string> edgeColors;
                     for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
                         for(int pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
-                            if (paths[pathNum].actualPath()[pathPart] == j &&
-                                paths[pathNum].actualPath()[pathPart-1] == i) {
+                            if((paths[pathNum].actualPath()[pathPart] == j &&
+                                paths[pathNum].actualPath()[pathPart-1] == i) ||
+                                (paths[pathNum].actualPath()[pathPart] == i &&
+                                paths[pathNum].actualPath()[pathPart-1] == j)) {
                                 edgeColors.push_back(colors[pathNum]);
                                 edgeUsed = true;
                             }

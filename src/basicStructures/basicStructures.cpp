@@ -1111,3 +1111,5 @@ float abs(float value)
         return (float)(-1)*value;
     
 }
+
+const floatWInf infinity(true, 0);  //float used to hold infinity

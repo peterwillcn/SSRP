@@ -14,14 +14,21 @@ extern const bool NO;
 ///graph readers:
 void readGraph(basicEdgeGroup & inputGroup);
 void readGraphFromFile(basicEdgeGroup & inputGroup);
-void generateGraph(basicEdgeGroup & randomGraph, int n, int type, int style);
+void generateGraph(basicEdgeGroup & randomGraph);
 void readGraphs(vector< basicEdgeGroup > & inputGroups);
 void exportGraph(basicEdgeGroup& outputGroup);
-void generateGraphs(vector< basicEdgeGroup > & randomGraphs, int n, int type, int style);
+void generateGraphs(vector< basicEdgeGroup > & randomGraphs);
 ///journey readers:
 void readJourneys(vector< journeyInfo > & journeysInformation);
 void readJourneysFromFile(vector< journeyInfo > & journeysInformation);
 void generateJourneys(vector< journeyInfo > & journeysInformation, int n);
+
+void generateFiniteWeightedGraph(basicEdgeGroup& randomGraph);
+void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph);
+void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph);
+void generateHighwaySystem(basicEdgeGroup& randomGraph);
+void generateThreadedGrid(basicEdgeGroup& randomGraph);
+void generateSparseGraph(basicEdgeGroup& randomGraph);
 
 // <- zfj
 int inputInt(const string& prompt);
@@ -40,7 +47,7 @@ void output(const string&, const string& suffix = "\n");
 
 bool getChoice(string prompt);
 
-void dumpGraph(const graphGroup&, int graphNum);
+void dumpGraph(const graphGroup&);
 // zfj ->
 
 #endif
