@@ -355,7 +355,7 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
     
     int infinitePercent = inputInt("What percent of the graph should be connected? (1 - 100)");
 
-    int numberInfiniteEdges = (numberVertices * (numberVertices-1) / 2) * (infinitePercent/100);
+    int numberInfiniteEdges = (numberVertices * (numberVertices-1) / 2) *  (1 - (infinitePercent/100.0));
 
     vector<pair<int, int> > notInfinity;
     for(int i = 0; i < numberVertices; i++) {
