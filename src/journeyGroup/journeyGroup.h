@@ -52,6 +52,8 @@ class journeyGroup
   void setSharedPath(int journeyNum, path const & newPath);
   void setSharedCost(int journeyNum, floatWInf const & newCost);
   void reset(int journeyNum);
+  int getSource(int journeyNum) const;
+  int getDestination(int journeyNum) const;
   
   //single member func's
   ///accessors

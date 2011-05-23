@@ -77,7 +77,8 @@ class graphGroup
   vector< vector< path > > groupDijkstras(vector< journeyInfo > & journeysInformation/*, vector< vertex > & vertices*/);
   void backtrackPaths(vector< journeyInfo > & journeysInformation, vector< path > dijkstraGroup, vector< vertex > vertices);
   vector< vector< path > > reversedDijkstra(int jj, int journeyNum) const;
-  
+
+    bool directed() const;
 
   ///shared path accessor member func's
   bool hasSharedPath(int journeyNum) const;

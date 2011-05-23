@@ -21,6 +21,7 @@ class basicEdgeGroup
   int type;
   int style;
   vector< vector< floatWInf > > group;
+  bool isDirected;
   
  public:
   
@@ -36,10 +37,13 @@ class basicEdgeGroup
   int returnStyle() const;
   floatWInf returnEdgeCost(int i, int j) const;
   void reverse(basicEdgeGroup & reversee) const;
+  bool directed() const;
   ///mutators
   void setN(int newN);
   void setType(int newType);
   void setStyle(int newStyle);
+  void setDirected();
+  void setUndirected();
   
   //basicEdge member func's
   ///accessor

@@ -112,7 +112,6 @@ void graphGroup::printGraph() const
     void graphGroup::printJourneys() const
     {
 
-        cout << "* J = " << numJourneys() << endl;
         for(int i = 0; i < numJourneys(); i++)
             printJourney(i);
 
@@ -132,7 +131,7 @@ void graphGroup::printGraph() const
     void graphGroup::printJourney(int journeyNum) const
     {
 
-        cout << "j" << journeyNum << ": " << endl;
+        cout << "Journey " << journeyNum << ": " << endl;
         printJourneyCost(journeyNum);
         printJourneyPath(journeyNum);
         cout << endl;
@@ -172,27 +171,27 @@ void graphGroup::printGraph() const
     void graphGroup::printJourneyPath(int journeyNum) const
     {
 
-        cout << "sP " << journeyNum;
-        if(journeys.hasSinglePath(journeyNum) == true)
-        {
-            cout << ":" << endl;
+        cout << "\tSingle Path: ";
+        if(journeys.hasSinglePath(journeyNum) == true) {
             for(int i = 0; i < journeys.singleActualPath(journeyNum).size(); i++)
                 cout << journeys.singleActualPath(journeyNum)[i] << " ";
-            cout << endl;
         }
-        else
-            cout << " is N/A." << endl;
+        else {
+            cout << "Journey not found between " <<
+                journeys.getSource(journeyNum) << " and " << journeys.getDestination(journeyNum) << ".";
+        }
+        cout << endl;
 
-        cout << "SP " << journeyNum;
-        if(journeys.hasSharedPath(journeyNum) == true)
-        {
-            cout << ":" << endl;
+        cout << "\tShared Path: ";
+        if(journeys.hasSharedPath(journeyNum) == true) {
             for(int i = 0; i < journeys.sharedActualPath(journeyNum).size(); i++)
                 cout << journeys.sharedActualPath(journeyNum)[i] << " ";
-            cout << endl;
         }
-        else
-            cout << " is N/A." << endl;
+        else {
+            cout << "Journey not found between " <<
+                journeys.getSource(journeyNum) << " and " << journeys.getDestination(journeyNum) << ".";
+        }
+        cout << endl;
 
     }
 
@@ -229,17 +228,21 @@ void graphGroup::printGraph() const
     void graphGroup::printJourneyCost(int journeyNum) const
     {
 
-        cout << "sP " << journeyNum;
+        cout << "\tSingle Path Cost: ";
         if(journeys.hasSinglePath(journeyNum) == true)
-            cout << " C: " << journeys.singleCost(journeyNum).value() << "." << endl;
-        else
-            cout << " C is N/A." << endl;
+            cout << journeys.singleCost(journeyNum).value() << "." << endl;
+        else {
+            cout << "Journey not found between " <<
+                journeys.getSource(journeyNum) << " and " << journeys.getDestination(journeyNum) << ".\n";
+        }
 
-        cout << "SP " << journeyNum;
+        cout << "\tShared Path Cost: ";
         if(journeys.hasSharedPath(journeyNum) == true)
-            cout << " C: " << journeys.sharedCost(journeyNum).value() << "." << endl;
-        else
-            cout << " C is N/A." << endl;
+            cout << journeys.sharedCost(journeyNum).value() << "." << endl;
+        else {
+            cout << "Journey not found between " <<
+                journeys.getSource(journeyNum) << " and " << journeys.getDestination(journeyNum) << ".\n";
+        }
 
     }
 
@@ -1287,6 +1290,10 @@ vector< vector< path > > graphGroup::reversedDijkstra(int jj, int journeyNum) co
 
         return answers;
 
+}
+
+bool graphGroup::directed() const {
+    return graph.directed();
 }
 
 //graphGroup::hasSharedPath()

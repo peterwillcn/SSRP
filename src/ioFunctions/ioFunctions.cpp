@@ -215,6 +215,11 @@ void generateFiniteWeightedGraph(basicEdgeGroup& randomGraph) {
     //begin work
     bool directed = getChoice("Is the graph directed?");
     bool undirected = not(directed);
+
+    if(directed)
+        randomGraph.setDirected();
+    else
+        randomGraph.setUndirected();
     
     for(int k = 0; k < numberVertices; k++) {
         if(numOfRanges == 1) {
@@ -296,6 +301,11 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
     bool directed = getChoice("Is the graph directed?");
     bool undirected = not(directed);
 
+    if(directed)
+        randomGraph.setDirected();
+    else
+        randomGraph.setUndirected();
+
     for(int k = 0; k < numberVertices; k++) {
         if(numOfRanges == 1) {
             //only one range
@@ -352,10 +362,10 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
     }
 
     //add random infinite edges if needed
-    
-    int infinitePercent = inputInt("What percent of the graph should be connected? (1 - 100)");
 
-    int numberInfiniteEdges = (numberVertices * (numberVertices-1) / 2) *  (1 - (infinitePercent/100.0));
+    int infinitePercent = 100 - inputInt("What percent of the graph should be connected? (1 - 100)");
+
+    int numberInfiniteEdges = (numberVertices * (numberVertices-1) / 2) *  (infinitePercent/100.0);
 
     vector<pair<int, int> > notInfinity;
     for(int i = 0; i < numberVertices; i++) {
@@ -377,114 +387,85 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
 
 void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
     //limited directional movement
-/*
+
     int numberVertices = inputInt("How many vertices does the graph have?");
 
     //read in information
-    directed = getChoice("Is the graph directed?");
+    bool directed = getChoice("Is the graph directed?");
+    bool undirected = not(directed);
+    int limitedback, limitedforward;
+
+    if(directed)
+        randomGraph.setDirected();
+    else
+        randomGraph.setUndirected();
 
     if(directed)
         limitedback = inputInt("How far backward?");
     else
         limitedback = 0;
-    
+
     limitedforward = inputInt("How far forward?");
-    
-    ranges.resize(1);
-    ranges[0].resize(2);
+
+    vector<vector<int> > ranges(1, vector<int>(2));
     ranges[0][0] = inputInt("What is Minimum weight?");
     ranges[0][1] = inputInt("What is Maximum weight?");
 
-    //read in information
-    cout << "Directed or Undirected? (d/u) ";
-    cin >> usersAnswer;
-    if(usersAnswer == 'd')
-        directed = true;
-    else
-        directed = false;
-    
-    if(directed == true)
-    {
-        cout << "How far backward? (> -1) ";
-        cin >> limitedback;
-    }
-    else
-        limitedback = 0;
-    cout << "How far forward? (> 0) ";
-    cin >> limitedforward;
-    
-    ranges.resize(1);
-    ranges[0].resize(2);
-    cout << "What is minimum weight? ";
-    cin >> tempValue;
-    ranges[0][0] = tempValue;
-    cout << "What is maximum weight? ";
-    cin >> tempValue;
-    ranges[0][1] = tempValue;
-    
     //begin work
-    for(int k = 0; k < n; k++){
+    for(int k = 0; k < numberVertices; k++){
         if(directed == true) {
             //directed graph
-            for(int l = 0; l < n; l++) {
+            for(int l = 0; l < numberVertices; l++) {
                 //select random weights
                 if(k == l)
                     randomGraph.addEdge(k, l, 0);
                 else if((k - limitedback <= l) && (k + limitedforward >= l))
                     randomGraph.addEdge(k, l, randomWeight(ranges[0][0], ranges[0][1]));
                 else
-                    randomGraph.addEdge(k, l, infiniteWeight);
+                    randomGraph.addEdge(k, l, infinity);
             }
         }
         else {
             //undirected graph
-            for(int l = k; l < n; l++) {
+            int l = (directed ? 0 : k);
+            for(; l < numberVertices; l++) {
                 //select random weights
                 if(k == l)
                     randomGraph.addEdge(k, l, 0);
                 else if((k - limitedback <= l) && (k + limitedforward >= l)) {
                     //k and l are connected
-                    tempValue = randomWeight(ranges[0][0], ranges[0][1]);
+                    int tempValue = randomWeight(ranges[0][0], ranges[0][1]);
                     randomGraph.addEdge(k, l, tempValue);
-                    randomGraph.addEdge(l, k, tempValue);
+                    if(undirected)
+                        randomGraph.addEdge(l, k, tempValue);
                 }
                 else {
                     //k and l are not connected
-                    randomGraph.addEdge(k, l, infiniteWeight);
-                    randomGraph.addEdge(l, k, infiniteWeight);
+                    randomGraph.addEdge(k, l, infinity);
+                    if(undirected)
+                        randomGraph.addEdge(l, k, infinity);
                 }
             }
         }
     }
-*/
 }
 
 void generateHighwaySystem(basicEdgeGroup& randomGraph) {
-/*
+
     int numberVertices = inputInt("How many vertices does the graph have?");
 
     //highway system
-    
+
     //read in information
     cout << "All highways are undirected." << endl;
-    cout << "How many vertices are in the highway? (They will be vertices 0 through (the number given - 1) ";
-    cin >> highway;
-    
-    ranges.resize(2);
-    ranges[0].resize(2);
-    ranges[1].resize(2);
-    cout << "What is the minimum weight between two highway vertices? ";
-    cin >> tempValue;
-    ranges[0][0] = tempValue;
-    cout << "What is the maximum weight between two highway vertices? ";
-    cin >> tempValue;
-    ranges[0][1] = tempValue;
-    cout << "What is the minimum weight between a highway vertex and a non-highway vertex? ";
-    cin >> tempValue;
-    ranges[1][0] = tempValue;
-    cout << "What is the maximum weight between a highway vertex and a non-highway vertex? ";
-    cin >> tempValue;
-    ranges[1][1] = tempValue;
+    int highway = inputInt("How many vertices are in the highway? ");
+    randomGraph.setUndirected();
+
+    vector<vector<int> > ranges(2, vector<int>(2));
+    ranges[0][0] = inputInt("What is the minimum weight between two highway vertices? ");
+    ranges[0][1] = inputInt("What is the maximum weight between two highway vertices? ");
+    ranges[1][0] = inputInt("What is the minimum weight between a highway vertex and a non-highway vertex? ");
+    ranges[1][1] = inputInt("What is the maximum weight between a highway vertex and a non-highway vertex? ");
     
     //begin work
     for(int k = 0; k < highway; k++) {
@@ -493,19 +474,18 @@ void generateHighwaySystem(basicEdgeGroup& randomGraph) {
         //select weights for edges along highway
         if(k < highway - 1) {
             //to keep intra-highway ranges within the highway only
-            tempValue = randomWeight(ranges[0][0], ranges[0][1]);
+            int tempValue = randomWeight(ranges[0][0], ranges[0][1]);
             randomGraph.addEdge(k, k + 1, tempValue);
             randomGraph.addEdge(k + 1, k, tempValue);
         }
         
         //select weights for edges not along highway
-        for(int l = highway; l < n; l++) {
-            tempValue = randomWeight(ranges[1][0], ranges[1][1]);
+        for(int l = highway; l < numberVertices; l++) {
+            int tempValue = randomWeight(ranges[1][0], ranges[1][1]);
             randomGraph.addEdge(k, l, tempValue);
             randomGraph.addEdge(l, k, tempValue);
         }
     }
-*/
 }
 
 void generateThreadedGrid(basicEdgeGroup& randomGraph) {
@@ -579,45 +559,75 @@ void generateSparseGraph(basicEdgeGroup& graph) {
     int maxWeight = inputInt("what is the maximum weight?");
     bool undirected = not(directed);
 
+    if(directed)
+        graph.setDirected();
+    else
+        graph.setUndirected();
+
     graph.setN(numberVertices);
-    vector<int> copy(0);
-    for(int i = 0; i < numberVertices; i++)
-        copy.push_back(i);
 
     for(int i = 0; i < numberVertices; i++)
-        graph.addEdge(i, i, 0);
+         graph.addEdge(i, i, 0);
 
-    const vector<int> vertices = copy;
+    if(directed) {
+        vector<int> copy(0);
+        for(int i = 0; i < numberVertices; i++)
+            copy.push_back(i);
 
-    vector<int> randomVertices;
-    for(int i = 0; i < vertices.size(); i++) {
-        int rand = randomGenerator(copy.size()-1);
-        randomVertices.push_back(copy[rand]);
-        copy.erase(copy.begin()+rand);
-    }
+        const vector<int> vertices = copy;
 
-    for(int i = 1; i < vertices.size(); i++) {
-        int j = randomGenerator(i-1);
-        int weight = randomWeight(minWeight, maxWeight);
-
-        graph.addEdge(randomVertices[j], randomVertices[i], weight);
-        if(undirected)
-            graph.addEdge(randomVertices[i], randomVertices[j], weight);
-    }
-
-    int numberEdges = numberVertices*0.20;
-    for(; numberEdges > 0; numberEdges--) {
-        int i, j;
-        i = j = 0;
-        while(i == j || not(graph.cost(i,j).isInfinity())) {
-            i = randomGenerator(numberVertices-1);
-            j = randomGenerator(numberVertices-1);
+        vector<int> randomVertices;
+        for(int i = 0; i < vertices.size(); i++) {
+            //int rand = randomGenerator(copy.size()-1);
+            randomVertices.push_back(copy[i]);
+            //copy.erase(copy.begin()+rand);
         }
-        int weight = randomWeight(minWeight, maxWeight);
 
-        graph.addEdge(i, j, weight);
-        if(undirected)
-            graph.addEdge(j, i, weight);
+        for(int i = 1; i < vertices.size(); i++) {
+            int j = randomGenerator(i-1);
+            int k = randomGenerator(i-1);
+
+            graph.addEdge(randomVertices[j], randomVertices[i], randomWeight(minWeight, maxWeight));
+            graph.addEdge(randomVertices[i], randomVertices[k], randomWeight(minWeight, maxWeight));
+        }
+    }
+    else {
+        vector<int> copy(0);
+        for(int i = 0; i < numberVertices; i++)
+            copy.push_back(i);
+
+        const vector<int> vertices = copy;
+
+        vector<int> randomVertices;
+        for(int i = 0; i < vertices.size(); i++) {
+            int rand = randomGenerator(copy.size()-1);
+            randomVertices.push_back(copy[rand]);
+            copy.erase(copy.begin()+rand);
+        }
+
+        for(int i = 1; i < vertices.size(); i++) {
+            int j = randomGenerator(i-1);
+            int weight = randomWeight(minWeight, maxWeight);
+
+            graph.addEdge(randomVertices[j], randomVertices[i], weight);
+            if(undirected)
+                graph.addEdge(randomVertices[i], randomVertices[j], weight);
+        }
+
+        int numberEdges = numberVertices*0.20;
+        for(; numberEdges > 0; numberEdges--) {
+            int i, j;
+            i = j = 0;
+            while(i == j || not(graph.cost(i,j).isInfinity())) {
+                i = randomGenerator(numberVertices-1);
+                j = randomGenerator(numberVertices-1);
+            }
+            int weight = randomWeight(minWeight, maxWeight);
+
+            graph.addEdge(i, j, weight);
+            if(undirected)
+                graph.addEdge(j, i, weight);
+        }
     }
 }
 
@@ -738,27 +748,26 @@ void readJourneysFromFile(vector< journeyInfo > & journeysInformation)
 void generateJourneys(vector< journeyInfo > & journeysInformation, int n)
 {
 
-    int randomNumber;
-    vector< int > vertices;
-    vertices.resize(n - 1, 0);
-    for(int i = 1; i < n; i++)
-        vertices[i - 1] = i;
-
-    for(int i = 0; i < journeysInformation.size(); i++)
-    {
-        int randomNumber = randomGenerator(vertices.size()-1);
-        journeysInformation[i].setSource(randomNumber);
-        randomNumber = randomGenerator(vertices.size()-1);
-        journeysInformation[i].setDestination(vertices[randomNumber]);
-        vertices[randomNumber] = vertices[vertices.size() - 1];
-        vertices.resize(vertices.size() - 1);
-        if(vertices.size() == 0)
-        {
-            vertices.resize(n - 1, 0);
-            for(int i = 1; i < n; i++)
-                vertices[i - 1] = i;
+    cout << endl << endl;
+    
+    vector<pair<int,int> > pairs;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            if(i != j) {
+                pairs.push_back(pair<int,int>(i, j));
+            }
         }
     }
+
+    for(int i = 0; i < journeysInformation.size(); i++) {
+        int r = randomGenerator(pairs.size()-1);
+        journeysInformation[i].setSource(pairs[r].first);
+        journeysInformation[i].setDestination(pairs[r].second);
+        cout << pairs[r].first << " " << pairs[r].second << endl;
+        pairs.erase(pairs.begin()+r);
+    }
+
+    cout << endl << endl;
 
 }
 
@@ -850,36 +859,91 @@ bool getChoice(string prompt) {
 ///
 const string graphFormat = "pdf";
 const string graphvizCmd = "dot";
+const string configFile  = ".graphConfig";
 
 // Dumps a graph to a file named "graph.dot"
 // Then runs graphviz on the file to produce an output file.
 void dumpGraph(const graphGroup& g) {
 
-    ifstream config1(".graphConfig");
-    int graphNum; config1 >> graphNum;
-    config1.close();
-    ofstream config2(".graphConfig");
-    config2 << graphNum+1;
-    config2.close();
+    int graphNum = 0;
 
+    {
+        ifstream config(configFile.data());
+        config >> graphNum;
+        config.close();
+    }
+    {
+        ofstream config(configFile.data());
+        config << graphNum+1;
+        config.close();
+    }
     ofstream fout(".graph.dot");
-    //fout << "graph G {\n\tgraph [ rankdir = \"LR\" bgcolor=\"#808080\" ];\n";
-    fout << "graph G {\n\tgraph [ bgcolor=\"#808080\" ];\n";
 
-    vector<string> colors;
-    vector<path> paths = g.returnSharedPaths();
+    if(g.directed()) {
+        fout << "digraph G {\n\tgraph [ bgcolor=\"#808080\" ];\n";
 
-    colors.push_back("red");
-    colors.push_back("blue");
-    colors.push_back("green");
-    colors.push_back("yellow");
-    colors.push_back("purple");
-    colors.push_back("orange");
+        vector<string> colors;
+        vector<path> paths = g.returnSharedPaths();
 
-    for(int i = 0; i < g.returnN(); i++) {
-        for(int j = i; j < g.returnN(); j++) {
-            if(not(g.totalEdgeCost(i, j).isInfinity())) {
-                if(i < j) {
+        colors.push_back("red");
+        colors.push_back("blue");
+        colors.push_back("green");
+        colors.push_back("yellow");
+        colors.push_back("purple");
+        colors.push_back("orange");
+
+        for(int i = 0; i < g.returnN(); i++) {
+            for(int j = 0; j < g.returnN(); j++) {
+                if(not(g.totalEdgeCost(i, j).isInfinity())) {
+                    if(i != j) {
+                        fout << "\t" << i << " -> " << j << " ";
+                        fout << " [ ";
+                        fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
+                        fout << "len = " << g.totalEdgeCost(i, j).value() << ".0 ";
+                        bool edgeUsed = false;
+                        vector<string> edgeColors;
+                        for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
+                            for(int pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
+                                if((paths[pathNum].actualPath()[pathPart] == j &&
+                                    paths[pathNum].actualPath()[pathPart-1] == i)) {
+                                    edgeColors.push_back(colors[pathNum%colors.size()]);
+                                    edgeUsed = true;
+                                }
+                            }
+                        }
+                        if(edgeUsed) {
+                            fout << "color=\"";
+                            for(int i = 0; i < edgeColors.size(); i++) {
+                                fout << edgeColors[i];
+                                if(i < edgeColors.size()-1)
+                                    fout << ":";
+                            }
+                            fout << "\" ";
+                        }
+                        fout << "];\n";
+                    }
+                }
+            }
+        }
+
+        fout << "}\n";
+    }
+    else {
+        fout << "graph G {\n\tgraph [ bgcolor=\"#808080\" ];\n";
+
+        vector<string> colors;
+        vector<path> paths = g.returnSharedPaths();
+
+        colors.push_back("red");
+        colors.push_back("blue");
+        colors.push_back("green");
+        colors.push_back("yellow");
+        colors.push_back("purple");
+        colors.push_back("orange");
+
+        for(int i = 0; i < g.returnN(); i++) {
+            for(int j = i+1; j < g.returnN(); j++) {
+                if(not(g.totalEdgeCost(i, j).isInfinity())) {
                     fout << "\t" << i << " -- " << j << " ";
                     fout << " [ ";
                     fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
@@ -910,9 +974,10 @@ void dumpGraph(const graphGroup& g) {
                 }
             }
         }
+
+        fout << "}\n";
     }
 
-    fout << "}\n";
     fout.close();
 
     string cmd = graphvizCmd  + " -T" + graphFormat +

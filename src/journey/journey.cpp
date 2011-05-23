@@ -330,3 +330,10 @@ void journey::setSinglePath(path const & newPath)
   
 }
 
+int journey::getDestination() const {
+    return internalDestination;
+}
+
+int journey::getSource() const {
+    return internalSource;
+}

@@ -177,6 +177,10 @@ void basicEdgeGroup::reverse(basicEdgeGroup & reversee) const
   
 }
 
+bool basicEdgeGroup::directed() const {
+    return isDirected;
+}
+
 //basicEdgeGroup::setN()
 // sets number of vertices in graph
 //
@@ -228,6 +232,14 @@ void basicEdgeGroup::setStyle(int newStyle)
   
   style = newStyle;
   
+}
+
+void basicEdgeGroup::setDirected() {
+    isDirected = true;
+}
+
+void basicEdgeGroup::setUndirected() {
+    isDirected = false;
 }
 
 //basicEdgeGroup::cost()
