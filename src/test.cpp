@@ -40,6 +40,7 @@ bool nashEquilibrium(graphGroup& g) {
         }
         else {
             output("journey " + str(j) + " will defect from the final solution.");
+            printJourney(g.getJourney(j));
             result = false;
         }
         g.removeJourney(j);
@@ -279,6 +280,12 @@ int main() {
         bool nash_equilibrium = nashEquilibrium(mainGraphs[graphNum]);
 
         dumpGraph(mainGraphs[graphNum]);
+        //print spanning treeSTGroup 
+        st;
+        st.findMinSpanningTree(mainGraphs[graphNum].returnGraph());
+        vector<journeyInfo> jiplaceholder;
+        graphGroup spanningTree = graphGroup(st.returnMinSpanningTree(), jiplaceholder);
+        dumpGraph(spanningTree);
 
         output(string("This solution is ")
                + (nash_equilibrium ? "" : "not ")
