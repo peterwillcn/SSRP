@@ -50,7 +50,10 @@ void STGroup::findMinSpanningTree(const basicEdgeGroup& graph)
           curInTree = curVertex;
           curAdjacentMin = i;
           curMinCost = floatWInf(false, graph.returnEdgeCost(curInTree, curAdjacentMin).value());
-          std::cout << "New closest vertex from " << curInTree << " to " << curAdjacentMin << " with cost " << curMinCost << std::endl;
+          if(debug)
+          {
+            //std::cout << "New closest vertex from " << curInTree << " to " << curAdjacentMin << " with cost " << curMinCost << std::endl;
+          }
         }
       }
     }
@@ -58,7 +61,10 @@ void STGroup::findMinSpanningTree(const basicEdgeGroup& graph)
     this->resultantTree.addEdge(curInTree, curAdjacentMin, curMinCost.value());
     this->resultantTree.addEdge(curAdjacentMin, curInTree, curMinCost.value());
     
-    std::cout << "Added vertex from " << curInTree << " to " << curAdjacentMin << " with cost " << curMinCost << std::endl;
+    if(debug)
+    {
+      //std::cout << "Added vertex from " << curInTree << " to " << curAdjacentMin << " with cost " << curMinCost << std::endl;
+    }
 
     curVerticies.push_back(curAdjacentMin);
 

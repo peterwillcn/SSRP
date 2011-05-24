@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "basicEdgeGroup.h"
+#include "debug.h"
 
 class STGroup
 {
