@@ -14,6 +14,7 @@ STGroup::~STGroup(void)
 void STGroup::findMinSpanningTree(const basicEdgeGroup& graph)
 {
   this->resultantTree = basicEdgeGroup(graph.returnN());
+  this->resultantTree.setUndirected();
 
   std::vector<int> curVerticies;
   curVerticies.push_back(0);

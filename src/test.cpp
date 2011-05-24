@@ -24,6 +24,7 @@ using namespace std;
 #include "graphGroup.h"
 #include "ioFunctions.h"
 #include "FWGroup.h"
+#include "STGroup.hpp"
 #include "debug.h"
 
 bool nashEquilibrium(graphGroup& g) {
@@ -280,8 +281,8 @@ int main() {
         bool nash_equilibrium = nashEquilibrium(mainGraphs[graphNum]);
 
         dumpGraph(mainGraphs[graphNum]);
-        //print spanning treeSTGroup 
-        st;
+        //print spanning tree
+        STGroup st;
         st.findMinSpanningTree(mainGraphs[graphNum].returnGraph());
         vector<journeyInfo> jiplaceholder;
         graphGroup spanningTree = graphGroup(st.returnMinSpanningTree(), jiplaceholder);

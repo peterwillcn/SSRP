@@ -25,4 +25,4 @@ Makefile.dep: $(SRCS)
 	rm -f Makefile.dep.bak
 
 linecount:
-	wc -l $(SRCS) Makefile Makefile.inc Makefile.real
+	wc -l $(SRCS) Makefile Makefile.inc Makefile.real# DO NOT DELETE
