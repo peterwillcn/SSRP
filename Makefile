@@ -5,7 +5,7 @@
 
 include Makefile.inc
 
-.PHONY: clean realclean git
+.PHONY: clean realclean linecount
 
 EXE =	graph
 
@@ -23,3 +23,6 @@ Makefile.dep: $(SRCS)
 	if [ ! -e Makefile.dep ] ; then touch Makefile.dep ; fi
 	$(DEP) $(DEPFLAGS) -fMakefile.dep -- $(CXXFLAGS) -- $(SRCS) 2> /dev/null
 	rm -f Makefile.dep.bak
+
+linecount:
+	wc -l $(SRCS) Makefile Makefile.inc Makefile.real

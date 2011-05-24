@@ -26,6 +26,28 @@ using namespace std;
 #include "FWGroup.h"
 #include "debug.h"
 
+bool nashEquilibrium(graphGroup& g) {
+    bool result = true;
+    vector<path> final_paths = g.returnSharedPaths();
+    vector<floatWInf> final_costs = g.returnSharedCosts();
+    for(int j = 0; j < g.numJourneys(); j++) {
+        path new_path;
+        g.removeJourney(j);
+        g.addJourneySP(j);
+        floatWInf x = g.returnSharedCost(j);
+        if( x >= final_costs[j]) {
+            output("journey " + str(j) + " has no incentive to move.");
+        }
+        else {
+            output("journey " + str(j) + " will defect from the final solution.");
+            result = false;
+        }
+        g.removeJourney(j);
+        g.addJourney(j, final_paths[j]);
+    }
+    return result;
+}
+
 //returns the index of (the first instance of)"key" in v,
 // or -1 if it's not there
 template<typename t>
@@ -48,7 +70,7 @@ const string welcomeHeader =
 |          Nicole Peterson (2010)                                              |\n\
 |          Ronald Fenelus (2011)                                               |\n\
 |          Zeal Jagannatha (2011)                                              |\n\
-| Mentor:  Sean McCulloch (The entire f'ing time)                              |\n\
+| Mentor:  Sean McCulloch                                                      |\n\
 +------------------------------------------------------------------------------+\n";
 
 
@@ -101,7 +123,7 @@ int main() {
 
     for(int graphNum = 0; graphNum < mainGraphs.size(); graphNum++){
         if(printGraphInfo)
-            mainGraphs[graphNum].printGraph();
+            printGraph(mainGraphs[graphNum]);
 
         //route each journey by it's FW path
         for(int j = 0; j < listsOfJourneys[graphNum].size(); j++){
@@ -127,7 +149,7 @@ int main() {
                 for(int cur_printing = 0;
                     cur_printing < mainGraphs[graphNum].numJourneys();
                     cur_printing++)
-                    mainGraphs[graphNum].printJourney(cur_printing);
+                    printJourney(mainGraphs[graphNum].getJourney(cur_printing));
             }
 
 
@@ -207,7 +229,7 @@ int main() {
                         if(show_reroutings){
                             // then show the current journeys paths
                             for(int cur_printing = 0; cur_printing < mainGraphs[graphNum].numJourneys(); cur_printing++)
-                                mainGraphs[graphNum].printJourney(cur_printing);
+                                printJourney(mainGraphs[graphNum].getJourney(cur_printing));
                         }
                         // did enough displaced journeys improve?
                         if(coalition_one && displaced_improvement_num >0)
@@ -229,7 +251,7 @@ int main() {
 
                                 for(int cur_journey = 0; cur_journey < mainGraphs[graphNum].numJourneys();
                                     cur_journey++)
-                                    mainGraphs[graphNum].printJourney(listsOfJourneys[graphNum][cur_journey].journeyNum());
+                                    printJourney(mainGraphs[graphNum].getJourney(listsOfJourneys[graphNum][cur_journey].journeyNum()));
                             }
                         }
                         else{ // put the old paths back
@@ -246,39 +268,20 @@ int main() {
 
         output("After:");
         for(int j = 0; j < mainGraphs[graphNum].numJourneys(); j++)
-            mainGraphs[graphNum].printJourney(j);
+            printJourney(mainGraphs[graphNum].getJourney(j));
 
         floatWInf final_total_cost = 0;
         for(int j = 0; j < mainGraphs[graphNum].numJourneys(); j++)
             final_total_cost += mainGraphs[graphNum].returnSharedCost(j);
         output("Final total cost: " + str(final_total_cost));
+
         // this checks if the final solution is a Nash Equilibrium
-        vector<path> final_paths;
-        vector<floatWInf> final_costs;
-        final_paths = mainGraphs[graphNum].returnSharedPaths();
-        final_costs = mainGraphs[graphNum].returnSharedCosts();
-        bool nash_equilibrium = true;
+        bool nash_equilibrium = nashEquilibrium(mainGraphs[graphNum]);
 
         dumpGraph(mainGraphs[graphNum]);
 
-        for(int j = 0; j < mainGraphs[graphNum].numJourneys(); j++){
-            path new_path;
-            mainGraphs[graphNum].removeJourney(j);
-            mainGraphs[graphNum].addJourneySP(j);
-            floatWInf x = mainGraphs[graphNum].returnSharedCost(j);
-            if( x >= final_costs[j])
-                output("journey " + str(j) + " has no incentive to move.");
-            else{
-                output("journey " + str(j) + " will defect from the final solution.");
-                nash_equilibrium = false;
-            }
-            mainGraphs[graphNum].removeJourney(j);
-            mainGraphs[graphNum].addJourney(j, final_paths[j]);
-
-        }
-
         output(string("This solution is ")
-               + (!nash_equilibrium ? "not " : "")
+               + (nash_equilibrium ? "" : "not ")
                + "a Nash Equilibrium.");
     }
 

@@ -65,6 +65,8 @@ class journeyGroup
   void setSinglePath(int journeyNum, path const & newPath);
   void setSAD(journeyInfo newInformation);
 
+  const journey& operator[](const int) const;
+
   //savings accessor member func
   floatWInf saving(int journeyNum) const;
   

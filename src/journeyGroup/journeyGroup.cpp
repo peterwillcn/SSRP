@@ -419,6 +419,10 @@ void journeyGroup::setSAD(journeyInfo newInformation)
   
 }
 
+const journey& journeyGroup::operator[](const int i) const {
+    return internalJourneys[i];
+}
+
 //journeyGroup::saving()
 // returns the savings of given journey
 //
