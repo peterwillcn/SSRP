@@ -2,14 +2,6 @@
 EXE	= graph
 SrcDir	= src
 
-CXX	= g++
-CXXFLAGS = -g $(Includes)
-#CXXFLAGS = -g -DDEBUG $(Includes)
-
-# Makedepend
-DEP = makedepend
-DEPFLAGS = -m -Y
-
 Includes = \
 	-I$(SrcDir)/FWGroup \
 	-I$(SrcDir)/basicEdgeGroup \
@@ -25,7 +17,15 @@ Includes = \
 	-I$(SrcDir)/journey \
 	-I$(SrcDir)/rand \
 	-I$(SrcDir)/ioFunctions \
-        -I$(SrcDir)/debug
+	-I$(SrcDir)/debug
+
+CXX	= g++
+CXXFLAGS = -g $(Includes)
+#CXXFLAGS = -g -DDEBUG $(Includes)
+
+# Makedepend
+DEP = makedepend
+DEPFLAGS = -m -Y
 
 OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/edge/edge.o \
@@ -72,4 +72,4 @@ SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/ioFunctions/ioFunctions.cpp \
 	$(SrcDir)/rand/rand.h \
 	$(SrcDir)/rand/rand.cpp \
-        $(SrcDir)/debug/debug.h
+	$(SrcDir)/debug/debug.h

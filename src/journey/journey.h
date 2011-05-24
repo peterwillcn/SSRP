@@ -53,6 +53,9 @@ class journey
   vector< int > const & singleActualPath() const;
   ///mutator
   void setSinglePath(path const & newPath);
+
+  int getDestination() const;
+  int getSource() const;
   
 };
 

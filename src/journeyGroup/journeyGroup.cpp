@@ -308,6 +308,14 @@ void journeyGroup::reset(int journeyNum)
   
 }
 
+int journeyGroup::getSource(int journeyNum) const {
+    return internalJourneys[journeyNum].getSource();
+}
+
+int journeyGroup::getDestination(int journeyNum) const {
+    return internalJourneys[journeyNum].getDestination();
+}
+
 //journeyGroup::hasSinglePath()
 // returns true if given journey has a single path
 //
@@ -409,6 +417,10 @@ void journeyGroup::setSAD(journeyInfo newInformation)
   
   internalJourneys[newInformation.journeyNum()].setSAD(newInformation.source(), newInformation.destination());
   
+}
+
+const journey& journeyGroup::operator[](const int i) const {
+    return internalJourneys[i];
 }
 
 //journeyGroup::saving()

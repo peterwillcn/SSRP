@@ -4,11 +4,9 @@
 
 #include <cstdlib>
 #include <vector>
-#include <fstream>
-#include <iostream>
-#include <fstream>
+//#include <iostream>
+//#include <fstream>
 #include <string>
-#include <iomanip>
 
 using namespace std;
 
@@ -62,507 +60,329 @@ graphGroup::graphGroup(basicEdgeGroup const & inputGroup, vector< journeyInfo > 
 
 }
 
-//graphGroup::printGraph()
-// prints graph with current costs
+//graphGroup::returnN()
+// returns number of vertices
 //
 //pre:
-// -this has been set with a basicEdgeGroup
-// -number of vertices is less than 101
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
 //
 //post:
-// -prints graph with current costs
+// -returns number of vertices
 //
-//O(returnN() ^2)
-void graphGroup::printGraph() const
+//O(1)
+int graphGroup::returnN() const
 {
 
-    cout << "Printing graph with current costs:" << endl;
-    cout << returnN() << " vertices" << endl;
+    return edges.returnN();
+
+}
+
+//graphGroup::numJourneys()
+// returns number of journeys
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+//
+//post:
+// -returns number of journeys
+//
+//O(1)
+int graphGroup::numJourneys() const
+{
+
+    return journeys.numJourneys();
+
+}
+
+const journey& graphGroup::getJourney(const int i) const {
+    return journeys[i];
+}
+
+//graphGroup::returnGraph()
+// returns the graph
+//
+//pre:
+// -the graph has been set
+//
+//post:
+// -returns the graph
+//
+//O(1)
+basicEdgeGroup graphGroup::returnGraph() const
+{
+    return graph;
+}
+
+
+//graphGroup::isEdgeUsable()
+// returns true if given edge is usable
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -i and j are valid vertex numbers
+//
+//post:
+// -returns true if given edge is usable
+//          false otherwise
+//
+//O(1)
+bool graphGroup::isEdgeUsable(int i, int j) const
+{
+
+    return edges.isEdgeUsable(i, j);
+
+}
+
+//graphGroup::isSectionUsable()
+// returns true if given section is usable
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -section is a vector of valid vertex numbers
+//
+//post:
+// -returns true if given section is usable
+//          false otherwise
+//
+//O(1)
+bool graphGroup::isSectionUsable(vector< int > section) const
+{
+
+    return edges.isSectionUsable(section);
+
+}
+
+//graphGroup::totalEdgeCost()
+// returns total cost of traversing given edge
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -i and j are valid vertex numbers
+//
+//post:
+// -returns total cost of traversing given edge
+//
+//O(1)
+floatWInf graphGroup::totalEdgeCost(int i, int j) const
+{
+
+    return edges.totalEdgeCost(i, j);
+
+}
+
+//graphGroup::totalSectionCost()
+// returns toal cost of traversing given section
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -section is a vector of valid vertex numbers
+//
+//post:
+// -returns total cost of traversing given section
+//
+//O(length of section)
+floatWInf graphGroup::totalSectionCost(vector< int > section) const
+{
+
+    return edges.totalSectionCost(section);
+
+}
+
+//graphGroup::currentEdgeCost()
+// returns current cost of traversing given edge for given journeyNum
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -i and j are valid vertex numbers
+// -journeyNum is a valid journey number
+//
+//post:
+// -returns current cost of traversing given edge for given journeyNum
+//
+//O(1)
+floatWInf graphGroup::currentEdgeCost(int i, int j, int journeyNum) const
+{
+
+    return edges.currentEdgeCost(i, j, journeyNum);
+
+}
+
+//graphGroup::currentSectionCost()
+// returns current cost of traversing given section for given journeyNum
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -section is a vector of valid vertex numbers
+// -journeyNum is a valid journey number
+//
+//post:
+// -returns current cost of traversing given section for given journeyNum
+//
+//O(length of section)
+floatWInf graphGroup::currentSectionCost(vector< int > section, int journeyNum) const
+{
+
+    return edges.currentSectionCost(section, journeyNum);
+
+}
+
+//graphGroup::currentEdgeCosts()
+// returns current cost of traversing given edge for given journeysNum
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -i and j are valid vertex numbers
+// -journeysNum is a vector of valid journey numbers
+//
+//post:
+// -returns current cost of traversing given edge for given journeysNum
+//
+//O(1)
+floatWInf graphGroup::currentEdgeCosts(int i, int j, vector< int > journeysNum) const
+{
+
+    return edges.currentEdgeCosts(i, j, journeysNum);
+
+}
+
+//graphGroup::currentSectionCosts()
+// returns current cost of traversing given section for given journeysNum
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -section is a vector of valid vertex numbers
+// -journeysNum is a vector of valid journey numbers
+//
+//post:
+// -returns current cost of traversing given section for given journeysNum
+//
+//O(length of section)
+floatWInf graphGroup::currentSectionCosts(vector< int > section, vector< int > journeysNum) const
+{
+
+    return edges.currentSectionCosts(section, journeysNum);
+
+}
+
+//graphGroup::isJourneyIn()
+// returns true if given edge has given journey
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -i and j are valid vertex numbers
+// -journeyNum is a valid journey number
+//
+//post:
+// -returns true if given edge has given journey
+//          false otherwise
+//
+//O(1)
+bool graphGroup::isJourneyIn(int i, int j, int journeyNum) const
+{
+
+    return edges.isJourneyIn(i, j, journeyNum);
+
+}
+
+//graphGroup::isJourneyInSection()
+// returns true if given section has given journey
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -section is a vector of valid vertex numbers
+// -journeyNum is a valid journey number
+//
+//post:
+// -returns true if given section has given journey
+//          false otherwise
+//
+//O(1)
+bool graphGroup::isJourneyInSection(vector< int > section, int journeyNum) const
+{
+
+    return edges.isJourneyInSection(section, journeyNum);
+
+}
+
+//graphGroup::numJourneysUsing()
+// returns number of journeys currently using
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -i and j are valid vertex numbers
+//
+//post:
+// -returns number of journeys currently using
+//
+int graphGroup::numJourneysUsing(int i, int j) const
+{
+
+    return edges.numJourneysUsing(i, j);
+
+}
+
+
+//graphGroup::Dijkstra()
+// returns a vector of the shortest paths from given vertex for a given journey
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -ii is a valid vertex number
+// -journeyNum is a valid number of a journey
+//
+//post:
+// -returns a vector of the shortest paths from given vertex for a given journey
+//
+vector< vector< path > > graphGroup::Dijkstra(int ii, int journeyNum)
+{
+    vector< vertex > vertices;
+    floatWInf infiniteFloat;
+    floatWInf zeroFloat;
+    intWInf infiniteInt;
+    vector< int > actualPath;
+    vector< vector< path > > answers;
+    zeroFloat.setValue(0);
+    bool greater;
+
+    //prepare vertices for Dijkstra
+    vertices.resize(returnN());
 
     for(int i = 0; i < returnN(); i++)
     {
-        for(int j = 0; j < returnN(); j++)
-        {
-            if(edges.totalEdgeCost(i, j).isInfinity() == true) {
-
-                cout << setw(7) << InfinitySymbol;
-            }
-            else {
-                cout << setw(5) << edges.totalEdgeCost(i, j).value();
-            }
-        }
-        cout << endl;
-    }
-    cout << endl;
-
+        greater=false;
+        vertices[i].setCost(infiniteFloat);  //set cost to infinity
+        vertices[i].setPredecessors(infiniteInt, greater);  //set predecessor to null
     }
 
+    vertices[ii].setCost(zeroFloat);  //set cost of source to be 0
 
+    //if Q[i] == true, then vertex i has not yet been extracted
+    bool Q[returnN()];
+    for(int i = 0; i < returnN(); i++)
+        Q[i] = true;
+    int u; //current vertex being looked at
+    intWInf tempU;
 
-    //graphGroup::printJourneys()
-    // prints all info on journeys
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    //
-    //post:
-    // -prints all info on journeys
-    //
-    //O(numJourneys() * returnN())
-    void graphGroup::printJourneys() const
+    //Dijkstra's algorithm:
+    for(int j = 0; j < returnN(); j++)
     {
+        u = ii;
 
-        cout << "* J = " << numJourneys() << endl;
-        for(int i = 0; i < numJourneys(); i++)
-            printJourney(i);
-
-    }
-
-    //graphGroup::printJourney()
-    // prints all info on given journey
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -journeyNum is a valid journey number
-    //
-    //post:
-    // -prints all info on given journey
-    //
-    //O(returnN())
-    void graphGroup::printJourney(int journeyNum) const
-    {
-
-        cout << "j" << journeyNum << ": " << endl;
-        printJourneyCost(journeyNum);
-        printJourneyPath(journeyNum);
-        cout << endl;
-
-    }
-
-    //graphGroup::printJourneyPaths()
-    // prints paths for all journeys
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    //
-    //post:
-    // -prints paths for all journeys
-    //
-    //O(numJourneys() * returnN())
-    void graphGroup::printJourneyPaths() const
-    {
-
-        cout << "Paths for journeys: " << endl;
-        for(int i = 0; i < numJourneys(); i++)
-            printJourneyPath(i);
-
-    }
-
-    //graphGroup::printJourneyPath()
-    // prints paths for given journey
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -journeyNum is a valid journey number
-    //
-    //post:
-    // -prints paths for given journey
-    //
-    //O(returnN())
-    void graphGroup::printJourneyPath(int journeyNum) const
-    {
-
-        cout << "sP " << journeyNum;
-        if(journeys.hasSinglePath(journeyNum) == true)
-        {
-            cout << ":" << endl;
-            for(int i = 0; i < journeys.singleActualPath(journeyNum).size(); i++)
-                cout << journeys.singleActualPath(journeyNum)[i] << " ";
-            cout << endl;
-        }
-        else
-            cout << " is N/A." << endl;
-
-        cout << "SP " << journeyNum;
-        if(journeys.hasSharedPath(journeyNum) == true)
-        {
-            cout << ":" << endl;
-            for(int i = 0; i < journeys.sharedActualPath(journeyNum).size(); i++)
-                cout << journeys.sharedActualPath(journeyNum)[i] << " ";
-            cout << endl;
-        }
-        else
-            cout << " is N/A." << endl;
-
-    }
-
-    //graphGroup::printJourneyCosts()
-    // prints costs and savings for all journeys
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    //
-    //post:
-    // -prints costs and savings for all journeys
-    //
-    //O(numJourneys())
-    void graphGroup::printJourneyCosts() const
-    {
-
-        cout << "Costs for journeys: " << endl;
-        for(int i = 0; i < numJourneys(); i++)
-            printJourneyCost(i);
-
-    }
-
-    //graphGroup::printJourneyCost()
-    // prints costs and savings for given journey
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -journeyNum is a valid journey number
-    //
-    //post:
-    // -prints costs and savings for given journey
-    //
-    //O(1)
-    void graphGroup::printJourneyCost(int journeyNum) const
-    {
-
-        cout << "sP " << journeyNum;
-        if(journeys.hasSinglePath(journeyNum) == true)
-            cout << " C: " << journeys.singleCost(journeyNum).value() << "." << endl;
-        else
-            cout << " C is N/A." << endl;
-
-        cout << "SP " << journeyNum;
-        if(journeys.hasSharedPath(journeyNum) == true)
-            cout << " C: " << journeys.sharedCost(journeyNum).value() << "." << endl;
-        else
-            cout << " C is N/A." << endl;
-
-    }
-
-    //graphGroup::returnN()
-    // returns number of vertices
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    //
-    //post:
-    // -returns number of vertices
-    //
-    //O(1)
-    int graphGroup::returnN() const
-    {
-
-        return edges.returnN();
-
-    }
-
-    //graphGroup::numJourneys()
-    // returns number of journeys
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    //
-    //post:
-    // -returns number of journeys
-    //
-    //O(1)
-    int graphGroup::numJourneys() const
-    {
-
-        return journeys.numJourneys();
-
-    }
-
-
-    //graphGroup::returnGraph()
-    // returns the graph
-    //
-    //pre:
-    // -the graph has been set
-    //
-    //post:
-    // -returns the graph
-    //
-    //O(1)
-    basicEdgeGroup graphGroup::returnGraph() const
-    {
-        return graph;
-    }
-
-
-    //graphGroup::isEdgeUsable()
-    // returns true if given edge is usable
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -i and j are valid vertex numbers
-    //
-    //post:
-    // -returns true if given edge is usable
-    //          false otherwise
-    //
-    //O(1)
-    bool graphGroup::isEdgeUsable(int i, int j) const
-    {
-
-        return edges.isEdgeUsable(i, j);
-
-    }
-
-    //graphGroup::isSectionUsable()
-    // returns true if given section is usable
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -section is a vector of valid vertex numbers
-    //
-    //post:
-    // -returns true if given section is usable
-    //          false otherwise
-    //
-    //O(1)
-    bool graphGroup::isSectionUsable(vector< int > section) const
-    {
-
-        return edges.isSectionUsable(section);
-
-    }
-
-    //graphGroup::totalEdgeCost()
-    // returns total cost of traversing given edge
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -i and j are valid vertex numbers
-    //
-    //post:
-    // -returns total cost of traversing given edge
-    //
-    //O(1)
-    floatWInf graphGroup::totalEdgeCost(int i, int j) const
-    {
-
-        return edges.totalEdgeCost(i, j);
-
-    }
-
-    //graphGroup::totalSectionCost()
-    // returns toal cost of traversing given section
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -section is a vector of valid vertex numbers
-    //
-    //post:
-    // -returns total cost of traversing given section
-    //
-    //O(length of section)
-    floatWInf graphGroup::totalSectionCost(vector< int > section) const
-    {
-
-        return edges.totalSectionCost(section);
-
-    }
-
-    //graphGroup::currentEdgeCost()
-    // returns current cost of traversing given edge for given journeyNum
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -i and j are valid vertex numbers
-    // -journeyNum is a valid journey number
-    //
-    //post:
-    // -returns current cost of traversing given edge for given journeyNum
-    //
-    //O(1)
-    floatWInf graphGroup::currentEdgeCost(int i, int j, int journeyNum) const
-    {
-
-        return edges.currentEdgeCost(i, j, journeyNum);
-
-    }
-
-    //graphGroup::currentSectionCost()
-    // returns current cost of traversing given section for given journeyNum
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -section is a vector of valid vertex numbers
-    // -journeyNum is a valid journey number
-    //
-    //post:
-    // -returns current cost of traversing given section for given journeyNum
-    //
-    //O(length of section)
-    floatWInf graphGroup::currentSectionCost(vector< int > section, int journeyNum) const
-    {
-
-        return edges.currentSectionCost(section, journeyNum);
-
-    }
-
-    //graphGroup::currentEdgeCosts()
-    // returns current cost of traversing given edge for given journeysNum
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -i and j are valid vertex numbers
-    // -journeysNum is a vector of valid journey numbers
-    //
-    //post:
-    // -returns current cost of traversing given edge for given journeysNum
-    //
-    //O(1)
-    floatWInf graphGroup::currentEdgeCosts(int i, int j, vector< int > journeysNum) const
-    {
-
-        return edges.currentEdgeCosts(i, j, journeysNum);
-
-    }
-
-    //graphGroup::currentSectionCosts()
-    // returns current cost of traversing given section for given journeysNum
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -section is a vector of valid vertex numbers
-    // -journeysNum is a vector of valid journey numbers
-    //
-    //post:
-    // -returns current cost of traversing given section for given journeysNum
-    //
-    //O(length of section)
-    floatWInf graphGroup::currentSectionCosts(vector< int > section, vector< int > journeysNum) const
-    {
-
-        return edges.currentSectionCosts(section, journeysNum);
-
-    }
-
-    //graphGroup::isJourneyIn()
-    // returns true if given edge has given journey
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -i and j are valid vertex numbers
-    // -journeyNum is a valid journey number
-    //
-    //post:
-    // -returns true if given edge has given journey
-    //          false otherwise
-    //
-    //O(1)
-    bool graphGroup::isJourneyIn(int i, int j, int journeyNum) const
-    {
-
-        return edges.isJourneyIn(i, j, journeyNum);
-
-    }
-
-    //graphGroup::isJourneyInSection()
-    // returns true if given section has given journey
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -section is a vector of valid vertex numbers
-    // -journeyNum is a valid journey number
-    //
-    //post:
-    // -returns true if given section has given journey
-    //          false otherwise
-    //
-    //O(1)
-    bool graphGroup::isJourneyInSection(vector< int > section, int journeyNum) const
-    {
-
-        return edges.isJourneyInSection(section, journeyNum);
-
-    }
-
-    //graphGroup::numJourneysUsing()
-    // returns number of journeys currently using
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -i and j are valid vertex numbers
-    //
-    //post:
-    // -returns number of journeys currently using
-    //
-    int graphGroup::numJourneysUsing(int i, int j) const
-    {
-
-        return edges.numJourneysUsing(i, j);
-
-    }
-
-
-    //graphGroup::Dijkstra()
-    // returns a vector of the shortest paths from given vertex for a given journey
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -ii is a valid vertex number
-    // -journeyNum is a valid number of a journey
-    //
-    //post:
-    // -returns a vector of the shortest paths from given vertex for a given journey
-    //
-    vector< vector< path > > graphGroup::Dijkstra(int ii, int journeyNum)
-    {
-        vector< vertex > vertices;
-        floatWInf infiniteFloat;
-        floatWInf zeroFloat;
-        intWInf infiniteInt;
-        vector< int > actualPath;
-        vector< vector< path > > answers;
-        zeroFloat.setValue(0);
-        bool greater;
-
-        //prepare vertices for Dijkstra
-        vertices.resize(returnN());
-
+        //select lowest cost vertex to reach
         for(int i = 0; i < returnN(); i++)
-        {
-            greater=false;
-            vertices[i].setCost(infiniteFloat);  //set cost to infinity
-            vertices[i].setPredecessors(infiniteInt, greater);  //set predecessor to null
-        }
-
-        vertices[ii].setCost(zeroFloat);  //set cost of source to be 0
-
-        //if Q[i] == true, then vertex i has not yet been extracted
-        bool Q[returnN()];
-        for(int i = 0; i < returnN(); i++)
-            Q[i] = true;
-        int u; //current vertex being looked at
-        intWInf tempU;
-
-        //Dijkstra's algorithm:
-        for(int j = 0; j < returnN(); j++)
-        {
-            u = ii;
-
-            //select lowest cost vertex to reach
-            for(int i = 0; i < returnN(); i++)
-                if((Q[i] == true)                                    //if ( (Q[i] is true)
+            if((Q[i] == true)                                    //if ( (Q[i] is true)
         &&((Q[u] == false)                                 //and ( (Q[u] is false)
         ||(vertices[i].cost() < vertices[u].cost())))      //or (i < u)))
-            {
-                u = i;                                //replace u with i
-            }
+{
+    u = i;                                //replace u with i
+}
 
-            Q[u] = false;
+Q[u] = false;
 
-            //relax other vertices
-            for(int v = 0; v < returnN(); v++)
-            {
-                if(vertices[v].cost() > (vertices[u].cost() + graph.cost(u, v)))  //(v > u + w(u, v))
+//relax other vertices
+for(int v = 0; v < returnN(); v++)
+{
+    if(vertices[v].cost() > (vertices[u].cost() + graph.cost(u, v)))  //(v > u + w(u, v))
         {
             greater=true;
             vertices[v].setCost(vertices[u].cost() + graph.cost(u, v));
@@ -578,43 +398,43 @@ void graphGroup::printGraph() const
                     tempU.setValue(u);
                     vertices[v].setPredecessors(tempU, greater);
                 }
-            }
-        }
-
-        //costs = vertices;
-
-        answers.resize(returnN());
-        for(int i(0); i < returnN(); i++)
-            answers[i].resize(1);
-
-        //find and return paths:
-            for(int v = 0; v < returnN(); v++)
-            {
-                actualPath.resize(0);
-
-                actualPath.push_back(v);
-                findPath(ii, v, vertices, actualPath, answers, v);
-                if(answers[v][0].isNull())
-                    answers[v][0].setPath(actualPath, vertices[v].cost());
-            }
-
-            /*cout << "\n\nANSWERS IN DIJKSTRA***: \n";
-             *    for(int i(0); i<answers.size(); i++)
-             *    {
-             *    for(int j(0); j<answers[i].size(); j++)
-             *    {
-             *        for( int k(0); k< answers[i][j].length(); k++)
-             *            cout << answers[i][j].returnVertex(k) << "  ";
-             *        cout << endl;
-             }
-             cout << endl;
-             }
-             cout << "\n\nEND ANSWERS***\n\n";*/
-
-            return answers;
+}
     }
 
-    //graphGroup::dijkstraCost()
+    //costs = vertices;
+
+    answers.resize(returnN());
+    for(int i(0); i < returnN(); i++)
+        answers[i].resize(1);
+
+    //find and return paths:
+        for(int v = 0; v < returnN(); v++)
+        {
+            actualPath.resize(0);
+
+            actualPath.push_back(v);
+            findPath(ii, v, vertices, actualPath, answers, v);
+            if(answers[v][0].isNull())
+                answers[v][0].setPath(actualPath, vertices[v].cost());
+        }
+
+        /*cout << "\n\nANSWERS IN DIJKSTRA***: \n";
+         *    for(int i(0); i<answers.size(); i++)
+         *    {
+         *    for(int j(0); j<answers[i].size(); j++)
+         *    {
+         *        for( int k(0); k< answers[i][j].length(); k++)
+         *            cout << answers[i][j].returnVertex(k) << "  ";
+         *        cout << endl;
+}
+cout << endl;
+}
+cout << "\n\nEND ANSWERS***\n\n";*/
+
+        return answers;
+}
+
+//graphGroup::dijkstraCost()
     // finds the cost of the shortest paths from given vertex for a given journey
     //
     //pre:
@@ -1066,138 +886,138 @@ void graphGroup::backtrackPaths(vector< journeyInfo > & journeysInformation, vec
     cout << "\n\nENTERED BACKTRACK PATHS\n\n";
 
     int startVertex=dijkstraGroup[0].returnVertex(0);//the first vertex in the shared path
-            int endVertex=dijkstraGroup[0].returnVertex(dijkstraGroup[0].length()-1);//the last vertex in the shared path
+    int endVertex=dijkstraGroup[0].returnVertex(dijkstraGroup[0].length()-1);//the last vertex in the shared path
 
-            vector< int > vertexShared;//keeps track of if a journey wants to backtrack to the current vertex
-            vertexShared.resize(dijkstraGroup[1].length());
-            for(int i(0); i<vertexShared.size(); i++)
-                vertexShared[i]=-1;
-            floatWInf infiniteFloat;
+    vector< int > vertexShared;//keeps track of if a journey wants to backtrack to the current vertex
+    vertexShared.resize(dijkstraGroup[1].length());
+    for(int i(0); i<vertexShared.size(); i++)
+        vertexShared[i]=-1;
+    floatWInf infiniteFloat;
 
-            path commonGroup;
-            commonGroup=dijkstraGroup[0];
-            int numSharing(dijkstraGroup[1].length());//number of journeys sharing the next edge
+    path commonGroup;
+    commonGroup=dijkstraGroup[0];
+    int numSharing(dijkstraGroup[1].length());//number of journeys sharing the next edge
 
 
-            //goes through each vertex to find the most beneficial one to move a group of journeys to
-            for(int i(0); i<returnN(); i++)
-                //picks a vertex that is actually connected, and can be backtracked to
+    //goes through each vertex to find the most beneficial one to move a group of journeys to
+    for(int i(0); i<returnN(); i++)
+        //picks a vertex that is actually connected, and can be backtracked to
+    {
+        bool inGroup=false;
+        for(int k(0); k<commonGroup.length(); k++)
+            if(i==commonGroup.returnVertex(k))
+                inGroup=true;
+            if((!(returnGraph().cost(startVertex, i)==infiniteFloat))&&(!inGroup))
+                //if i is an adjacent vertex
             {
-                bool inGroup=false;
-                for(int k(0); k<commonGroup.length(); k++)
-                    if(i==commonGroup.returnVertex(k))
-                        inGroup=true;
-                    if((!(returnGraph().cost(startVertex, i)==infiniteFloat))&&(!inGroup))
-                        //if i is an adjacent vertex
-                    {
-                        cout << "start vertex: " << startVertex;
-                        cout << "\n\nCHECKING ADJACENT VERTEX " << i << "\n\n";
+                cout << "start vertex: " << startVertex;
+                cout << "\n\nCHECKING ADJACENT VERTEX " << i << "\n\n";
 
-                        vector< vertex > backtrackVertices;//helps find the cost of backtracking with a group
-                        vector< vertex > dijkstraVertices;//holds the cost of an individual journey's dijkstra path
-                        vector< double > backtrackCost;
-                        backtrackCost.resize(numSharing);
-                        double sharedGroupCost(0);//keeps track of cost of common group for each journey sharing it
+                vector< vertex > backtrackVertices;//helps find the cost of backtracking with a group
+                vector< vertex > dijkstraVertices;//holds the cost of an individual journey's dijkstra path
+                vector< double > backtrackCost;
+                backtrackCost.resize(numSharing);
+                double sharedGroupCost(0);//keeps track of cost of common group for each journey sharing it
 
-            vector< int > journeysSharing;//keeps track of which journeys want to backtrack
-            journeysSharing.resize(0);
-            for(int k(0); k<numSharing; k++)
-                journeysSharing.push_back(dijkstraGroup[1].returnVertex(k));
-
-            for(int k(0); k<(commonGroup.length()-1); k++)
-            {
-                sharedGroupCost += graph.cost(commonGroup.returnVertex(k), commonGroup.returnVertex(k+1)).value();
-            }
-
-            sharedGroupCost/=numSharing;
-            //now sharedGroupCost contains the cost of one journey to cross the shared path
-
-            for(int k(0); k<numSharing; k++)
-                backtrackCost[k]=sharedGroupCost;
-
-            //This gives me the cost of their dijkstra split between the journeys
+                vector< int > journeysSharing;//keeps track of which journeys want to backtrack
+                journeysSharing.resize(0);
                 for(int k(0); k<numSharing; k++)
+                    journeysSharing.push_back(dijkstraGroup[1].returnVertex(k));
+
+                for(int k(0); k<(commonGroup.length()-1); k++)
                 {
-                    //adds the cost of extending the common path to this vertex
-                    backtrackCost[k]+=(returnGraph().returnEdgeCost(startVertex, i).value()/numSharing);
-
-                    //adding cost of their paths before the shared portion
-                    backtrackVertices.resize(0);
-                    dijkstraCost(journeysInformation[journeysSharing[k]].source(), journeysSharing[k], backtrackVertices);
-                    backtrackCost[k]+=backtrackVertices[i].cost().value();
-
-                    //adding cost of their paths after the shared portion
-                    backtrackVertices.resize(0);
-                    dijkstraCost(endVertex, journeysSharing[k], backtrackVertices);
-                    backtrackCost[k]+=backtrackVertices[journeysInformation[journeysSharing[k]].destination()].cost().value();
+                    sharedGroupCost += graph.cost(commonGroup.returnVertex(k), commonGroup.returnVertex(k+1)).value();
                 }
 
-                bool journeysDefect=true;//notifies when no one else wants to defect
+                sharedGroupCost/=numSharing;
+                //now sharedGroupCost contains the cost of one journey to cross the shared path
 
-                while(numSharing>1&&journeysDefect)
-                {
-                    for(int k(0); k<journeysSharing.size(); k++)
+                for(int k(0); k<numSharing; k++)
+                    backtrackCost[k]=sharedGroupCost;
+
+                //This gives me the cost of their dijkstra split between the journeys
+                    for(int k(0); k<numSharing; k++)
                     {
+                        //adds the cost of extending the common path to this vertex
+                        backtrackCost[k]+=(returnGraph().returnEdgeCost(startVertex, i).value()/numSharing);
 
-                        //gets dijkstra cost to compare new backtracked cost to
-                        dijkstraCost(journeysInformation[journeysSharing[k]].source(), journeysSharing[k], dijkstraVertices);
+                        //adding cost of their paths before the shared portion
+                        backtrackVertices.resize(0);
+                        dijkstraCost(journeysInformation[journeysSharing[k]].source(), journeysSharing[k], backtrackVertices);
+                        backtrackCost[k]+=backtrackVertices[i].cost().value();
 
-                        //comparing costs
-                        if(backtrackCost[k]<dijkstraVertices[journeysInformation[journeysSharing[k]].destination()].cost().value())
-                        {
-                            //if the backtracked cost is better then we reset the backtracked vertex of this journey to this vertex
-                            vertexShared[journeysSharing[k]]=i;
-                            cout << "\n\nJourney "<< journeysSharing[k] << " backtrack cost better on vertex "<< i << "\n\n";
-                        }
-                        else
-                            vertexShared[journeysSharing[k]]=-1;
+                        //adding cost of their paths after the shared portion
+                        backtrackVertices.resize(0);
+                        dijkstraCost(endVertex, journeysSharing[k], backtrackVertices);
+                        backtrackCost[k]+=backtrackVertices[journeysInformation[journeysSharing[k]].destination()].cost().value();
                     }
 
-                    //counts how many journeys still want to share this group
-                    int newNumSharing(0);
-                    for(int k(0); k<vertexShared.size(); k++)
-                        if(vertexShared[k]==i)
-                            newNumSharing++;
+                    bool journeysDefect=true;//notifies when no one else wants to defect
 
-                        if(newNumSharing>0)
+                    while(numSharing>1&&journeysDefect)
+                    {
+                        for(int k(0); k<journeysSharing.size(); k++)
                         {
 
-                            vector< int > temp;
-                            temp.resize(0);
-                            int prevJournSharing=journeysSharing.size();
-                            //update journeysSharing
-                            for(int k(0); k<prevJournSharing; k++)
+                            //gets dijkstra cost to compare new backtracked cost to
+                            dijkstraCost(journeysInformation[journeysSharing[k]].source(), journeysSharing[k], dijkstraVertices);
+
+                            //comparing costs
+                            if(backtrackCost[k]<dijkstraVertices[journeysInformation[journeysSharing[k]].destination()].cost().value())
                             {
-                                if(vertexShared[journeysSharing[k]]==-1)
-                                    //remove this journey from journeySharing
+                                //if the backtracked cost is better then we reset the backtracked vertex of this journey to this vertex
+                                vertexShared[journeysSharing[k]]=i;
+                                cout << "\n\nJourney "<< journeysSharing[k] << " backtrack cost better on vertex "<< i << "\n\n";
+                            }
+                            else
+                                vertexShared[journeysSharing[k]]=-1;
+                        }
+
+                        //counts how many journeys still want to share this group
+                        int newNumSharing(0);
+                        for(int k(0); k<vertexShared.size(); k++)
+                            if(vertexShared[k]==i)
+                                newNumSharing++;
+
+                            if(newNumSharing>0)
+                            {
+
+                                vector< int > temp;
+                                temp.resize(0);
+                                int prevJournSharing=journeysSharing.size();
+                                //update journeysSharing
+                                for(int k(0); k<prevJournSharing; k++)
                                 {
-                                    cout << "\n\nJourney "<< journeysSharing[k] << " has defected from vertex "<< i << "\n\n";
-                                    for(int j(0); j<journeysSharing.size(); j++)
-                                        if(journeysSharing[k]!=journeysSharing[j])
-                                            temp.push_back(journeysSharing[j]);
-                                        journeysSharing=temp;
+                                    if(vertexShared[journeysSharing[k]]==-1)
+                                        //remove this journey from journeySharing
+                                    {
+                                        cout << "\n\nJourney "<< journeysSharing[k] << " has defected from vertex "<< i << "\n\n";
+                                        for(int j(0); j<journeysSharing.size(); j++)
+                                            if(journeysSharing[k]!=journeysSharing[j])
+                                                temp.push_back(journeysSharing[j]);
+                                            journeysSharing=temp;
+                                    }
+                                    if(k>journeysSharing.size())
+                                        break;
                                 }
-                                if(k>journeysSharing.size())
-                                    break;
+
+                                //update backtrackCost according to the number of journeys that still want to backtrack
+                                for(int k(0); k<vertexShared.size(); k++)
+                                    if(vertexShared[k]==i)
+                                    {
+                                        backtrackCost[k]-=returnGraph().returnEdgeCost(startVertex, i).value()/numSharing;
+                                        backtrackCost[k]+=returnGraph().returnEdgeCost(startVertex, i).value()/newNumSharing;
+                                    }
+
+                                    //No journeys defected
+                                    if(numSharing==newNumSharing)
+                                        journeysDefect=false;
                             }
 
-                            //update backtrackCost according to the number of journeys that still want to backtrack
-                            for(int k(0); k<vertexShared.size(); k++)
-                                if(vertexShared[k]==i)
-                                {
-                                    backtrackCost[k]-=returnGraph().returnEdgeCost(startVertex, i).value()/numSharing;
-                                    backtrackCost[k]+=returnGraph().returnEdgeCost(startVertex, i).value()/newNumSharing;
-                                }
-
-                                //No journeys defected
-                                if(numSharing==newNumSharing)
-                                    journeysDefect=false;
-                        }
-
-                        numSharing==newNumSharing;
-                }
+                            numSharing==newNumSharing;
                     }
             }
+    }
 
 }
 
@@ -1287,6 +1107,10 @@ vector< vector< path > > graphGroup::reversedDijkstra(int jj, int journeyNum) co
 
         return answers;
 
+}
+
+bool graphGroup::directed() const {
+    return graph.directed();
 }
 
 //graphGroup::hasSharedPath()
@@ -1778,111 +1602,111 @@ void graphGroup::update_journeys(vector<journeyInfo> const& listOfJourneys,
     for(int i = 0; i < changed_journey_numbers.size(); i++){
         journeys.setSAD(listOfJourneys[changed_journey_numbers[i]]);
     }
-}
+                                 }
 
 
 
-//graphGroup::update_edge_cost()
-//changes the cost of the edge from i to j into "new_cost"
-// pre: i and j are vertices in the graph.
-//      There are no journes along the (i,j) edge currently.
-// post: the cost of edge (i,j) is now "new_cost"
-void graphGroup::update_edge_cost(int i, int j, floatWInf new_cost){
-    graph.addEdge(i,j,new_cost);
-    edges.update_edge_cost(i,j,new_cost);
-}
+                                 //graphGroup::update_edge_cost()
+                                 //changes the cost of the edge from i to j into "new_cost"
+                                 // pre: i and j are vertices in the graph.
+                                 //      There are no journes along the (i,j) edge currently.
+                                 // post: the cost of edge (i,j) is now "new_cost"
+                                 void graphGroup::update_edge_cost(int i, int j, floatWInf new_cost){
+                                     graph.addEdge(i,j,new_cost);
+                                     edges.update_edge_cost(i,j,new_cost);
+                                 }
 
-//graphGroup::tryJourneys()
-// finds shortest shared paths for given journeys if each journey is added in order given
-//
-//pre:
-// -this has been set with a basicEdgeGroup and a vector of journeyInfos
-// -journeysNum is a vector of valid journey numbers
-//
-//post:
-// -returns a vector of paths of shortest shared paths of given journeys in the same order as they were given
-// -everything is changed back to the way it was before function was called
-//
-//O(numJourneys() * max(returnN() ^2, numJourneys() * returnN()))
-vector< path > graphGroup::tryJourneys(vector< int > journeysNum)
-{
+                                 //graphGroup::tryJourneys()
+                                 // finds shortest shared paths for given journeys if each journey is added in order given
+                                 //
+                                 //pre:
+                                 // -this has been set with a basicEdgeGroup and a vector of journeyInfos
+                                 // -journeysNum is a vector of valid journey numbers
+                                 //
+                                 //post:
+                                 // -returns a vector of paths of shortest shared paths of given journeys in the same order as they were given
+                                 // -everything is changed back to the way it was before function was called
+                                 //
+                                 //O(numJourneys() * max(returnN() ^2, numJourneys() * returnN()))
+                                 vector< path > graphGroup::tryJourneys(vector< int > journeysNum)
+                                 {
 
-    vector< path > answers;
-    vector< path > needToReplace;
-    vector<int> numToReplace;
-    answers.resize(0);
-    needToReplace.resize(0);
+                                     vector< path > answers;
+                                     vector< path > needToReplace;
+                                     vector<int> numToReplace;
+                                     answers.resize(0);
+                                     needToReplace.resize(0);
 
-    //save current paths
-    for(int i = 0; i < numJourneys(); i++){
-        needToReplace.push_back(returnSharedPath(i));
-        numToReplace.push_back(i);
-    }
+                                     //save current paths
+                                     for(int i = 0; i < numJourneys(); i++){
+                                         needToReplace.push_back(returnSharedPath(i));
+                                         numToReplace.push_back(i);
+                                     }
 
-    //remove current paths
-    removeAllJourneys();
+                                     //remove current paths
+                                     removeAllJourneys();
 
-    //make new paths
-    addJourneysSP(journeysNum);
+                                     //make new paths
+                                     addJourneysSP(journeysNum);
 
-    /*cout << "journey" << journeysNum[0] << endl;
-     *    printJourney(journeysNum[0]);*/
-    //save new paths
-    for(int i = 0; i < journeysNum.size(); i++)
-        answers.push_back(returnSharedPath(journeysNum[i]));
+                                     /*cout << "journey" << journeysNum[0] << endl;
+                                      *    printJourney(journeysNum[0]);*/
+                                     //save new paths
+                                     for(int i = 0; i < journeysNum.size(); i++)
+                                         answers.push_back(returnSharedPath(journeysNum[i]));
 
-    //write over new paths with previous (current) paths
-    addJourneys(numToReplace, needToReplace);
+                                     //write over new paths with previous (current) paths
+                                         addJourneys(numToReplace, needToReplace);
 
-    return answers;
+                                         return answers;
 
-}
+                                 }
 
-//findPath()
-// recursively finds path of given information
-//
-//pre:
-// -this has been set with a basicEdgeGroup and a vector of journeyInfos
-// -source is the source of the path to find
-// -destination is the destination of the path to find
-// -vertices is a vector of vertex's that have a full predecessor tree
-//
-//post:
-// -actualPath contains the path from source to destination, including source but NOT including destination
-//
-void graphGroup::findPath(int source, int destination, vector< vertex > const & vertices, vector< int > & actualPath, vector< vector< path > > & answers, int const v) const
-{
-    if(vertices[destination].cost().isInfinity() == false)
-        if(source != destination)
-        {
-            int size;
-            size = vertices[destination].predecessors().size();
-            if(size==1)
-                if((vertices[destination].predecessors(0).isInfinity() == false)
-                    &&(source == vertices[destination].predecessors(0).value()))
-                {
-                    actualPath.push_back(source);
-                    vector< int > temp;
-                    temp.resize(0);
-                    for(int i(actualPath.size()); i>0; i--)
-                        temp.push_back(actualPath[i-1]);
-                    actualPath=temp;
-                    if(!(answers[v][answers[v].size()-1].isNull()))
-                        answers[v].resize(answers[v].size()+1);
-                    answers[v][answers[v].size()-1].setPath(actualPath, vertices[v].cost());
-                }
-                else
-                {
-                    actualPath.push_back(vertices[destination].predecessors(0).value());//switch
-                    findPath(source, vertices[destination].predecessors(0).value(), vertices, actualPath, answers, v);
-                }
-                else if(size!=0)
-                    //tiedDijkstra(source, destination, vertices, actualPath, answers, v);
-                {
-                    for(int i(0); i<size; i++)
-                    {
-                        //cout << "\nNumber of Predecessors for vertex " << destination << ": " << size << "\n";
-                        for(int j(0); j<answers[vertices[destination].predecessors(i).value()].size(); j++)//
+                                 //findPath()
+                                 // recursively finds path of given information
+                                 //
+                                 //pre:
+                                 // -this has been set with a basicEdgeGroup and a vector of journeyInfos
+                                 // -source is the source of the path to find
+                                 // -destination is the destination of the path to find
+                                 // -vertices is a vector of vertex's that have a full predecessor tree
+                                 //
+                                 //post:
+                                 // -actualPath contains the path from source to destination, including source but NOT including destination
+                                 //
+                                 void graphGroup::findPath(int source, int destination, vector< vertex > const & vertices, vector< int > & actualPath, vector< vector< path > > & answers, int const v) const
+                                 {
+                                     if(vertices[destination].cost().isInfinity() == false)
+                                         if(source != destination)
+                                         {
+                                             int size;
+                                             size = vertices[destination].predecessors().size();
+                                             if(size==1)
+                                                 if((vertices[destination].predecessors(0).isInfinity() == false)
+                                                     &&(source == vertices[destination].predecessors(0).value()))
+                                                 {
+                                                     actualPath.push_back(source);
+                                                     vector< int > temp;
+                                                     temp.resize(0);
+                                                     for(int i(actualPath.size()); i>0; i--)
+                                                         temp.push_back(actualPath[i-1]);
+                                                     actualPath=temp;
+                                                     if(!(answers[v][answers[v].size()-1].isNull()))
+                                                         answers[v].resize(answers[v].size()+1);
+                                                     answers[v][answers[v].size()-1].setPath(actualPath, vertices[v].cost());
+                                                 }
+                                                 else
+                                                 {
+                                                     actualPath.push_back(vertices[destination].predecessors(0).value());//switch
+                                                     findPath(source, vertices[destination].predecessors(0).value(), vertices, actualPath, answers, v);
+                                                 }
+                                                 else if(size!=0)
+                                                     //tiedDijkstra(source, destination, vertices, actualPath, answers, v);
+                                                 {
+                                                     for(int i(0); i<size; i++)
+                                                     {
+                                                         //cout << "\nNumber of Predecessors for vertex " << destination << ": " << size << "\n";
+                                                         for(int j(0); j<answers[vertices[destination].predecessors(i).value()].size(); j++)//
                 {
                     //cout << "\nNumber of Predecessors for vertex " << vertices[destination].predecessors(i).value() << ": " << answers[vertices[destination].predecessors(i).value()].size() << "\n";
                     int index;
@@ -1895,37 +1719,38 @@ void graphGroup::findPath(int source, int destination, vector< vertex > const & 
                         answers[v].resize(answers[v].size()+1);
                     answers[v][answers[v].size()-1].setPath(temp, vertices[v].cost());
                 }
-                    }
-                }
-        }
-}
+                                                     }
+                                                 }
+                                         }
+                                 }
 
 
-//findReversedPath()
-// recursively finds path of given information
-//
-//pre:
-// -this has been set with a basicEdgeGroup and a vector of journeyInfos
-// -source is the source of the path to find
-// -destination is the destination of the path to find
-// -vertices is a vector of vertex's that have a full predecessor tree
-//
-//post:
-// -actualPath contains the path from source to destination, including destination but NOT including source
-//
-void graphGroup::findReversedPath(int source, int destination, vector< vertex > const & vertices, vector< int > & actualPath, vector< vector< path > > & answers, int const u) const
-{
+                                 //findReversedPath()
+                                 // recursively finds path of given information
+                                 //
+                                 //pre:
+                                 // -this has been set with a basicEdgeGroup and a vector of journeyInfos
+                                 // -source is the source of the path to find
+                                 // -destination is the destination of the path to find
+                                 // -vertices is a vector of vertex's that have a full predecessor tree
+                                 //
+                                 //post:
+                                 // -actualPath contains the path from source to destination, including destination but NOT including source
+                                 //
+                                 void graphGroup::findReversedPath(int source, int destination, vector< vertex > const & vertices, vector< int > & actualPath, vector< vector< path > > & answers, int const u) const
+                                 {
 
-    if(vertices[source].cost().isInfinity() == false)
-        if(source != destination)
-            if((vertices[source].predecessor().isInfinity() == false)
-                &&(destination == vertices[source].predecessor().value()))
-                actualPath.push_back(destination);
-            else
-            {
-                actualPath.push_back(vertices[source].predecessor().value());
-                findPath(vertices[source].predecessor().value(), destination, vertices, actualPath, answers, u);
-            }
+                                     if(vertices[source].cost().isInfinity() == false)
+                                         if(source != destination)
+                                             if((vertices[source].predecessor().isInfinity() == false)
+                                                 &&(destination == vertices[source].predecessor().value()))
+                                                 actualPath.push_back(destination);
+                                             else
+                                             {
+                                                 actualPath.push_back(vertices[source].predecessor().value());
+                                                 findPath(vertices[source].predecessor().value(), destination, vertices, actualPath, answers, u);
+                                             }
 
-}
+                                 }
 
+                                 
