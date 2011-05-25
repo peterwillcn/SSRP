@@ -18,6 +18,7 @@ Includes = \
 	-I$(SrcDir)/rand \
 	-I$(SrcDir)/ioFunctions \
 	-I$(SrcDir)/STGroup \
+        -I$(SrcDir)/equilib \
 	-I$(SrcDir)/debug
 
 CXX	= g++
@@ -43,6 +44,7 @@ OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/journey/journey.o \
 	$(SrcDir)/rand/rand.o \
 	$(SrcDir)/ioFunctions/ioFunctions.o \
+        $(SrcDir)/equilib/nashTest.o \
 	$(SrcDir)/STGroup/STGroup.o
 
 SRCS =	$(SrcDir)/test.cpp \
@@ -76,4 +78,6 @@ SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/rand/rand.cpp \
 	$(SrcDir)/STGroup/STGroup.hpp \
 	$(SrcDir)/STGroup/STGroup.cpp \
+        $(SrcDir)/equilib/nashTest.hpp \
+        $(SrcDir)/equilib/nashTest.cpp \
 	$(SrcDir)/debug/debug.h
