@@ -260,11 +260,14 @@ int main() {
 
         dumpGraph(mainGraphs[graphNum]);
         //print spanning tree
+        /* 
+         * currently buggy, not in use
         STGroup st;
         st.findMinSpanningTree(mainGraphs[graphNum].returnGraph());
         vector<journeyInfo> jiplaceholder;
         graphGroup spanningTree = graphGroup(st.returnMinSpanningTree(), jiplaceholder);
         dumpGraph(spanningTree);
+        */
 
         output(string("This solution is ")
                + (nash_equilibrium ? "" : "not ")
