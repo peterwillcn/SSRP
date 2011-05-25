@@ -256,7 +256,7 @@ int main() {
         output("Final total cost: " + str(final_total_cost));
 
         // this checks if the final solution is a Nash Equilibrium
-        bool nash_equilibrium = nashEquilibrium(mainGraphs[graphNum]);
+        bool nash_equilibrium = nashEquilibrium(mainGraphs[graphNum], 0);
 
         dumpGraph(mainGraphs[graphNum]);
         //print spanning tree

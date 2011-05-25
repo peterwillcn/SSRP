@@ -4,6 +4,8 @@
 #include "graphGroup.h"
 #include "ioFunctions.h"
 
-bool nashEquilibrium(graphGroup& g);
+const int nashDepth = 20;
+
+bool nashEquilibrium(graphGroup& g, int depth);
 
 #endif
