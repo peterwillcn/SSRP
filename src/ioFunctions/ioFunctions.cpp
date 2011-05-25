@@ -79,6 +79,13 @@ string str(double d) {
     return s.str();
 }
 
+// Returns the string form of an unsigned
+string str(unsigned u) {
+    ostringstream s;
+    s << u;
+    return s.str();
+}
+
 // Returns the string form of a floatWInf
 string str(floatWInf f) {
     ostringstream s;
@@ -265,6 +272,7 @@ const string graphFormat = "pdf";
 ///
 const string graphvizCmd = "dot";
 const string configFile  = ".graphConfig";
+const bool printLabelNodes = true;
 
 // Dumps a graph to a file named "graph.dot"
 // Then runs graphviz on the file to produce an output file.
@@ -294,9 +302,17 @@ void dumpGraph(const graphGroup& g) {
     colors.push_back("purple");
     colors.push_back("orange");
 
-    if(g.directed()) {
-        fout << "digraph G {\n\tgraph [ bgcolor=\"#808080\" ];\n";
+    if(g.directed())
+        fout << "di";
+    fout << "graph G {\n\tgraph [ bgcolor=\"#808080\" ];\n";
 
+    fout << "node [shape=doublecircle] ";
+    for(int i =0 ; i < paths.size(); i++) {\
+        fout << paths[i].actualPath()[0] << " " << paths[i].actualPath()[paths[i].actualPath().size()-1] << " ";
+    }
+    fout << "\nnode [shape=circle];\n";
+
+    if(g.directed()) {
         for(int i = 0; i < g.returnN(); i++) {
             for(int j = 0; j < g.returnN(); j++) {
                 if(not(g.totalEdgeCost(i, j).isInfinity())) {
@@ -330,12 +346,8 @@ void dumpGraph(const graphGroup& g) {
                 }
             }
         }
-
-        fout << "}\n";
     }
     else {
-        fout << "graph G {\n\tgraph [ bgcolor=\"#808080\" ];\n";
-
         for(int i = 0; i < g.returnN(); i++) {
             for(int j = i+1; j < g.returnN(); j++) {
                 if(not(g.totalEdgeCost(i, j).isInfinity())) {
@@ -369,9 +381,19 @@ void dumpGraph(const graphGroup& g) {
                 }
             }
         }
-
-        fout << "}\n";
     }
+
+    if(printLabelNodes) {
+        for(int i = 0; i < paths.size(); i++) {
+            fout << "node [shape=circle ";
+            fout << "label=\"Journey " << i << "\\n";
+            fout << paths[i].actualPath()[0] << " -> " << paths[i].actualPath()[paths[i].actualPath().size()-1];
+            fout << "\" ";
+            fout << "color=\"" << colors[i%colors.size()] << "\"]; j" << i << ";\n";
+        }
+    }
+
+    fout << "}\n";
 
     fout.close();
 
@@ -509,8 +531,10 @@ void readJourneysFromFile(vector< journeyInfo > & journeysInformation) {
 
 // print all info on journeys
 void printJourneys(const journeyGroup& jgroup) {
-    for(int i = 0; i < jgroup.numJourneys(); i++)
+    for(int i = 0; i < jgroup.numJourneys(); i++) {
+        output("Journey " + str(i) + ":");
         printJourney(jgroup[i]);
+    }
 }
 
 // print all info on a journey

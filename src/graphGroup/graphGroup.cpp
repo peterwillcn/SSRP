@@ -98,6 +98,10 @@ const journey& graphGroup::getJourney(const int i) const {
     return journeys[i];
 }
 
+const journeyGroup& graphGroup::getJourneys() const {
+    return journeys;
+}
+
 //graphGroup::returnGraph()
 // returns the graph
 //

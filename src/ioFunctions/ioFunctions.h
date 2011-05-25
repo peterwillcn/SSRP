@@ -32,6 +32,9 @@ string str(float);
 // Returns the string form of a double
 string str(double);
 
+// Returns the string form of an unsigned
+string str(unsigned);
+
 // Returns the string form of a floatWInf
 string str(floatWInf);
 

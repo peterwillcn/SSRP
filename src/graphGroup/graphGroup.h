@@ -46,6 +46,7 @@ public:
     int numJourneys() const;
 
     const journey& getJourney(const int) const;
+    const journeyGroup& getJourneys() const;
 
 
     basicEdgeGroup returnGraph() const;
