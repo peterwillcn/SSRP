@@ -1,38 +1,35 @@
 #include "nashTest.hpp"
 
-bool nashEquilibrium(graphGroup& g, int depth) 
+bool nashEquilibrium(graphGroup& g) 
 {
     bool result = true;
     
     vector<path> final_paths = g.returnSharedPaths();
     vector<floatWInf> final_costs = g.returnSharedCosts();
     
-    std::string spaces;
-    if(depth > 0)
-    {
-      spaces = "  ";
-      for(int i = 1; i < depth; ++i)
-      {
-        spaces += spaces;
-      }
-    }
-    
-    output(spaces + "Testing for nash equilibrium at depth " + str(depth));
+    //loop through each journey
+    //if a journey can improve start back at journey 0
+    //if all journeys can not improve an equilibrium has been found
     
     
     int j = 0; 
-    while(j < g.numJourneys() ||
-          !result
-    ) 
+    while(j < g.numJourneys()) 
     {
         path new_path;
         g.removeJourney(j);
         g.addJourneySP(j);
         floatWInf x = g.returnSharedCost(j);
-        if( x >= final_costs[j]) 
+        if( x < final_costs[j]) 
         {
-            output(spaces + "journey " + str(j) + " has no incentive to move.");
+            final_costs[j] = x;
+            output("journey " + str(j) + " has a better strategy");
+            j = 0;
+            //output(spaces + "journey " + str(j) + " has no incentive to move.");
         }
+        
+        j++;
+        
+        /*
         else 
         {
             result = false;
@@ -48,10 +45,13 @@ bool nashEquilibrium(graphGroup& g, int depth)
             }
             printJourney(g.getJourney(j));
         }
+        
+        
         g.removeJourney(j);
         g.addJourney(j, final_paths[j]);
-        j++;
+        */
     }
     
+    result = true;
     return result;
 }
