@@ -274,9 +274,10 @@ int main() {
         dumpGraph(spanningTree);
         */
 
-        output(string("This solution is ")
+        /*output(string("This solution is ")
                + (nash_equilibrium ? "" : "not ")
                + "a Nash Equilibrium.");
+               */
     }
 
     return 0;
