@@ -254,11 +254,16 @@ int main() {
         for(int j = 0; j < mainGraphs[graphNum].numJourneys(); j++)
             final_total_cost += mainGraphs[graphNum].returnSharedCost(j);
         output("Final total cost: " + str(final_total_cost));
-
-        // this checks if the final solution is a Nash Equilibrium
-        bool nash_equilibrium = nashEquilibrium(mainGraphs[graphNum], 0);
-
+        
+        //preequilibrium
         dumpGraph(mainGraphs[graphNum]);
+        
+        // this checks if the final solution is a Nash Equilibrium
+        bool nash_equilibrium = nashEquilibrium(mainGraphs[graphNum]);
+
+        //equlibrium
+        dumpGraph(mainGraphs[graphNum]);
+        
         //print spanning tree
         /* 
          * currently buggy, not in use
