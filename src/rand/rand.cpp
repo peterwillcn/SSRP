@@ -304,6 +304,7 @@ void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
     //limited directional movement
 
     int numberVertices = inputInt("How many vertices does the graph have?");
+    randomGraph.setN(numberVertices);
 
     //read in information
     bool directed = getChoice("Is the graph directed?");
@@ -335,7 +336,7 @@ void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
                 if(k == l)
                     randomGraph.addEdge(k, l, 0);
                 else if((k - limitedback <= l) && (k + limitedforward >= l))
-                    randomGraph.addEdge(k, l, randomWeight(ranges[0][0], ranges[0][1]));
+                    randomGraph.addEdge(klimitedback, l, randomWeight(ranges[0][0], ranges[0][1]));
                 else
                     randomGraph.addEdge(k, l, infinity);
             }
@@ -368,6 +369,7 @@ void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
 void generateHighwaySystem(basicEdgeGroup& randomGraph) {
 
     int numberVertices = inputInt("How many vertices does the graph have?");
+    randomGraph.setN(numberVertices);
 
     //highway system
 
@@ -404,66 +406,55 @@ void generateHighwaySystem(basicEdgeGroup& randomGraph) {
 }
 
 void generateThreadedGrid(basicEdgeGroup& randomGraph) {
-/*
+
     int numberVertices = inputInt("How many vertices does the graph have?");
+    randomGraph.setN(numberVertices);
 
     //read in work
-    cout << "All threaded grids are undirected." << endl;
-    cout << "How many levels? (number per level is equal for all levels) ";
-    cin >> levels;
-    cout << "How many levels can a vertices connect to above or below? (>0) ";
-    cin >> jumping;
-    perLevel = n / levels;
+    output("All threaded grids are undirected.");
+    int levels = inputInt("How many levels? (number per level is equal for all levels)");
+    int jumping = inputInt("How many levels can a vertices connect to above or below? ");
+    int perLevel = numberVertices / levels;
 
-    ranges.resize(jumping + 1);
-    ranges[0].resize(2);
-    cout << "What is the minimum weight between vertices on the same level? ";
-    cin >> tempValue;
-    ranges[0][0] = tempValue;
-    cout << "What is the maximum weight between vertices on the same level? ";
-    cin >> tempValue;
-    ranges[0][1] = tempValue;
+    vector<vector<int> > ranges(jumping + 1, vector<int>(2));
+    ranges[0][0] = inputInt("What is the minimum weight between vertices on the same level?");
+    ranges[0][1] = inputInt("What is the maximum weight between vertices on the same level?");
 
     for(int i = 1; i < jumping + 1; i++) {
-        cout << "What is the minimum weight between vertices " << i << " level(s) distant? ";
-        cin >> tempValue;
-        ranges[i][0] = tempValue;
-        cout << "What is the maximum weight between vertices " << i << " level(s) distant? ";
-        cin >> tempValue;
-        ranges[i][1] = tempValue;
+        ranges[i][0] = inputInt("What is the minimum weight between vertices "+str(i)+" level(s) distant?");
+        ranges[i][1] = inputInt("What is the maximum weight between vertices "+str(i)+" level(s) distant?");
     }
 
     //begin work
-    for(int k = 0; k < n; k++) {
-        for(int l = k; l < n; l++) {
+    for(int k = 0; k < numberVertices; k++) {
+        for(int l = k; l < numberVertices; l++) {
             //select random weights for:
             if(k == l)  //same vertex
                 randomGraph.addEdge(k, l, 0);
             else if(k / perLevel == l / perLevel) {
                 //same level
-                tempValue = randomWeight(ranges[0][0], ranges[0][1]);
+                int tempValue = randomWeight(ranges[0][0], ranges[0][1]);
                 randomGraph.addEdge(k, l, tempValue);
                 randomGraph.addEdge(l, k, tempValue);
             }
             else {
                 //different levels
-                currentLevel1 = k / perLevel;
-                currentLevel2 = l / perLevel;
+                int currentLevel1 = k / perLevel;
+                int currentLevel2 = l / perLevel;
                 if(currentLevel1 >= levels)
                     currentLevel1--;
                 if(currentLevel2 >= levels)
                     currentLevel2--;
 
-                levelDifference = abs(currentLevel1 - currentLevel2);
+                int levelDifference = abs(currentLevel1 - currentLevel2);
                 if(levelDifference <= jumping) {
-                    tempValue = randomWeight(ranges[levelDifference][0], ranges[levelDifference][1]);
+                    int tempValue = randomWeight(ranges[levelDifference][0], ranges[levelDifference][1]);
                     randomGraph.addEdge(k, l, tempValue);
                     randomGraph.addEdge(l, k, tempValue);
                 }
             }
         }
     }
-*/
 }
 
 void generateSparseGraph(basicEdgeGroup& graph) {
@@ -563,8 +554,6 @@ void generateSparseGraph(basicEdgeGroup& graph) {
 void generateJourneys(vector< journeyInfo > & journeysInformation, int n)
 {
 
-    cout << endl << endl;
-
     vector<pair<int,int> > pairs;
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
@@ -578,10 +567,6 @@ void generateJourneys(vector< journeyInfo > & journeysInformation, int n)
         int r = randomGenerator(pairs.size()-1);
         journeysInformation[i].setSource(pairs[r].first);
         journeysInformation[i].setDestination(pairs[r].second);
-        cout << pairs[r].first << " " << pairs[r].second << endl;
         pairs.erase(pairs.begin()+r);
     }
-
-    cout << endl << endl;
-
 }

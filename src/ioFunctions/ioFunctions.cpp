@@ -159,7 +159,7 @@ void readGraphs(vector< basicEdgeGroup > & inputGroups) {
     int numGraphs = inputInt("How many graphs are there?");
     inputGroups.resize(numGraphs);
     for(int i = 0; i < inputGroups.size(); i++)
-        generateGraphs(inputGroups);
+        readGraph(inputGroups[i]);
 }
 
 //readGraphFromFile()
@@ -189,9 +189,8 @@ void readGraphFromFile(basicEdgeGroup & inputGroup)
     int n;  //number of vertices
     int type;  //type of graph
     int style;  //style of graph
-    float tempWeight;  //float used to hold weight while reading from input file
     floatWInf infiniteWeight(true, 0);  //float used to hold infinity
-    float infinitySymbol; //holds symbol of infinity in file
+    string infinitySymbol; //holds symbol of infinity in file
     fstream fin;
 
     fileName = inputString("Input file name: ");
@@ -207,16 +206,20 @@ void readGraphFromFile(basicEdgeGroup & inputGroup)
     //read in graph info
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
-            fin >> tempWeight;
-            if(tempWeight == infinitySymbol)
+            string temp;
+            fin >> temp;
+            if(temp == infinitySymbol)
                 inputGroup.addEdge(i, j, infiniteWeight);
-            else
-                inputGroup.addEdge(i, j, tempWeight);
+            else {
+                float f;
+                istringstream in(temp);
+                in >> f;
+                inputGroup.addEdge(i, j, f);
+            }
         }
     }
 
     fin.close();
-
 }
 
 //            exportGraph()
