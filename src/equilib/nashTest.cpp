@@ -7,6 +7,8 @@ bool nashEquilibrium(graphGroup& g)
     vector<path> final_paths = g.returnSharedPaths();
     vector<floatWInf> final_costs = g.returnSharedCosts();
     
+    output("searching for a nash equilibrium");
+    
     //loop through each journey
     //if a journey can improve start back at journey 0
     //if all journeys can not improve an equilibrium has been found
@@ -51,6 +53,8 @@ bool nashEquilibrium(graphGroup& g)
         g.addJourney(j, final_paths[j]);
         */
     }
+    
+    output("This solution is a nash equilibrium");
     
     result = true;
     return result;
