@@ -54,7 +54,7 @@ const string welcomeHeader =
 | Mentor:  Sean McCulloch                                                      |\n\
 +------------------------------------------------------------------------------+\n";
 
-void runPastHeuristics(graphGroup& mainGraph, vector<journeyInfo> listOfJourneys) {
+void runPastHeuristics(graphGroup mainGraph, vector<journeyInfo> listOfJourneys) {
     vector< vector< floatWInf > > minSavings;
     vector< vector< floatWInf > > maxSavings;
     vector< vector< floatWInf > > averageSavings;
@@ -285,6 +285,11 @@ int main(int argc, char* argv[]) {
     mainGraph.set(basicGraph, listOfJourneys);
 
     runPastHeuristics(mainGraph, listOfJourneys);
+    
+    STGroup st;
+    st.findMinSpanningTree(mainGraph.returnGraph());
+    
+    dumpGraph(graphGroup(st.returnMinSpanningTree(), std::vector<journeyInfo>()));
 
     if(inFile != &cin)
         delete inFile;
