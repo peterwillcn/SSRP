@@ -123,7 +123,7 @@ int journeyGroup::numJourneys() const
 //O(numJourneys())
 vector< journeyInfo > journeyGroup::returnInfos() const
 {
-  vector< journeyInfo > answers;
+  vector< journeyInfo > answers(numJourneys());
   
   for(int i = 0; i < numJourneys(); i++)
     answers[i] = returnInfo(i);
