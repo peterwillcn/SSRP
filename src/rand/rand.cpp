@@ -68,7 +68,7 @@ void generateGraphs(vector< basicEdgeGroup > & randomGraphs) {
 //post:
 // -inputGroup has been set randomly with user selected properties
 void generateGraph(basicEdgeGroup & randomGraph) {
-    bool repeat = false;
+    bool repeat;
     do {
         repeat = false;
         outputPrompt("Types:", "");

@@ -54,7 +54,7 @@ const string welcomeHeader =
 | Mentor:  Sean McCulloch                                                      |\n\
 +------------------------------------------------------------------------------+\n";
 
-void runPastHeuristics(graphGroup mainGraph, vector<journeyInfo> listOfJourneys) {
+int runNashEquilibriumHeuristic(graphGroup& mainGraph, vector<journeyInfo> listOfJourneys) {
     vector< vector< floatWInf > > minSavings;
     vector< vector< floatWInf > > maxSavings;
     vector< vector< floatWInf > > averageSavings;
@@ -220,23 +220,21 @@ void runPastHeuristics(graphGroup mainGraph, vector<journeyInfo> listOfJourneys)
         } // end "for all edges"
     } // end # of passes
 
-    for(int j = 0; j < mainGraph.numJourneys(); j++) {
-        output("Journey " + str(j) + ":");
-        printJourney(mainGraph.getJourney(j));
-    }
+
+//     for(int j = 0; j < mainGraph.numJourneys(); j++) {
+//         output("Journey " + str(j) + ":");
+//         printJourney(mainGraph.getJourney(j));
+//     }
 
     floatWInf final_total_cost = 0;
     for(int j = 0; j < mainGraph.numJourneys(); j++)
         final_total_cost += mainGraph.returnSharedCost(j);
-    output("Final total cost: " + str(final_total_cost));
-
-    //preequilibrium
-    dumpGraph(mainGraph);
 
     // this checks if the final solution is a Nash Equilibrium
     bool nash_equilibrium = nashEquilibrium(mainGraph);
 
-    //equlibrium
+    cout << "D: " << mainGraph.directed() << endl;
+
     dumpGraph(mainGraph);
 
     //print spanning tree
@@ -254,7 +252,9 @@ void runPastHeuristics(graphGroup mainGraph, vector<journeyInfo> listOfJourneys)
             + "a Nash Equilibrium.");
             */
 
-    return;
+    if(debug)
+        output("Final total cost: " + str(final_total_cost));
+    return final_total_cost.value();
 }
 
 int main(int argc, char* argv[]) {
@@ -262,7 +262,7 @@ int main(int argc, char* argv[]) {
     output(welcomeHeader);
 
     if(argc > 1) {
-        readFromFile = false;
+        readFromFile = true;
         inFile = new ifstream(argv[1]);
     }
     else {
@@ -278,18 +278,28 @@ int main(int argc, char* argv[]) {
     readGraph(basicGraph);
     readJourneys(listOfJourneys, basicGraph);
 
+    for(int i = 0; i < listOfJourneys.size(); i++) {
+        output("Journey " +str(i)+ ": ", "");
+        output(str(listOfJourneys[i].source()) + " -> " + str(listOfJourneys[i].destination()));
+    }
+
     // Set the journey numbers for each journey:
     // Journey i's journey number is i
     for(int i = 0; i < listOfJourneys.size(); i++)
         listOfJourneys[i].setJourneyNum(i);
     mainGraph.set(basicGraph, listOfJourneys);
 
+<<<<<<< HEAD
+    output("Running Nash Equilibrium Heuristic");
+    output("Had total cost of: " + str(runNashEquilibriumHeuristic(mainGraph, listOfJourneys)));
+=======
     runPastHeuristics(mainGraph, listOfJourneys);
     
     STGroup st;
     st.findMinSpanningTree(mainGraph.returnGraph());
     
     dumpGraph(graphGroup(st.returnMinSpanningTree(), std::vector<journeyInfo>()));
+>>>>>>> b4d78f2be5f1e2808d18f15a189d5daa599f7114
 
     if(inFile != &cin)
         delete inFile;
