@@ -71,13 +71,13 @@ void generateGraph(basicEdgeGroup & randomGraph) {
     bool repeat = false;
     do {
         repeat = false;
-        output("Types:", "");
-        output("\t1 - finite weights");
-        output("\t2 - some random infinite weights");
-        output("\t3 - limited directional movement");
-        output("\t4 - highway system");
-        output("\t5 - threaded grid");
-        output("\t6 - sparse graph");
+        outputPrompt("Types:", "");
+        outputPrompt("\t1 - finite weights");
+        outputPrompt("\t2 - some random infinite weights");
+        outputPrompt("\t3 - limited directional movement");
+        outputPrompt("\t4 - highway system");
+        outputPrompt("\t5 - threaded grid");
+        outputPrompt("\t6 - sparse graph");
         int type = inputInt("Which type is the graph?");
         switch(type) {
             case 1:
@@ -336,7 +336,7 @@ void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
                 if(k == l)
                     randomGraph.addEdge(k, l, 0);
                 else if((k - limitedback <= l) && (k + limitedforward >= l))
-                    randomGraph.addEdge(klimitedback, l, randomWeight(ranges[0][0], ranges[0][1]));
+                    randomGraph.addEdge(limitedback, l, randomWeight(ranges[0][0], ranges[0][1]));
                 else
                     randomGraph.addEdge(k, l, infinity);
             }

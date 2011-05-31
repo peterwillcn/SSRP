@@ -25,9 +25,9 @@ using namespace std;
 //
 //O(1)
 edgeGroup::edgeGroup()
-  :internalNumJourneys(), edges()
+:internalNumJourneys(), edges()
 {
-  
+
 }
 
 //edgeGroup::edgeGroup()
@@ -42,14 +42,14 @@ edgeGroup::edgeGroup()
 //
 //O(numVertices)
 edgeGroup::edgeGroup(int numVertices, int numJourneys)
-  :internalNumJourneys(numJourneys)
+:internalNumJourneys(numJourneys)
 {
-  
-  edges.resize(numVertices);
-  
-  for(int i = 0; i < returnN(); i++)
-    edges[i].resize(returnN());
-  
+
+    edges.resize(numVertices);
+
+    for(int i = 0; i < returnN(); i++)
+        edges[i].resize(returnN());
+
 }
 
 //edgeGroup::edgeGroup()
@@ -65,9 +65,9 @@ edgeGroup::edgeGroup(int numVertices, int numJourneys)
 //O(inputGroup.returnN() ^2 * numJourneys)
 edgeGroup::edgeGroup(basicEdgeGroup const & inputGroup, int numJourneys)
 {
-  
-  set(inputGroup, numJourneys);
-  
+
+    set(inputGroup, numJourneys);
+
 }
 
 //edgeGroup::isEdgeUsable()
@@ -85,8 +85,8 @@ edgeGroup::edgeGroup(basicEdgeGroup const & inputGroup, int numJourneys)
 bool edgeGroup::isEdgeUsable(int i, int j) const
 {
 
-  return edges[i][j].isUsable();
-  
+    return edges[i][j].isUsable();
+
 }
 
 //edgeGroup::isSectionUsable()
@@ -103,18 +103,18 @@ bool edgeGroup::isEdgeUsable(int i, int j) const
 //O(length of section)
 bool edgeGroup::isSectionUsable(vector< int > section) const
 {
-  bool answer = true;
-  int i = 0;
-  
-  while(i < section.size() - 1
-	&& answer == true)
+    bool answer = true;
+    int i = 0;
+
+    while(i < section.size() - 1
+        && answer == true)
     {
-      answer = isEdgeUsable(section[i], section[i + 1]);
-      i++;
+        answer = isEdgeUsable(section[i], section[i + 1]);
+        i++;
     }
-  
-  return answer;
-  
+
+    return answer;
+
 }
 
 //edgeGroup::totalEdgeCost()
@@ -130,9 +130,9 @@ bool edgeGroup::isSectionUsable(vector< int > section) const
 //O(1)
 floatWInf edgeGroup::totalEdgeCost(int i, int j) const
 {
-  
-  return edges[i][j].totalCost();
-  
+
+    return edges[i][j].totalCost();
+
 }
 
 //edgeGroup::totalSectionCost()
@@ -148,16 +148,16 @@ floatWInf edgeGroup::totalEdgeCost(int i, int j) const
 //O(length of section)
 floatWInf edgeGroup::totalSectionCost(vector< int > section) const
 {
-  floatWInf answer;
-  
-  if(isSectionUsable(section) == true)
-    for(int i = 0; i < section.size() - 1; i++)
-      answer += totalEdgeCost(i, i + 1);
-  else
-    answer.setValue();
-  
-  return answer;
-  
+    floatWInf answer;
+
+    if(isSectionUsable(section) == true)
+        for(int i = 0; i < section.size() - 1; i++)
+            answer += totalEdgeCost(i, i + 1);
+        else
+            answer.setValue();
+
+        return answer;
+
 }
 
 //edgeGroup::currentEdgeCost()
@@ -174,9 +174,9 @@ floatWInf edgeGroup::totalSectionCost(vector< int > section) const
 //O(1)
 floatWInf edgeGroup::currentEdgeCost(int i, int j, int journeyNum) const
 {
-  
-  return edges[i][j].currentCost(journeyNum);
-  
+
+    return edges[i][j].currentCost(journeyNum);
+
 }
 
 //edgeGroup::currentSectionCost()
@@ -193,17 +193,17 @@ floatWInf edgeGroup::currentEdgeCost(int i, int j, int journeyNum) const
 //O(length of section)
 floatWInf edgeGroup::currentSectionCost(vector< int > section, int journeyNum) const
 {
-  
-  floatWInf answer(0);
-  
-  if(isSectionUsable(section) == true)
-    for(int i = 0; i < section.size() - 1; i++)
-	answer += currentEdgeCost(section[i], section[i + 1], journeyNum);
-  else
-    answer.setValue();
-  
-  return answer;
-  
+
+    floatWInf answer(0);
+
+    if(isSectionUsable(section) == true)
+        for(int i = 0; i < section.size() - 1; i++)
+            answer += currentEdgeCost(section[i], section[i + 1], journeyNum);
+        else
+            answer.setValue();
+
+        return answer;
+
 }
 
 //edgeGroup::currentEdgeCosts()
@@ -220,9 +220,9 @@ floatWInf edgeGroup::currentSectionCost(vector< int > section, int journeyNum) c
 //O(length of journeysNum)
 floatWInf edgeGroup::currentEdgeCosts(int i, int j, vector< int > journeysNum) const
 {
-  
-  return edges[i][j].currentCosts(journeysNum);
-  
+
+    return edges[i][j].currentCosts(journeysNum);
+
 }
 
 //edgeGroup::currentSectionCosts()
@@ -239,17 +239,17 @@ floatWInf edgeGroup::currentEdgeCosts(int i, int j, vector< int > journeysNum) c
 //O((length of section) * (length of journeysNum))
 floatWInf edgeGroup::currentSectionCosts(vector< int > section, vector< int > journeysNum) const
 {
-  
-  floatWInf answer;
-  
-  if(isSectionUsable(section) == true)
-    for(int i = 0; i < section.size() - 1; i++)
-      answer += currentEdgeCosts(i, i + 1, journeysNum);
-  else
-    answer.setValue();
-  
-  return answer;
-  
+
+    floatWInf answer;
+
+    if(isSectionUsable(section) == true)
+        for(int i = 0; i < section.size() - 1; i++)
+            answer += currentEdgeCosts(i, i + 1, journeysNum);
+        else
+            answer.setValue();
+
+        return answer;
+
 }
 
 //edgeGroup::isJourneyIn()
@@ -267,9 +267,9 @@ floatWInf edgeGroup::currentSectionCosts(vector< int > section, vector< int > jo
 //O(1)
 bool edgeGroup::isJourneyIn(int i, int j, int journeyNum) const
 {
-  
-  return edges[i][j].isJourneyIn(journeyNum);
-  
+
+    return edges[i][j].isJourneyIn(journeyNum);
+
 }
 
 //edgeGroup::isJourneyInSection()
@@ -287,23 +287,23 @@ bool edgeGroup::isJourneyIn(int i, int j, int journeyNum) const
 //O(length of section)
 bool  edgeGroup::isJourneyInSection(vector< int > section, int journeyNum) const
 {
-  
-  bool answer = true;
-  
-  int i = 0;
-    
-  if(isSectionUsable(section) == true)
-    while(answer == true
-	  && i < section.size() - 1)
-      {
-	answer = isJourneyIn(i, i + 1, journeyNum);
-	i++;
-      }
-  else
-    answer = false;
-  
-  return answer;
-  
+
+    bool answer = true;
+
+    int i = 0;
+
+    if(isSectionUsable(section) == true)
+        while(answer == true
+            && i < section.size() - 1)
+        {
+            answer = isJourneyIn(i, i + 1, journeyNum);
+            i++;
+        }
+        else
+            answer = false;
+
+        return answer;
+
 }
 
 //edgeGroup::numJourneysUsing()
@@ -319,9 +319,9 @@ bool  edgeGroup::isJourneyInSection(vector< int > section, int journeyNum) const
 //O(1)
 int edgeGroup::numJourneysUsing(int i, int j) const
 {
-  
-  return edges[i][j].numJourneysUsing();
-  
+
+    return edges[i][j].numJourneysUsing();
+
 }
 
 //edgeGroup::findSP()
@@ -337,9 +337,9 @@ int edgeGroup::numJourneysUsing(int i, int j) const
 //O(returnN() ^2)
 path edgeGroup::findSP(journeyInfo information) const
 {
-  
-  return Dijkstra(information);
-  
+
+    return Dijkstra(information);
+
 }
 
 //edgeGroup::returnN()
@@ -354,9 +354,9 @@ path edgeGroup::findSP(journeyInfo information) const
 //O(1)
 int edgeGroup::returnN() const
 {
-  
-  return edges.size();
-  
+
+    return edges.size();
+
 }
 
 //edgeGroup::numJourneys()
@@ -371,9 +371,9 @@ int edgeGroup::returnN() const
 //O(1)
 int edgeGroup::numJourneys() const
 {
-  
-  return internalNumJourneys;
-  
+
+    return internalNumJourneys;
+
 }
 
 //edgeGroup::addJourneySP()
@@ -389,9 +389,9 @@ int edgeGroup::numJourneys() const
 //O(returnN() ^2)
 void edgeGroup::addJourneySP(journeyInfo information)
 {
-  
-  addJourney(information.journeyNum(), findSP(information));
-  
+
+    addJourney(information.journeyNum(), findSP(information));
+
 }
 
 //edgeGroup::addJourney()
@@ -407,12 +407,12 @@ void edgeGroup::addJourneySP(journeyInfo information)
 //O(length of newPath)
 void edgeGroup::addJourney(int journeyNum, path const & newPath)
 {
-  
-  removeJourney(journeyNum);
 
-  for(int i = 0; i < newPath.length() - 1; i++)
-    edges[newPath.returnVertex(i)][newPath.returnVertex(i + 1)].addJourney(journeyNum);
-  
+    removeJourney(journeyNum);
+
+    for(int i = 0; i < newPath.length() - 1; i++)
+        edges[newPath.returnVertex(i)][newPath.returnVertex(i + 1)].addJourney(journeyNum);
+
 }
 
 //edgeGroup::removeJourney()
@@ -428,11 +428,11 @@ void edgeGroup::addJourney(int journeyNum, path const & newPath)
 //O(returnN() ^2)
 void edgeGroup::removeJourney(int journeyNum)
 {
-  
-  for(int i = 0; i < returnN(); i++)
-    for(int j = 0; j < returnN(); j++)
-      edges[i][j].removeJourney(journeyNum);
-  
+
+    for(int i = 0; i < returnN(); i++)
+        for(int j = 0; j < returnN(); j++)
+            edges[i][j].removeJourney(journeyNum);
+
 }
 
 //edgeGroup::removeAllJourneys()
@@ -448,11 +448,11 @@ void edgeGroup::removeJourney(int journeyNum)
 //O(returnN() ^2 * numJourneys())
 void edgeGroup::removeAllJourneys()
 {
-  
-  for(int i = 0; i < returnN(); i++)
-    for(int j = 0; j < returnN(); j++)
-      edges[i][j].removeAllJourneys();
-  
+
+    for(int i = 0; i < returnN(); i++)
+        for(int j = 0; j < returnN(); j++)
+            edges[i][j].removeAllJourneys();
+
 }
 
 //edgeGroup::set()
@@ -468,32 +468,32 @@ void edgeGroup::removeAllJourneys()
 //O(returnN() ^2 * numJourneys())
 void edgeGroup::set(basicEdgeGroup const & newGraph, int newNumJourneys)
 {
-  
-  internalNumJourneys = newNumJourneys;
-  edges.resize(newGraph.returnN());
-  
-  for(int i = 0; i < returnN(); i++)
+
+    internalNumJourneys = newNumJourneys;
+    edges.resize(newGraph.returnN());
+
+    for(int i = 0; i < returnN(); i++)
     {
-      edges[i].resize(returnN());
-      for(int j = 0; j < returnN(); j++)
-	{
-	  edges[i][j].setTotalCost(newGraph.cost(i, j));
-	  edges[i][j].setTotalNumJourneys(numJourneys());
-	  edges[i][j].removeAllJourneys();
-	}
+        edges[i].resize(returnN());
+        for(int j = 0; j < returnN(); j++)
+        {
+            edges[i][j].setTotalCost(newGraph.cost(i, j));
+            edges[i][j].setTotalNumJourneys(numJourneys());
+            edges[i][j].removeAllJourneys();
+        }
     }
-  
+
 }
 
 //edgeGroup::update_edge_cost()
 //updates the cost of edge (i,j) to "new_cost" and removes all journeys from it
-// pre: i and j are valid vertices. 
+// pre: i and j are valid vertices.
 // post: edge (i,j) now costs "new_cost"
 //       all journeys on (i,j) are removed.
 void edgeGroup::update_edge_cost(int i, int j, floatWInf new_cost){
-  edges[i][j].setTotalCost(new_cost);
-  edges[i][j].setTotalNumJourneys(numJourneys());
-  edges[i][j].removeAllJourneys();
+    edges[i][j].setTotalCost(new_cost);
+    edges[i][j].setTotalNumJourneys(numJourneys());
+    edges[i][j].removeAllJourneys();
 }
 //edgeGroup::Dijkstra()
 // returns shortest path given current costs of edges using Dijkstra's algorithm
@@ -508,64 +508,64 @@ void edgeGroup::update_edge_cost(int i, int j, floatWInf new_cost){
 //O(returnN() ^2)
 path edgeGroup::Dijkstra(journeyInfo information) const
 {
-  
-  vector< vertex > vertices;
-  floatWInf infiniteFloat;
-  floatWInf zeroFloat;
-  intWInf infiniteInt;
-  vector< int > actualPath;
-  path answer;
-  zeroFloat.setValue(0);
-  
-  //prepare vertices for Dijkstra
-  vertices.resize(returnN());
- 
-  for(int i = 0; i < returnN(); i++)
-    {
-      vertices[i].setCost(infiniteFloat);  //set cost to infinity
-      vertices[i].setPredecessor(infiniteInt);  //set predecessor to null
-    }
-  
-  vertices[information.source()].setCost(zeroFloat);  //set cost of source to be 0
-  
-  //if Q[i] == true, then vertex i has not yet been extracted
-  bool Q[returnN()];
-  for(int i = 0; i < returnN(); i++)
-    Q[i] = true;
-  int u; //current vertex being looked at
-  intWInf tempU;
-  
-  //Dijkstra's algorithm: 
-  for(int j = 0; j < returnN(); j++)
-    {
-      u = information.source();
-  
-      for(int i = 0; i < returnN(); i++)
-	if((Q[i] == true)                                    //if ( (Q[i] is true)
-	   &&((Q[u] == false)                                 //and ( (Q[u] is false)
-	      ||(vertices[i].cost() < vertices[u].cost())))      //or (i < u)))
-	  {
-	    u = i;                                //replace u with i
-	  }
 
-      Q[u] = false;
-      
-      for(int v = 0; v < returnN(); v++)
-	if(vertices[v].cost() > (vertices[u].cost() + currentEdgeCost(u, v, information.journeyNum())))  //(v > u + w(u, v))
-	  {
-	    vertices[v].setCost(vertices[u].cost() + currentEdgeCost(u, v, information.journeyNum()));
-	    tempU.setValue(u);
-	    vertices[v].setPredecessor(tempU);
-	  }
+    vector< vertex > vertices;
+    floatWInf infiniteFloat;
+    floatWInf zeroFloat;
+    intWInf infiniteInt;
+    vector< int > actualPath;
+    path answer;
+    zeroFloat.setValue(0);
+
+    //prepare vertices for Dijkstra
+    vertices.resize(returnN());
+
+    for(int i = 0; i < returnN(); i++)
+    {
+        vertices[i].setCost(infiniteFloat);  //set cost to infinity
+        vertices[i].setPredecessor(infiniteInt);  //set predecessor to null
     }
-  
-  //find and return path:
-  findPath(information, vertices, actualPath);
-  actualPath.push_back(information.destination());
-  answer.setPath(actualPath, vertices[information.destination()].cost());
-  
-  return answer;
-  
+
+    vertices[information.source()].setCost(zeroFloat);  //set cost of source to be 0
+
+    //if Q[i] == true, then vertex i has not yet been extracted
+    bool Q[returnN()];
+    for(int i = 0; i < returnN(); i++)
+        Q[i] = true;
+    int u; //current vertex being looked at
+    intWInf tempU;
+
+    //Dijkstra's algorithm:
+    for(int j = 0; j < returnN(); j++)
+    {
+        u = information.source();
+
+        for(int i = 0; i < returnN(); i++)
+            if((Q[i] == true)                                    //if ( (Q[i] is true)
+        &&((Q[u] == false)                                 //and ( (Q[u] is false)
+        ||(vertices[i].cost() < vertices[u].cost())))      //or (i < u)))
+        {
+            u = i;                                //replace u with i
+        }
+
+        Q[u] = false;
+
+        for(int v = 0; v < returnN(); v++)
+            if(vertices[v].cost() > (vertices[u].cost() + currentEdgeCost(u, v, information.journeyNum())))  //(v > u + w(u, v))
+        {
+            vertices[v].setCost(vertices[u].cost() + currentEdgeCost(u, v, information.journeyNum()));
+            tempU.setValue(u);
+            vertices[v].setPredecessor(tempU);
+        }
+    }
+
+    //find and return path:
+    findPath(information, vertices, actualPath);
+    actualPath.push_back(information.destination());
+    answer.setPath(actualPath, vertices[information.destination()].cost());
+
+    return answer;
+
 }
 
 //findPath()
@@ -582,19 +582,19 @@ path edgeGroup::Dijkstra(journeyInfo information) const
 //O(returnN())
 void edgeGroup::findPath(journeyInfo information, vector< vertex > const & vertices, vector< int > & foundPath) const
 {
-  
-  if(vertices[information.destination()].cost().isInfinity() == false)
-    if(information.source() != information.destination())
-      if((vertices[information.destination()].predecessor().isInfinity() == false)
-	 &&(information.source() == vertices[information.destination()].predecessor().value()))
-	foundPath.push_back(information.source());
-      else
-	{
-	  journeyInfo newInformation(information.journeyNum(), information.source(), vertices[information.destination()].predecessor().value());
-	  
-	  findPath(newInformation, vertices, foundPath);
-	  foundPath.push_back(vertices[information.destination()].predecessor().value());
-	}
-  
+
+    if(vertices[information.destination()].cost().isInfinity() == false)
+        if(information.source() != information.destination())
+            if((vertices[information.destination()].predecessor().isInfinity() == false)
+                &&(information.source() == vertices[information.destination()].predecessor().value()))
+                foundPath.push_back(information.source());
+            else
+            {
+                journeyInfo newInformation(information.journeyNum(), information.source(), vertices[information.destination()].predecessor().value());
+
+                findPath(newInformation, vertices, foundPath);
+                foundPath.push_back(vertices[information.destination()].predecessor().value());
+            }
+
 }
 

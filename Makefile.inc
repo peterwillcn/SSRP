@@ -18,8 +18,9 @@ Includes = \
 	-I$(SrcDir)/rand \
 	-I$(SrcDir)/ioFunctions \
 	-I$(SrcDir)/STGroup \
-        -I$(SrcDir)/equilib \
-	-I$(SrcDir)/debug
+	-I$(SrcDir)/equilib \
+	-I$(SrcDir)/debug \
+	-I$(SrcDir)/options
 
 CXX	= g++
 CXXFLAGS = -g $(Includes)
@@ -44,8 +45,9 @@ OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/journey/journey.o \
 	$(SrcDir)/rand/rand.o \
 	$(SrcDir)/ioFunctions/ioFunctions.o \
-        $(SrcDir)/equilib/nashTest.o \
-	$(SrcDir)/STGroup/STGroup.o
+	$(SrcDir)/equilib/nashTest.o \
+	$(SrcDir)/STGroup/STGroup.o \
+	$(SrcDir)/options/options.o
 
 SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/FWGroup/FWGroup.cpp \
@@ -78,6 +80,8 @@ SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/rand/rand.cpp \
 	$(SrcDir)/STGroup/STGroup.hpp \
 	$(SrcDir)/STGroup/STGroup.cpp \
-        $(SrcDir)/equilib/nashTest.hpp \
-        $(SrcDir)/equilib/nashTest.cpp \
-	$(SrcDir)/debug/debug.h
+	$(SrcDir)/equilib/nashTest.hpp \
+	$(SrcDir)/equilib/nashTest.cpp \
+	$(SrcDir)/debug/debug.h \
+	$(SrcDir)/options/options.h \
+	$(SrcDir)/options/options.cpp

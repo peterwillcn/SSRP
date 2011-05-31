@@ -17,9 +17,6 @@ extern const bool NO;
 // Reads in an integer from cin
 int inputInt(const string& prompt);
 
-// Reads in an integer in the range [low, high) from cin
-int inputBoundedInt(const string& prompt, int low, int high);
-
 // Reads in a string from cin
 string inputString(const string& prompt);
 
@@ -40,6 +37,13 @@ string str(floatWInf);
 
 // Outputs a string to cout. Appends suffix to the end
 void output(const string&, const string& suffix = "\n");
+// Like output, but doesn't print when reading from a file.
+void outputPrompt(const string&, const string& suffix = "\n");
+
+// Outputs a string to cout with a particular alignment and width
+void outputLeft(const string&, int);
+void outputRight(const string&, int);
+void outputCenter(const string&, int);
 
 // Reads in a boolean answer from cin.
 // Yes/No answer
@@ -51,7 +55,7 @@ bool getChoice(string prompt);
 
 void readGraph(basicEdgeGroup & inputGroup);
 void readGraphFromFile(basicEdgeGroup & inputGroup);
-void readGraphs(vector< basicEdgeGroup > & inputGroups);
+//void readGraphs(vector< basicEdgeGroup > & inputGroups);
 void exportGraph(basicEdgeGroup& outputGroup);
 
 // Prints a graph to a file.
@@ -64,7 +68,7 @@ void printGraph(const graphGroup&);
 //// Journey I/O Functions:
 ////
 
-void readJourneys(vector< journeyInfo > & journeysInformation);
+void readJourneys(vector< journeyInfo > & journeysInformation, const basicEdgeGroup& g);
 void readJourneysFromFile(vector< journeyInfo > & journeysInformation);
 
 // print all info on journeys

@@ -1,6 +1,9 @@
 #include "ioFunctions.h"
 #include "rand.h"
 #include "graphGroup.h"
+#include "options.h"
+#include <limits.h>
+#include <signal.h>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
@@ -15,28 +18,24 @@ const bool NO = false;
 
 // Reads in an integer from cin
 int inputInt(const string& prompt) {
-    while(true) {
+    if(not(readFromFile))
         cout << prompt << " ";
-        int item;
-        cin >> item;
-        if(cin.fail() || cin.eof()) {
-            cin.clear();
-            cout << "Illegal value.\n";
-        }
-        else
-            return item;
-    }
+    int item;
+    (*inFile) >> item;
+    return item;
 }
 
 // Reads in an integer in the range [low, high) from cin
 int inputBoundedInt(const string& prompt, int low, int high) {
     while(true) {
-        cout << prompt << " [ " << low << " , " << high << " ) ";
+        if(not(readFromFile))
+            cout << prompt << " [ " << low << " , " << high << " ) ";
         int item;
-        cin >> item;
+        (*inFile) >> item;
         if(item < low || item >= high || cin.fail() || cin.eof()) {
             cin.clear();
-            cout << "Illegal value.\n";
+            if(not(readFromFile))
+                cout << "Illegal value.\n";
         }
         else
             return item;
@@ -46,12 +45,14 @@ int inputBoundedInt(const string& prompt, int low, int high) {
 // Reads in a string from cin
 string inputString(const string& prompt) {
     while(true) {
-        cout << prompt << " ";
+        if(not(readFromFile))
+            cout << prompt << " ";
         string item;
-        cin >> item;
+        (*inFile) >> item;
         if(cin.fail() || cin.eof()) {
             cin.clear();
-            cout << "Illegal value.\n";
+            if(not(readFromFile))
+                cout << "Illegal value.\n";
         }
         else
             return item;
@@ -97,14 +98,49 @@ string str(floatWInf f) {
 void output(const string& s, const string& suffix) {
     cout << s << suffix;
 }
+// Like output, but doesn't print when reading from a file.
+void outputPrompt(const string& s, const string& suffix) {
+    if(not(readFromFile))
+        cout << s << suffix;
+}
+
+// Outputs a string to cout with a particular alignment and width
+void outputLeft(const string& s, int w) {
+    if(w <= s.size())
+        cout << s;
+    else {
+        outputLeft(s, w-1);
+        cout << " ";
+    }
+}
+void outputRight(const string& s, int w) {
+    if(w <= s.size())
+        cout << s;
+    else {
+        cout << " ";
+        outputRight(s, w-1);
+    }
+}
+void outputCenter(const string& s, int w) {
+    if(w <= s.size())
+        cout << s;
+    if(w == s.size()+1)
+        cout << s << " ";
+    else {
+        cout << " ";
+        outputCenter(s, w-2);
+        cout << " ";
+    }
+}
 
 // Reads in a boolean answer from cin.
 // Yes/No answer
 bool getChoice(string prompt) {
     while(true) {
-        cout << prompt << " ";
+        if(not(readFromFile))
+            cout << prompt << " ";
         string temp;
-        cin >> temp;
+        (*inFile) >> temp;
         switch(temp[0]) {
             case 'Y':
             case 'y':
@@ -117,7 +153,15 @@ bool getChoice(string prompt) {
                 return NO;
                 break;
             default:
-                cout << "Illegal choice.\n";
+                if(cin.fail())
+                    cin.clear();
+                //if(not(readFromFile)) {
+                //    cout << "Illegal choice.\n";
+                //}
+                //else {
+                    cout << '"' << temp << "\"\n";
+                    throw SIGSEGV;
+                //}
         }
     }
 }
@@ -138,7 +182,7 @@ bool getChoice(string prompt) {
 void readGraph(basicEdgeGroup & inputGroup)
 {
 
-    if(getChoice("Generate a random graph? ")) {
+    if(getChoice("Generate a random graph?")) {
         generateGraph(inputGroup);
     }
     else
@@ -155,12 +199,12 @@ void readGraph(basicEdgeGroup & inputGroup)
 //post:
 // -inputGroups has been set by user
 //
-void readGraphs(vector< basicEdgeGroup > & inputGroups) {
-    int numGraphs = inputInt("How many graphs are there?");
-    inputGroups.resize(numGraphs);
-    for(int i = 0; i < inputGroups.size(); i++)
-        readGraph(inputGroups[i]);
-}
+// void readGraphs(vector< basicEdgeGroup > & inputGroups) {
+//     int numGraphs = inputInt("How many graphs are there?");
+//     inputGroups.resize(numGraphs);
+//     for(int i = 0; i < inputGroups.size(); i++)
+//         readGraph(inputGroups[i]);
+// }
 
 //readGraphFromFile()
 // reads graph from a user selected file
@@ -193,7 +237,7 @@ void readGraphFromFile(basicEdgeGroup & inputGroup)
     string infinitySymbol; //holds symbol of infinity in file
     fstream fin;
 
-    fileName = inputString("Input file name: ");
+    fileName = inputString("Input file name:");
 
     //read in header info
     fin.open(fileName.data());
@@ -250,33 +294,6 @@ void exportGraph(basicEdgeGroup& outputGroup){
     }
 }
 
-const string graphFormat = "pdf";
-///
-/// Can be one of:
-///     bmp              Windows Bitmap Format
-///     dot              Dot file
-///     gif              GIF
-///     gtk              GTK canvas
-///     ico              Icon Image File Format
-///     jpg              JPEG
-///     jpeg             ...
-///     jpe              ...
-///     pdf              Portable Document Format (PDF)
-///     plain            Simple text format
-///     plain-ext        ...
-///     png              Portable Network Graphics format
-///     ps               PostScript
-///     ps2              PostScript for PDF
-///     svg              Scalable Vector Graphics
-///     svgz             ...
-///
-/// For a full list see:
-///     http://www.graphviz.org/content/output-formats
-///
-const string graphvizCmd = "dot";
-const string configFile  = ".graphConfig";
-const bool printLabelNodes = true;
-
 // Dumps a graph to a file named "graph.dot"
 // Then runs graphviz on the file to produce an output file.
 void dumpGraph(const graphGroup& g) {
@@ -301,19 +318,21 @@ void dumpGraph(const graphGroup& g) {
     colors.push_back("red");
     colors.push_back("blue");
     colors.push_back("green");
-    colors.push_back("yellow");
-    colors.push_back("purple");
     colors.push_back("orange");
+    colors.push_back("purple");
+    colors.push_back("yellow");
 
     if(g.directed())
         fout << "di";
-    fout << "graph G {\n\tgraph [ bgcolor=\"#808080\" ];\n";
+    fout << "graph G {\n\tgraph [ bgcolor=\""+background+"\" ];\n";
 
-    fout << "node [shape=doublecircle] ";
-    for(int i =0 ; i < paths.size(); i++) {\
-        fout << paths[i].actualPath()[0] << " " << paths[i].actualPath()[paths[i].actualPath().size()-1] << " ";
+    if(useDoubleEndpoints) {
+        fout << "\tnode [shape=doublecircle] ";
+        for(int i =0 ; i < paths.size(); i++) {\
+            fout << paths[i].actualPath()[0] << " " << paths[i].actualPath()[paths[i].actualPath().size()-1] << " ";
+        }
     }
-    fout << "\nnode [shape=circle];\n";
+    fout << "\n\tnode [shape=circle];\n";
 
     if(g.directed()) {
         for(int i = 0; i < g.returnN(); i++) {
@@ -357,7 +376,6 @@ void dumpGraph(const graphGroup& g) {
                     fout << "\t" << i << " -- " << j << " ";
                     fout << " [ ";
                     fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
-                    fout << "len = " << g.totalEdgeCost(i, j).value() << ".0 ";
                     bool edgeUsed = false;
                     vector<string> edgeColors;
                     for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
@@ -409,8 +427,8 @@ void dumpGraph(const graphGroup& g) {
 // print a graph
 void printGraph(const graphGroup& g) {
 
-    cout << "Printing graph with current costs:" << endl;
-    cout << g.returnN() << " vertices" << endl;
+    output("Printing graph with current costs:");
+    //output(str(g.returnN()) + " vertices");
 
     for(int i = 0; i < g.returnN(); i++)
     {
@@ -418,10 +436,10 @@ void printGraph(const graphGroup& g) {
         {
             if(g.totalEdgeCost(i, j).isInfinity() == true) {
 
-                cout << setw(7) << InfinitySymbol;
+                outputLeft(InfinitySymbol, 5);
             }
             else {
-                cout << setw(5) << g.totalEdgeCost(i, j).value();
+                outputLeft(str(g.totalEdgeCost(i, j).value()), 5);
             }
         }
         cout << endl;
@@ -443,47 +461,30 @@ void printGraph(const graphGroup& g) {
 //post:
 // -journeysInformation has journey information given by user
 //
-void readJourneys(vector< journeyInfo > & journeysInformation)
+void readJourneys(vector< journeyInfo > & journeysInformation, const basicEdgeGroup& g)
 {
+    const int numberVertices = g.returnN();
 
-    char usersAnswer;  //holds user's answer to questions
-    int numJourneys;  //holds total number of journeys
-    int n;  //number of vertices
-    int tempVertex;  //holds vertex number while reading in info
-
-    cout << "Read journeys from file? (y/n) ";
-    cin >> usersAnswer;
-    if(usersAnswer == 'y')
+    if(getChoice("Read journeys from file?"))
         readJourneysFromFile(journeysInformation);
     else
     {
-        cout << "Create random journeys? (y/n) ";
-        cin >> usersAnswer;
-        if(usersAnswer == 'y')
+        int numJourneys = inputInt("How many journeys to create?");
+        if(getChoice("Create random journeys?"))
         {
-            cout << "How many journeys to create? ";
-            cin >> numJourneys;
-            cout << "How many vertices are in graph? ";
-            cin >> n;
             journeysInformation.resize(numJourneys);
             for(int i = 0; i < numJourneys; i++)
                 journeysInformation[i].setJourneyNum(i);
-            generateJourneys(journeysInformation, n);
+            generateJourneys(journeysInformation, numberVertices);
         }
         else
         {
-            cout << "How many journeys to create? ";
-            cin >> numJourneys;
             journeysInformation.resize(numJourneys);
             for(int i = 0; i < numJourneys; i++)
             {
                 journeysInformation[i].setJourneyNum(i);
-                cout << "Source of journey " << i << ": ";
-                cin >> tempVertex;
-                journeysInformation[i].setSource(tempVertex);
-                cout << "Destination of journey " << i << ": ";
-                cin >> tempVertex;
-                journeysInformation[i].setDestination(tempVertex);
+                journeysInformation[i].setSource(inputInt("Source of journey "+str(i)+":"));
+                journeysInformation[i].setDestination(inputInt("Destination of journey "+str(i)+":"));
             }
         }
     }
