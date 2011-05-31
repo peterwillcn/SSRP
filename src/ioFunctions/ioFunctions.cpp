@@ -181,7 +181,6 @@ bool getChoice(string prompt) {
 //
 void readGraph(basicEdgeGroup & inputGroup)
 {
-
     if(getChoice("Generate a random graph?")) {
         generateGraph(inputGroup);
     }

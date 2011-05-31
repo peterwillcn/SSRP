@@ -54,42 +54,24 @@ const string welcomeHeader =
 | Mentor:  Sean McCulloch                                                      |\n\
 +------------------------------------------------------------------------------+\n";
 
-void runPastHeuristics() {
-    graphGroup mainGraph;
-    vector< journeyInfo > listsOfJourneys;
-    basicEdgeGroup basicGraph;
+void runPastHeuristics(graphGroup& mainGraph, vector<journeyInfo> listOfJourneys) {
     vector< vector< floatWInf > > minSavings;
     vector< vector< floatWInf > > maxSavings;
     vector< vector< floatWInf > > averageSavings;
     string fileName;
 
-    output(welcomeHeader);
+    FWGroup FloydPaths;
+    vector<int> journeysNum;
+
+    for(int j = 0; j < listOfJourneys.size(); j++)
+        journeysNum.push_back(listOfJourneys[j].journeyNum());
+
+    FloydPaths.set(journeysNum, mainGraph);
 
     // Some simple questions before we start
     bool printGraphInfo = getChoice("Print graph?");
 
     bool show_reroutings = getChoice("Print journey reroutings?");
-
-    // Generate the graph and journeys
-    readGraph(basicGraph);
-    readJourneys(listsOfJourneys, basicGraph);
-
-    // Set the journey numbers for each journey:
-    // Journey i's journey number is i
-    for(int i = 0; i < listsOfJourneys.size(); i++)
-        listsOfJourneys[i].setJourneyNum(i);
-    mainGraph.set(basicGraph, listsOfJourneys);
-
-    FWGroup FloydPaths;
-
-    mainGraph.set(basicGraph, listsOfJourneys);
-    vector<int> journeysNum;
-
-    for(int j = 0; j < listsOfJourneys.size(); j++)
-        journeysNum.push_back(listsOfJourneys[j].journeyNum());
-
-    FloydPaths.set(journeysNum, mainGraph);
-    // FloydPaths[i].print_cost_grid();
 
     if(debug)
         output("Running tests...");
@@ -98,10 +80,10 @@ void runPastHeuristics() {
         printGraph(mainGraph);
 
     //route each journey by it's FW path
-    for(int j = 0; j < listsOfJourneys.size(); j++){
-        mainGraph.addJourney(listsOfJourneys[j].journeyNum(),
-                             FloydPaths.returnPath(listsOfJourneys[j].source(),
-                                                   listsOfJourneys[j].destination()));
+    for(int j = 0; j < listOfJourneys.size(); j++){
+        mainGraph.addJourney(listOfJourneys[j].journeyNum(),
+                             FloydPaths.returnPath(listOfJourneys[j].source(),
+                                                   listOfJourneys[j].destination()));
     }
 
     int num_passes = inputInt("How many times to run through the edges?");
@@ -146,8 +128,8 @@ void runPastHeuristics() {
                         cur_journey++){
                         if(mainGraph.isJourneyIn(j,k,cur_journey)){ // then rip it up
 
-                            mainGraph.removeJourney(listsOfJourneys[cur_journey].journeyNum());
-                            journeys_rerouted.push_back(listsOfJourneys[cur_journey].journeyNum());
+                            mainGraph.removeJourney(listOfJourneys[cur_journey].journeyNum());
+                            journeys_rerouted.push_back(listOfJourneys[cur_journey].journeyNum());
                             if(debug)
                                 output("Ripping up " + str(cur_journey));
                         }
@@ -169,9 +151,9 @@ void runPastHeuristics() {
                     //now see if anyone else wants to move
                     for(int cur_journey = 0; cur_journey < mainGraph.numJourneys();
                         cur_journey++){
-                        int my_journey_num = listsOfJourneys[cur_journey].journeyNum();
+                        int my_journey_num = listOfJourneys[cur_journey].journeyNum();
                         if(find_in_vector(journeys_rerouted,
-                                            listsOfJourneys[cur_journey].journeyNum())
+                                            listOfJourneys[cur_journey].journeyNum())
                             == -1){
                             //then it's not there
 
@@ -223,7 +205,7 @@ void runPastHeuristics() {
 
                             for(int cur_journey = 0; cur_journey < mainGraph.numJourneys();
                                 cur_journey++)
-                                printJourney(mainGraph.getJourney(listsOfJourneys[cur_journey].journeyNum()));
+                                printJourney(mainGraph.getJourney(listOfJourneys[cur_journey].journeyNum()));
                         }
                     }
                     else{ // put the old paths back
@@ -277,8 +259,10 @@ void runPastHeuristics() {
 
 int main(int argc, char* argv[]) {
 
+    output(welcomeHeader);
+
     if(argc > 1) {
-        readFromFile = true;
+        readFromFile = false;
         inFile = new ifstream(argv[1]);
     }
     else {
@@ -286,7 +270,21 @@ int main(int argc, char* argv[]) {
         inFile = &cin;
     }
 
-    runPastHeuristics();
+    graphGroup mainGraph;
+    basicEdgeGroup basicGraph;
+    vector<journeyInfo> listOfJourneys;
+
+    // Generate the graph and journeys
+    readGraph(basicGraph);
+    readJourneys(listOfJourneys, basicGraph);
+
+    // Set the journey numbers for each journey:
+    // Journey i's journey number is i
+    for(int i = 0; i < listOfJourneys.size(); i++)
+        listOfJourneys[i].setJourneyNum(i);
+    mainGraph.set(basicGraph, listOfJourneys);
+
+    runPastHeuristics(mainGraph, listOfJourneys);
 
     if(inFile != &cin)
         delete inFile;
