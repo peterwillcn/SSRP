@@ -54,7 +54,7 @@ const string welcomeHeader =
 | Mentor:  Sean McCulloch                                                      |\n\
 +------------------------------------------------------------------------------+\n";
 
-void runPastHeuristics(graphGroup& mainGraph, vector<journeyInfo> listOfJourneys) {
+void runPastHeuristics(graphGroup mainGraph, vector<journeyInfo> listOfJourneys) {
     vector< vector< floatWInf > > minSavings;
     vector< vector< floatWInf > > maxSavings;
     vector< vector< floatWInf > > averageSavings;
