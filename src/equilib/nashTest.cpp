@@ -1,4 +1,5 @@
 #include "nashTest.hpp"
+#include "debug.h"
 
 bool nashEquilibrium(graphGroup& g) 
 {
@@ -6,8 +7,9 @@ bool nashEquilibrium(graphGroup& g)
     
     vector<path> final_paths = g.returnSharedPaths();
     vector<floatWInf> final_costs = g.returnSharedCosts();
-    
-    output("searching for a nash equilibrium");
+
+    if(debug)
+        output("searching for a nash equilibrium");
     
     //loop through each journey
     //if a journey can improve start back at journey 0
@@ -24,7 +26,8 @@ bool nashEquilibrium(graphGroup& g)
         if( x < final_costs[j]) 
         {
             final_costs[j] = x;
-            output("journey " + str(j) + " has a better strategy");
+            if(debug)
+                output("journey " + str(j) + " has a better strategy");
             j = 0;
             //output(spaces + "journey " + str(j) + " has no incentive to move.");
         }
@@ -53,8 +56,9 @@ bool nashEquilibrium(graphGroup& g)
         g.addJourney(j, final_paths[j]);
         */
     }
-    
-    output("This solution is a nash equilibrium");
+
+    if(debug)
+        output("This solution is a nash equilibrium");
     
     result = true;
     return result;
