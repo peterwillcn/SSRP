@@ -289,8 +289,17 @@ int main(int argc, char* argv[]) {
         listOfJourneys[i].setJourneyNum(i);
     mainGraph.set(basicGraph, listOfJourneys);
 
+<<<<<<< HEAD
     output("Running Nash Equilibrium Heuristic");
     output("Had total cost of: " + str(runNashEquilibriumHeuristic(mainGraph, listOfJourneys)));
+=======
+    runPastHeuristics(mainGraph, listOfJourneys);
+    
+    STGroup st;
+    st.findMinSpanningTree(mainGraph.returnGraph());
+    
+    dumpGraph(graphGroup(st.returnMinSpanningTree(), std::vector<journeyInfo>()));
+>>>>>>> b4d78f2be5f1e2808d18f15a189d5daa599f7114
 
     if(inFile != &cin)
         delete inFile;
