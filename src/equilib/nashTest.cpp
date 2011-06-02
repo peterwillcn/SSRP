@@ -29,7 +29,6 @@ bool nashEquilibrium(graphGroup& g)
             final_costs[j] = x;
             output("journey " + str(j) + " has a better strategy");
             j = 0;
-            output("journey " + str(j) + " has no incentive to move.");
         }
         
         j++;
