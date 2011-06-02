@@ -26,8 +26,10 @@ bool nashEquilibrium(graphGroup& g)
         floatWInf x = g.returnSharedCost(j);
         if( x < final_costs[j]) 
         {
-            final_costs[j] = x;
             output("journey " + str(j) + " has a better strategy");
+            printJourney(g.getJourney(j));
+            final_paths = g.returnSharedPaths();
+            final_costs = g.returnSharedCosts();
             j = 0;
         }
         
