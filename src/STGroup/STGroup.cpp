@@ -27,12 +27,19 @@ void STGroup::findMinSpanningTree(const basicEdgeGroup& graph)
     int curInTree = 0;
     int curAdjacentMin = 0;
     floatWInf curMinCost = floatWInf(true, 0);
+    
     //check each of the verticies already in the tree
-    for(int curVertex = 0; curVertex < curVerticies.size(); ++curVertex)
+    for(int j = 0; j < curVerticies.size(); ++j)
     {
+      int curVertex = curVerticies[j];
       //check all adjacent verticies
       for(int i = 0; i < graph.returnN(); ++i)
       {
+        
+        //no edge to this vertex
+        if(graph.returnEdgeCost(curVertex, i) == 0)
+          continue;
+        
         //this will always be a 0 edge
         if(i == curVertex)
           continue;
@@ -41,36 +48,34 @@ void STGroup::findMinSpanningTree(const basicEdgeGroup& graph)
         if(std::find(curVerticies.begin(), curVerticies.end(), i) != curVerticies.end())
           continue;
         
-        //if we find a closer edge that is nonzero and not already in the tree plan to add it to the tree
-        if(graph.returnEdgeCost(curVertex, i) < curMinCost &&
-           !(graph.returnEdgeCost(curVertex, i) == 0) &&
-           resultantTree.returnEdgeCost(curVertex, i) == 0 &&
-           resultantTree.returnEdgeCost(i, curVertex) == 0
-        )
+        //if we find a closer edge and not already in the tree plan to add it to the tree
+        if(graph.returnEdgeCost(curVertex, i) < curMinCost)
         {
           curInTree = curVertex;
           curAdjacentMin = i;
           curMinCost = floatWInf(false, graph.returnEdgeCost(curInTree, curAdjacentMin).value());
           if(debug)
           {
-            //std::cout << "New closest vertex from " << curInTree << " to " << curAdjacentMin << " with cost " << curMinCost << std::endl;
+            std::cout << "New closest vertex from " << curInTree << " to " << curAdjacentMin << " with cost " << curMinCost << std::endl;
           }
         }
       }
     }
+    
     //add the closest vertex not in the tree
     this->resultantTree.addEdge(curInTree, curAdjacentMin, curMinCost.value());
     this->resultantTree.addEdge(curAdjacentMin, curInTree, curMinCost.value());
     
     if(debug)
     {
-      //std::cout << "Added vertex from " << curInTree << " to " << curAdjacentMin << " with cost " << curMinCost << std::endl;
+      std::cout << "Added edge from " << curInTree << " to " << curAdjacentMin << " with cost " << curMinCost << std::endl;
     }
 
     curVerticies.push_back(curAdjacentMin);
 
     ++edgesAdded;
   }
+  
 }
 
 

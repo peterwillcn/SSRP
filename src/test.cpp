@@ -236,22 +236,7 @@ int runNashEquilibriumHeuristic(graphGroup mainGraph, const vector<journeyInfo>&
     bool nash_equilibrium = nashEquilibrium(mainGraph);
 
     dumpGraph(mainGraph);
-
-    //print spanning tree
-    /*
-        * currently buggy, not in use
-    STGroup st;
-    st.findMinSpanningTree(mainGraph.returnGraph());
-    vector<journeyInfo> jiplaceholder;
-    graphGroup spanningTree = graphGroup(st.returnMinSpanningTree(), jiplaceholder);
-    dumpGraph(spanningTree);
-    */
-
-    /*output(string("This solution is ")
-            + (nash_equilibrium ? "" : "not ")
-            + "a Nash Equilibrium.");
-            */
-
+    
     if(debug)
         output("Final total cost: " + str(final_total_cost));
     return final_total_cost.value();
@@ -362,6 +347,15 @@ int runSubGraphHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOf
     dumpGraph(newGraph);
 
     return totalCost.value();
+
+}
+
+void printSpanningTree(graphGroup& g)
+{
+    STGroup st;
+    st.findMinSpanningTree(g.returnGraph());
+    
+    dumpGraph(graphGroup(st.returnMinSpanningTree(), std::vector<journeyInfo>()));
 }
 
 int main(int argc, char* argv[]) {
@@ -396,6 +390,7 @@ int main(int argc, char* argv[]) {
         listOfJourneys[i].setJourneyNum(i);
     mainGraph.set(basicGraph, listOfJourneys);
 
+<<<<<<< HEAD
     int result = -1;
     
     const int shortestPathTotalCost = runShortestPathHeuristic(mainGraph, listOfJourneys);
@@ -409,6 +404,11 @@ int main(int argc, char* argv[]) {
     output("\tHas total cost of: " + str(result));
     output("\tImprovement over shortest path: " + str(shortestPathTotalCost - result));
 
+=======
+    output("Running Nash Equilibrium Heuristic");
+    output("Had total cost of: " + str(runNashEquilibriumHeuristic(mainGraph, listOfJourneys)));
+    
+>>>>>>> d52a351167e720df3cfe44279809dc98ec4e4fda
     if(inFile != &cin)
         delete inFile;
 
