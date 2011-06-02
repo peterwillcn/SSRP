@@ -390,7 +390,6 @@ int main(int argc, char* argv[]) {
         listOfJourneys[i].setJourneyNum(i);
     mainGraph.set(basicGraph, listOfJourneys);
 
-<<<<<<< HEAD
     int result = -1;
     
     const int shortestPathTotalCost = runShortestPathHeuristic(mainGraph, listOfJourneys);
@@ -404,11 +403,9 @@ int main(int argc, char* argv[]) {
     output("\tHas total cost of: " + str(result));
     output("\tImprovement over shortest path: " + str(shortestPathTotalCost - result));
 
-=======
     output("Running Nash Equilibrium Heuristic");
     output("Had total cost of: " + str(runNashEquilibriumHeuristic(mainGraph, listOfJourneys)));
-    
->>>>>>> d52a351167e720df3cfe44279809dc98ec4e4fda
+
     if(inFile != &cin)
         delete inFile;
 
