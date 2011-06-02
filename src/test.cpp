@@ -403,9 +403,6 @@ int main(int argc, char* argv[]) {
     output("\tHas total cost of: " + str(result));
     output("\tImprovement over shortest path: " + str(shortestPathTotalCost - result));
 
-    output("Running Nash Equilibrium Heuristic");
-    output("Had total cost of: " + str(runNashEquilibriumHeuristic(mainGraph, listOfJourneys)));
-
     if(inFile != &cin)
         delete inFile;
 

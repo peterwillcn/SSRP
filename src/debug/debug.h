@@ -7,4 +7,10 @@ const bool debug = true;
 const bool debug = false;
 #endif
 
+#ifdef NASH_OUT
+const bool nash_out = true;
+#else
+const bool nash_out = false;
+#endif
+
 #endif
