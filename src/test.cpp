@@ -236,25 +236,18 @@ int runNashEquilibriumHeuristic(graphGroup& mainGraph, vector<journeyInfo> listO
     cout << "D: " << mainGraph.directed() << endl;
 
     dumpGraph(mainGraph);
-
-    //print spanning tree
-    /*
-        * currently buggy, not in use
-    STGroup st;
-    st.findMinSpanningTree(mainGraph.returnGraph());
-    vector<journeyInfo> jiplaceholder;
-    graphGroup spanningTree = graphGroup(st.returnMinSpanningTree(), jiplaceholder);
-    dumpGraph(spanningTree);
-    */
-
-    /*output(string("This solution is ")
-            + (nash_equilibrium ? "" : "not ")
-            + "a Nash Equilibrium.");
-            */
-
+    
     if(debug)
         output("Final total cost: " + str(final_total_cost));
     return final_total_cost.value();
+}
+
+void printSpanningTree(graphGroup& g)
+{
+    STGroup st;
+    st.findMinSpanningTree(g.returnGraph());
+    
+    dumpGraph(graphGroup(st.returnMinSpanningTree(), std::vector<journeyInfo>()));
 }
 
 int main(int argc, char* argv[]) {
@@ -289,18 +282,9 @@ int main(int argc, char* argv[]) {
         listOfJourneys[i].setJourneyNum(i);
     mainGraph.set(basicGraph, listOfJourneys);
 
-<<<<<<< HEAD
     output("Running Nash Equilibrium Heuristic");
     output("Had total cost of: " + str(runNashEquilibriumHeuristic(mainGraph, listOfJourneys)));
-=======
-    runPastHeuristics(mainGraph, listOfJourneys);
     
-    STGroup st;
-    st.findMinSpanningTree(mainGraph.returnGraph());
-    
-    dumpGraph(graphGroup(st.returnMinSpanningTree(), std::vector<journeyInfo>()));
->>>>>>> b4d78f2be5f1e2808d18f15a189d5daa599f7114
-
     if(inFile != &cin)
         delete inFile;
 
