@@ -32,8 +32,8 @@ bool nashEquilibrium(graphGroup& g)
             final_costs = g.returnSharedCosts();
             j = 0;
         }
-        
-        j++;
+        else
+          ++j;
     }
 
     output("This solution is a nash equilibrium");
