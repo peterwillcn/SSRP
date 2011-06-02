@@ -54,7 +54,9 @@ const string welcomeHeader =
 | Mentor:  Sean McCulloch                                                      |\n\
 +------------------------------------------------------------------------------+\n";
 
-int runNashEquilibriumHeuristic(graphGroup& mainGraph, vector<journeyInfo> listOfJourneys) {
+int runNashEquilibriumHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
+    output("Running Nash Equilibrium Heuristic");
+
     vector< vector< floatWInf > > minSavings;
     vector< vector< floatWInf > > maxSavings;
     vector< vector< floatWInf > > averageSavings;
@@ -233,8 +235,6 @@ int runNashEquilibriumHeuristic(graphGroup& mainGraph, vector<journeyInfo> listO
     // this checks if the final solution is a Nash Equilibrium
     bool nash_equilibrium = nashEquilibrium(mainGraph);
 
-    cout << "D: " << mainGraph.directed() << endl;
-
     dumpGraph(mainGraph);
 
     //print spanning tree
@@ -255,6 +255,113 @@ int runNashEquilibriumHeuristic(graphGroup& mainGraph, vector<journeyInfo> listO
     if(debug)
         output("Final total cost: " + str(final_total_cost));
     return final_total_cost.value();
+}
+
+int runShortestPathHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
+    output("Running Shortest Path Heuristic");
+
+    floatWInf final_total_cost(0);
+    FWGroup FloydPaths;
+    vector<int> journeysNum;
+
+    for(int j = 0; j < listOfJourneys.size(); j++)
+        journeysNum.push_back(listOfJourneys[j].journeyNum());
+
+    FloydPaths.set(journeysNum, mainGraph);
+
+    //route each journey by it's FW path
+    for(int j = 0; j < listOfJourneys.size(); j++){
+        mainGraph.addJourney(listOfJourneys[j].journeyNum(),
+                             FloydPaths.returnPath(listOfJourneys[j].source(),
+                                                   listOfJourneys[j].destination()));
+    }
+
+    for(int j = 0; j < listOfJourneys.size(); j++) {
+        floatWInf res = mainGraph.returnSharedCost(j);
+        final_total_cost += res;
+    }
+
+    return final_total_cost.value();
+}
+
+int runSubGraphHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
+    output("Running Subgraph Heuristic");
+
+    if(mainGraph.directed()) {
+        output("Warning: this heuristic has not been tested with directed graphs");
+    }
+
+
+    int startPoint = listOfJourneys[0].source();
+    for(int i = 1; i < listOfJourneys.size(); i++) {
+        if(listOfJourneys[i].source() != startPoint) {
+            output("Error: journeys do not share the same start point.");
+            return -1;
+        }
+    }
+
+    basicEdgeGroup subGraph;
+    subGraph.setUndirected();
+    graphGroup newGraph;
+    subGraph.setN(mainGraph.returnN());
+
+    vector<int> midPoints(listOfJourneys.size());
+    vector<int> endPoints(listOfJourneys.size());
+
+    // Find the endpoints
+    for(int i = 0; i < listOfJourneys.size(); i++) {
+        endPoints[i] = listOfJourneys[i].destination();
+    }
+
+    for(int i = 0; i < listOfJourneys.size(); i++) {
+        path p = mainGraph.findSP(endPoints[i], endPoints[(i+1)%listOfJourneys.size()]);
+
+        midPoints[i] = p.getElement(p.length()/2);
+    }
+
+    // Now we have the mid points, the start point, and the ending points for all the journeys.
+    // We can start to reduce the graph.
+
+    for(int i = 0; i < listOfJourneys.size(); i++) {
+        path p = mainGraph.findSP(endPoints[i], midPoints[i]);
+
+        //cout << "Adding edge (" << endPoints[i] << ", " << midPoints[i] << ", " << p.cost() << ")\n";
+        subGraph.addEdge(endPoints[i], midPoints[i], p.cost());
+        subGraph.addEdge(midPoints[i], endPoints[i], p.cost());
+
+        p = mainGraph.findSP(midPoints[i], endPoints[(i+1)%listOfJourneys.size()]);
+
+        //cout << "Adding edge (" << midPoints[i] << ", " << endPoints[(i+1)%listOfJourneys.size()] << ", " << p.cost() << ")\n";
+        subGraph.addEdge(midPoints[i], endPoints[(i+1)%listOfJourneys.size()], p.cost());
+        subGraph.addEdge(endPoints[(i+1)%listOfJourneys.size()], midPoints[i], p.cost());
+    }
+
+    for(int i = 0; i < midPoints.size(); i++) {
+        path p = mainGraph.findSP(startPoint, midPoints[i]);
+
+        //cout << "Adding edge (" << startPoint << ", " << midPoints[i] << ", " << p.cost() << ")\n";
+        subGraph.addEdge(startPoint, midPoints[i], p.cost());
+        subGraph.addEdge(midPoints[i], startPoint, p.cost());
+    }
+
+    newGraph.set(subGraph, listOfJourneys);
+
+    for(int i = 0; i < listOfJourneys.size(); i++) {
+        newGraph.addJourneySP(i);
+        newGraph.refindSharedCosts();
+    }
+
+    nashEquilibrium(newGraph);
+
+    floatWInf totalCost(0);
+
+    for(int i = 0; i < listOfJourneys.size(); i++) {
+        totalCost += newGraph.returnSharedCost(i);
+    }
+
+    dumpGraph(newGraph);
+
+    return totalCost.value();
 }
 
 int main(int argc, char* argv[]) {
@@ -289,17 +396,18 @@ int main(int argc, char* argv[]) {
         listOfJourneys[i].setJourneyNum(i);
     mainGraph.set(basicGraph, listOfJourneys);
 
-<<<<<<< HEAD
-    output("Running Nash Equilibrium Heuristic");
-    output("Had total cost of: " + str(runNashEquilibriumHeuristic(mainGraph, listOfJourneys)));
-=======
-    runPastHeuristics(mainGraph, listOfJourneys);
+    int result = -1;
     
-    STGroup st;
-    st.findMinSpanningTree(mainGraph.returnGraph());
-    
-    dumpGraph(graphGroup(st.returnMinSpanningTree(), std::vector<journeyInfo>()));
->>>>>>> b4d78f2be5f1e2808d18f15a189d5daa599f7114
+    const int shortestPathTotalCost = runShortestPathHeuristic(mainGraph, listOfJourneys);
+    output("\tHas total cost of: " + str(shortestPathTotalCost));
+
+    result = runNashEquilibriumHeuristic(mainGraph, listOfJourneys);
+    output("\tHas total cost of: " + str(result));
+    output("\tImprovement over shortest path: " + str(shortestPathTotalCost - result));
+
+    result = runSubGraphHeuristic(mainGraph, listOfJourneys);
+    output("\tHas total cost of: " + str(result));
+    output("\tImprovement over shortest path: " + str(shortestPathTotalCost - result));
 
     if(inFile != &cin)
         delete inFile;

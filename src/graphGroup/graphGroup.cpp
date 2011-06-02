@@ -60,6 +60,11 @@ graphGroup::graphGroup(basicEdgeGroup const & inputGroup, vector< journeyInfo > 
 
 }
 
+// Copy Constructor
+graphGroup::graphGroup(const graphGroup& other)
+    : journeys(other.journeys), edges(other.edges), graph(other.graph) {
+}
+
 //graphGroup::returnN()
 // returns number of vertices
 //
@@ -1381,6 +1386,10 @@ path graphGroup::findSP(int journeyNum) const
 
     return edges.findSP(journeys.returnInfo(journeyNum));
 
+}
+
+path graphGroup::findSP(int source, int destination) const {
+    return edges.findSP(journeyInfo(0, source, destination));
 }
 
 //graphGroup::refindSharedCosts()

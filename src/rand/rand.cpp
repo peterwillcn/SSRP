@@ -520,7 +520,7 @@ void generateSparseGraph(basicEdgeGroup& graph) {
                 graph.addEdge(randomVertices[i], randomVertices[j], weight);
         }
 
-        int numberEdges = numberVertices*0.20;
+        int numberEdges = numberVertices*0.2;
         for(; numberEdges > 0; numberEdges--) {
             int i, j;
             i = j = 0;
@@ -555,13 +555,14 @@ void generateJourneys(vector< journeyInfo > & journeysInformation, int n)
 {
 
     vector<pair<int,int> > pairs;
-    for(int i = 0; i < n; i++) {
+    int i = 0;
+    //for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
             if(i != j) {
                 pairs.push_back(pair<int,int>(i, j));
             }
         }
-    }
+    //}
 
     for(int i = 0; i < journeysInformation.size(); i++) {
         int r = randomGenerator(pairs.size()-1);

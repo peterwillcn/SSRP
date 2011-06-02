@@ -52,6 +52,11 @@ edgeGroup::edgeGroup(int numVertices, int numJourneys)
 
 }
 
+edgeGroup::edgeGroup(const edgeGroup& other)
+    : internalNumJourneys(other.internalNumJourneys), edges(other.edges) {
+
+}
+
 //edgeGroup::edgeGroup()
 // c'tor
 //

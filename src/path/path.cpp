@@ -311,6 +311,10 @@ int path::length() const
   
 }
 
+int path::getElement(int ref) const {
+    return internalActualPath[ref];
+}
+
 //path::actualPath()
 // returns actual path
 //

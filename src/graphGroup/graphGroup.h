@@ -36,6 +36,7 @@ public:
 
     graphGroup();
     graphGroup(basicEdgeGroup const & inputGroup, vector< journeyInfo > const & journeysInformation);
+    graphGroup(const graphGroup& other);
 
     //group accessor member func's
 
@@ -94,6 +95,7 @@ public:
 
     ///shared path accessor member func's
     path findSP(int journeyNum) const;
+    path findSP(int source, int destination) const;
 
     ///mutators
     void refindSharedCosts();

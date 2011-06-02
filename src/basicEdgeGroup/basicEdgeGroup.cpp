@@ -40,7 +40,7 @@ basicEdgeGroup::basicEdgeGroup()
 //
 //O(newGroup.returnN() ^2)
 basicEdgeGroup::basicEdgeGroup(basicEdgeGroup const & newGroup)
-  :type(newGroup.returnType()), style(newGroup.returnStyle())
+  :type(newGroup.returnType()), style(newGroup.returnStyle()), isDirected(newGroup.directed())
 {
   
   setN(newGroup.returnN());

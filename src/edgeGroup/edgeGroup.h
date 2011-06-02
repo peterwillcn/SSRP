@@ -32,6 +32,7 @@ class edgeGroup
   
   edgeGroup();
   edgeGroup(int numVertices, int numJourneys);
+  edgeGroup(const edgeGroup& other);
   edgeGroup(basicEdgeGroup const & inputGroup, int numJourneys);
   
   //edge accessors
