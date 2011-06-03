@@ -39,5 +39,15 @@ const bool useDoubleEndpoints = false;
 const string background = "white";
 
 // If this value is true, no prompts are written to output for input values.
+// Defaults to false
 extern bool readFromFile;
+// Defaults to NULL
 extern istream* inFile;
+
+// Should we actually dump the graph when the dumpGraph function is called?
+// Defaults to true
+extern bool dumpGraphToFile;
+
+// Should we run statistics or do normal testing
+// Defaults to false
+extern bool doStatistics;

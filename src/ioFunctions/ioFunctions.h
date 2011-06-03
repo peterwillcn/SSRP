@@ -44,6 +44,7 @@ void outputPrompt(const string&, const string& suffix = "\n");
 void outputLeft(const string&, int);
 void outputRight(const string&, int);
 void outputCenter(const string&, int);
+void pad(const string&, int);
 
 // Reads in a boolean answer from cin.
 // Yes/No answer

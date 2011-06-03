@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <iostream>
+#include <limits.h>
 
 using namespace std;
 
@@ -548,7 +549,7 @@ floatWInf::floatWInf()
 //
 //O(1)
 floatWInf::floatWInf(floatWInf const & newFloatWInf)
-:internalInfinity(newFloatWInf.isInfinity()), internalFloat(newFloatWInf.value())
+:internalInfinity(newFloatWInf.internalInfinity), internalFloat(newFloatWInf.internalFloat)
 {
     
 }
@@ -756,10 +757,14 @@ bool floatWInf::operator<(floatWInf const & other) const
     
     bool answer = false;
     
-    if((isInfinity() == false)          //if( (this is not infinity)
-    &&((other.isInfinity() == true)  //and ( (other is infinity)
-    ||(value() < other.value())))    //or (this < other)))
-    answer = true;
+    if (
+        (isInfinity() == false)          //if( (this is not infinity)
+        &&
+        (
+            (other.isInfinity() == true)  //and ( (other is infinity)
+            ||
+            (value() < other.value())))    //or (this < other)))
+        answer = true;
     
     return answer;
     
@@ -1112,4 +1117,4 @@ float abs(float value)
     
 }
 
-const floatWInf infinity(true, 0);  //float used to hold infinity
+const floatWInf infinity(true, INT_MAX);  //float used to hold infinity

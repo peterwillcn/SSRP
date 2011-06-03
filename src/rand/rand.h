@@ -32,6 +32,7 @@ void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph);
 void generateHighwaySystem(basicEdgeGroup& randomGraph);
 void generateThreadedGrid(basicEdgeGroup& randomGraph);
 void generateSparseGraph(basicEdgeGroup& randomGraph);
+void generateSparseGraph(basicEdgeGroup& graph, int numberVertices, bool directed, int minWeight, int maxWeight);
 
 ////
 //// Journey Generation

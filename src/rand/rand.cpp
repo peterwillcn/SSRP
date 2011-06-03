@@ -537,6 +537,81 @@ void generateSparseGraph(basicEdgeGroup& graph) {
     }
 }
 
+void generateSparseGraph(basicEdgeGroup& graph, int numberVertices, bool directed, int minWeight, int maxWeight) {
+    bool undirected = not(directed);
+
+    if(directed)
+        graph.setDirected();
+    else
+        graph.setUndirected();
+
+    graph.setN(numberVertices);
+
+    for(int i = 0; i < numberVertices; i++)
+         graph.addEdge(i, i, 0);
+
+    if(directed) {
+        vector<int> copy(0);
+        for(int i = 0; i < numberVertices; i++)
+            copy.push_back(i);
+
+        const vector<int> vertices = copy;
+
+        vector<int> randomVertices;
+        for(int i = 0; i < vertices.size(); i++) {
+            //int rand = randomGenerator(copy.size()-1);
+            randomVertices.push_back(copy[i]);
+            //copy.erase(copy.begin()+rand);
+        }
+
+        for(int i = 1; i < vertices.size(); i++) {
+            int j = randomGenerator(i-1);
+            int k = randomGenerator(i-1);
+
+            graph.addEdge(randomVertices[j], randomVertices[i], randomWeight(minWeight, maxWeight));
+            graph.addEdge(randomVertices[i], randomVertices[k], randomWeight(minWeight, maxWeight));
+        }
+    }
+    else {
+        vector<int> copy(0);
+        for(int i = 0; i < numberVertices; i++)
+            copy.push_back(i);
+
+        const vector<int> vertices = copy;
+
+        vector<int> randomVertices;
+        for(int i = 0; i < vertices.size(); i++) {
+            int rand = randomGenerator(copy.size()-1);
+            randomVertices.push_back(copy[rand]);
+            copy.erase(copy.begin()+rand);
+        }
+
+        for(int i = 1; i < vertices.size(); i++) {
+            int j = randomGenerator(i-1);
+            int weight = randomWeight(minWeight, maxWeight);
+
+            graph.addEdge(randomVertices[j], randomVertices[i], weight);
+            if(undirected)
+                graph.addEdge(randomVertices[i], randomVertices[j], weight);
+        }
+
+        int numberEdges = numberVertices*0.2;
+        for(; numberEdges > 0; numberEdges--) {
+            int i, j;
+            i = j = 0;
+            while(i == j || not(graph.cost(i,j).isInfinity())) {
+                i = randomGenerator(numberVertices-1);
+                j = randomGenerator(numberVertices-1);
+            }
+            int weight = randomWeight(minWeight, maxWeight);
+
+            graph.addEdge(i, j, weight);
+            if(undirected)
+                graph.addEdge(j, i, weight);
+        }
+    }
+}
+
 ////
 //// Journey Generation
 ////
@@ -551,18 +626,17 @@ void generateSparseGraph(basicEdgeGroup& graph) {
 //post:
 // -journeysInformation has generated journeys
 //
-void generateJourneys(vector< journeyInfo > & journeysInformation, int n)
+void generateJourneys(vector< journeyInfo > & journeysInformation, int numVertices)
 {
 
     vector<pair<int,int> > pairs;
-    int i = 0;
-    //for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
+    for(int i = 0; i < numVertices; i++) {
+        for(int j = 0; j < numVertices; j++) {
             if(i != j) {
                 pairs.push_back(pair<int,int>(i, j));
             }
         }
-    //}
+    }
 
     for(int i = 0; i < journeysInformation.size(); i++) {
         int r = randomGenerator(pairs.size()-1);

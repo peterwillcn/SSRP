@@ -38,7 +38,7 @@ path::path()
 //
 //O(length of actualPath)
 path::path(path const & newPath)
-  :internalCost(newPath.cost()), internalActualPath(newPath.actualPath())
+  :internalCost(newPath.internalCost), internalActualPath(newPath.internalActualPath)
 {
   
 }

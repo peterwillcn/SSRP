@@ -9,6 +9,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <limits.h>
 
 using namespace std;
 
@@ -28,6 +29,7 @@ using namespace std;
 #include "nashTest.hpp"
 #include "debug.h"
 #include "options.h"
+#include "rand.h"
 
 //returns the index of (the first instance of)"key" in v,
 // or -1 if it's not there
@@ -54,8 +56,22 @@ const string welcomeHeader =
 | Mentor:  Sean McCulloch                                                      |\n\
 +------------------------------------------------------------------------------+\n";
 
-int runNashEquilibriumHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
-    output("Running Nash Equilibrium Heuristic");
+int runNashEquilibriumHeuristic(graphGroup mainGraph,
+                                const vector<journeyInfo>& listOfJourneys) {
+//                                 bool printGraphInfo = false,
+//                                 bool show_reroutings = false,
+//                                 int num_passes = 5,
+//                                 int journey_threshold = 3,
+//                                 bool coalition_one = false,
+//                                 bool outsider_one = false) {
+    //output("Running Nash Equilibrium Heuristic");
+
+    bool printGraphInfo = false;
+    bool show_reroutings = false;
+    int num_passes = 5;
+    int journey_threshold = 3;
+    bool coalition_one = false;
+    bool outsider_one = false;
 
     vector< vector< floatWInf > > minSavings;
     vector< vector< floatWInf > > maxSavings;
@@ -70,11 +86,6 @@ int runNashEquilibriumHeuristic(graphGroup mainGraph, const vector<journeyInfo>&
 
     FloydPaths.set(journeysNum, mainGraph);
 
-    // Some simple questions before we start
-    bool printGraphInfo = getChoice("Print graph?");
-
-    bool show_reroutings = getChoice("Print journey reroutings?");
-
     if(debug)
         output("Running tests...");
 
@@ -87,14 +98,6 @@ int runNashEquilibriumHeuristic(graphGroup mainGraph, const vector<journeyInfo>&
                              FloydPaths.returnPath(listOfJourneys[j].source(),
                                                    listOfJourneys[j].destination()));
     }
-
-    int num_passes = inputInt("How many times to run through the edges?");
-    int journey_threshold =
-        inputInt("How many journeys on the edge before we delete the edge?");
-    bool coalition_one =
-        getChoice("Do you want to change the graph after one coalition edge improves?");
-    bool outsider_one =
-        getChoice("Do you want to change the graph after one outsider edge improves?");
 
     for(int cur_pass = 0; cur_pass < num_passes; cur_pass++){
 
@@ -236,14 +239,14 @@ int runNashEquilibriumHeuristic(graphGroup mainGraph, const vector<journeyInfo>&
     bool nash_equilibrium = nashEquilibrium(mainGraph);
 
     dumpGraph(mainGraph);
-    
+
     if(debug)
         output("Final total cost: " + str(final_total_cost));
     return final_total_cost.value();
 }
 
 int runShortestPathHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
-    output("Running Shortest Path Heuristic");
+    //output("Running Shortest Path Heuristic");
 
     floatWInf final_total_cost(0);
     FWGroup FloydPaths;
@@ -269,32 +272,19 @@ int runShortestPathHeuristic(graphGroup mainGraph, const vector<journeyInfo>& li
     return final_total_cost.value();
 }
 
-int runSubGraphHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
-    output("Running Subgraph Heuristic");
-
-    if(mainGraph.directed()) {
-        output("Warning: this heuristic has not been tested with directed graphs");
-    }
-
-
-    int startPoint = listOfJourneys[0].source();
-    for(int i = 1; i < listOfJourneys.size(); i++) {
-        if(listOfJourneys[i].source() != startPoint) {
-            output("Error: journeys do not share the same start point.");
-            return -1;
-        }
-    }
-
+int subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<journeyInfo>& listOfJourneys, int startPoint) {
     basicEdgeGroup subGraph;
     subGraph.setUndirected();
     graphGroup newGraph;
     subGraph.setN(mainGraph.returnN());
 
+    vector<int> startPoints(listOfJourneys.size());
     vector<int> midPoints(listOfJourneys.size());
     vector<int> endPoints(listOfJourneys.size());
 
     // Find the endpoints
     for(int i = 0; i < listOfJourneys.size(); i++) {
+        startPoints[i] = listOfJourneys[i].source();
         endPoints[i] = listOfJourneys[i].destination();
     }
 
@@ -329,6 +319,13 @@ int runSubGraphHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOf
         subGraph.addEdge(midPoints[i], startPoint, p.cost());
     }
 
+    for(int i = 0; i < startPoints.size(); i++) {
+        path p = mainGraph.findSP(startPoints[i], startPoint);
+
+        subGraph.addEdge(startPoints[i], startPoint, p.cost());
+        subGraph.addEdge(startPoint, startPoints[i], p.cost());
+    }
+
     newGraph.set(subGraph, listOfJourneys);
 
     for(int i = 0; i < listOfJourneys.size(); i++) {
@@ -336,17 +333,43 @@ int runSubGraphHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOf
         newGraph.refindSharedCosts();
     }
 
-    nashEquilibrium(newGraph);
+    //dumpGraph(newGraph);
+    //nashEquilibrium(newGraph);
 
-    floatWInf totalCost(0);
-
+    int totalCost(0);
     for(int i = 0; i < listOfJourneys.size(); i++) {
-        totalCost += newGraph.returnSharedCost(i);
+        floatWInf cost = newGraph.returnSharedCost(i);
+        if(cost.isInfinity()) {
+            //output("Journey " +str(i)+ " is not routable.");
+        }
+        else
+            totalCost += cost.value();
     }
 
-    dumpGraph(newGraph);
+    return totalCost;
+}
 
-    return totalCost.value();
+int runSubGraphHeuristic(const graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
+    //output("Running Subgraph Heuristic");
+
+    if(mainGraph.directed()) {
+        output("Warning: this heuristic has not been tested with directed graphs");
+    }
+
+    int bestStart = 0;
+    int bestCost = INT_MAX;
+    for(int startPoint = 0; startPoint < mainGraph.returnN(); startPoint++) {
+
+        int cost = subGraphHeuristicHelper(mainGraph, listOfJourneys, startPoint);
+
+        if(cost < bestCost) {
+            //output("Found a better solution.");
+            bestCost = cost;
+            bestStart = startPoint;
+        }
+    }
+
+    return bestCost;
 
 }
 
@@ -354,57 +377,177 @@ void printSpanningTree(graphGroup& g)
 {
     STGroup st;
     st.findMinSpanningTree(g.returnGraph());
-    
+
     dumpGraph(graphGroup(st.returnMinSpanningTree(), std::vector<journeyInfo>()));
+}
+
+struct heuristic {
+// Public:
+    int (*func)(graphGroup, const vector<journeyInfo>&);
+
+    string name;
+
+    int numberCorrect;
+
+    heuristic(string initName,
+              int (*f)(graphGroup, const vector<journeyInfo>&))
+        : func(f), name(initName), numberCorrect(0) {
+        // Do Nothing
+    }
+};
+
+void doStats(int NUM_TEST_CASES = 10) {
+
+    // Options
+    const int NUM_VERTICES = 50;
+    const bool DIRECTED = false;
+    const int MIN_WEIGHT = 10;
+    const int MAX_WEIGHT = 20;
+    const int NUM_JOURNEYS = 10;
+
+    // Turn off graph dumping
+    dumpGraphToFile = false;
+
+    // Setup Heuristics
+    vector<heuristic> heuristics;
+
+    heuristics.push_back(heuristic("Shortest Path",
+                                   &runShortestPathHeuristic));
+
+    heuristics.push_back(heuristic("Nash Equilibrium",
+                                   &runNashEquilibriumHeuristic));
+
+    heuristics.push_back(heuristic("Sub-Graph",
+                                   &runSubGraphHeuristic));
+
+    // Output formatting
+    pad(" ", 10); output("|", "");
+    for(int i = 0; i < heuristics.size(); i++){
+        outputCenter(heuristics[i].name, heuristics[i].name.size()+2);
+        output("|", "");
+    }
+    output("");
+
+    // Run the loop
+    for(int i = 0; i < NUM_TEST_CASES; i++) {
+        output("Case:", "");
+        outputRight(str(i+1),5);
+        output("|", "");
+
+        basicEdgeGroup g;
+        graphGroup mainGraph;
+        vector<journeyInfo> listOfJourneys;
+
+        generateSparseGraph(g, NUM_VERTICES, DIRECTED, MIN_WEIGHT, MAX_WEIGHT);
+
+        listOfJourneys.resize(NUM_JOURNEYS);
+        for(int i = 0; i < NUM_JOURNEYS; i++)
+            listOfJourneys[i].setJourneyNum(i);
+        generateJourneys(listOfJourneys, NUM_VERTICES);
+        mainGraph.set(g, listOfJourneys);
+
+
+        vector<int> v(heuristics.size());
+
+        for(int i = 0; i < heuristics.size(); i++) {
+            v[i] = heuristics[i].func(mainGraph, listOfJourneys);
+            outputRight(str(v[i]), heuristics[i].name.size()+2);
+            output("|", "");
+        }
+        output("");
+
+        int best = 0;
+        for(int i = 1; i < heuristics.size(); i++) {
+            if(v[i] <= v[best])
+                best = i;
+        }
+
+        heuristics[best].numberCorrect++;
+    }
+
+    outputLeft("Totals:", 10);
+    output("|", "");
+    for(int i = 0; i < heuristics.size(); i++) {
+        outputCenter(heuristics[i].name, heuristics[i].name.size()+2);
+        output("|", "");
+    }
+    output("");
+
+    pad(" ", 10);
+    output("|", "");
+    for(int i = 0; i < heuristics.size(); i++) {
+        outputRight(str(heuristics[i].numberCorrect), heuristics[i].name.size()+2);
+        output("|", "");
+    }
+    output("");
 }
 
 int main(int argc, char* argv[]) {
 
     output(welcomeHeader);
 
-    if(argc > 1) {
-        readFromFile = true;
-        inFile = new ifstream(argv[1]);
+    doStatistics = true;
+
+    if(doStatistics) {
+
+        if(argc > 1)
+            doStats(atoi(argv[1]));
+        else
+            doStats();
+        return 0;
+
     }
+
     else {
-        readFromFile = false;
-        inFile = &cin;
-    }
 
-    graphGroup mainGraph;
-    basicEdgeGroup basicGraph;
-    vector<journeyInfo> listOfJourneys;
+        if(argc > 1) {
+            readFromFile = true;
+            inFile = new ifstream(argv[1]);
+        }
+        else {
+            readFromFile = false;
+            inFile = &cin;
+        }
 
-    // Generate the graph and journeys
-    readGraph(basicGraph);
-    readJourneys(listOfJourneys, basicGraph);
+        graphGroup mainGraph;
+        basicEdgeGroup basicGraph;
+        vector<journeyInfo> listOfJourneys;
 
-    for(int i = 0; i < listOfJourneys.size(); i++) {
-        output("Journey " +str(i)+ ": ", "");
-        output(str(listOfJourneys[i].source()) + " -> " + str(listOfJourneys[i].destination()));
-    }
+        // Generate the graph and journeys
+        readGraph(basicGraph);
+        readJourneys(listOfJourneys, basicGraph);
 
-    // Set the journey numbers for each journey:
-    // Journey i's journey number is i
-    for(int i = 0; i < listOfJourneys.size(); i++)
-        listOfJourneys[i].setJourneyNum(i);
-    mainGraph.set(basicGraph, listOfJourneys);
+        for(int i = 0; i < listOfJourneys.size(); i++) {
+            output("Journey " +str(i)+ ": ", "");
+            output(str(listOfJourneys[i].source()) + " -> " + str(listOfJourneys[i].destination()));
+        }
 
-    int result = -1;
-    
-    const int shortestPathTotalCost = runShortestPathHeuristic(mainGraph, listOfJourneys);
-    output("\tHas total cost of: " + str(shortestPathTotalCost));
+        // Set the journey numbers for each journey:
+        // Journey i's journey number is i
+        for(int i = 0; i < listOfJourneys.size(); i++)
+            listOfJourneys[i].setJourneyNum(i);
+        mainGraph.set(basicGraph, listOfJourneys);
 
-    result = runNashEquilibriumHeuristic(mainGraph, listOfJourneys);
-    output("\tHas total cost of: " + str(result));
-    output("\tImprovement over shortest path: " + str(shortestPathTotalCost - result));
+        int result = -1;
 
-    result = runSubGraphHeuristic(mainGraph, listOfJourneys);
-    output("\tHas total cost of: " + str(result));
-    output("\tImprovement over shortest path: " + str(shortestPathTotalCost - result));
+        const int shortestPathTotalCost = runShortestPathHeuristic(mainGraph, listOfJourneys);
+        output("\tHas total cost of: " + str(shortestPathTotalCost));
+        output("");
 
-    if(inFile != &cin)
-        delete inFile;
+        result = runNashEquilibriumHeuristic(mainGraph, listOfJourneys);
+        output("\tHas total cost of: " + str(result));
+        output("\tImprovement over shortest path: " + str(shortestPathTotalCost - result));
+        output("");
+
+        result = runSubGraphHeuristic(mainGraph, listOfJourneys);
+        output("\tHas total cost of: " + str(result));
+        output("\tImprovement over shortest path: " + str(shortestPathTotalCost - result));
+        output("");
+
+        if(inFile != &cin)
+            delete inFile;
+
+        }
 
     return 0;
 }

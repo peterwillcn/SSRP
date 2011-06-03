@@ -124,12 +124,20 @@ void outputRight(const string& s, int w) {
 void outputCenter(const string& s, int w) {
     if(w <= s.size())
         cout << s;
-    if(w == s.size()+1)
+    else if(w == s.size()+1)
         cout << s << " ";
     else {
         cout << " ";
         outputCenter(s, w-2);
         cout << " ";
+    }
+}
+void pad(const string& s, int w) {
+    if(w <= 0)
+        return;
+    else {
+        cout << s;
+        pad(s, w-1);
     }
 }
 
@@ -296,58 +304,93 @@ void exportGraph(basicEdgeGroup& outputGroup){
 // Dumps a graph to a file named "graph.dot"
 // Then runs graphviz on the file to produce an output file.
 void dumpGraph(const graphGroup& g) {
+    if(dumpGraphToFile) {
+        int graphNum = 0;
 
-    int graphNum = 0;
-
-    {
-        ifstream config(configFile.data());
-        config >> graphNum;
-        config.close();
-    }
-    {
-        ofstream config(configFile.data());
-        config << graphNum+1;
-        config.close();
-    }
-    ofstream fout(".graph.dot");
-
-    vector<string> colors;
-    vector<path> paths = g.returnSharedPaths();
-
-    colors.push_back("red");
-    colors.push_back("blue");
-    colors.push_back("green");
-    colors.push_back("orange");
-    colors.push_back("purple");
-    colors.push_back("yellow");
-
-    if(g.directed())
-        fout << "di";
-    fout << "graph G {\n\tgraph [ bgcolor=\""+background+"\" ];\n";
-
-    if(useDoubleEndpoints) {
-        fout << "\tnode [shape=doublecircle] ";
-        for(int i =0 ; i < paths.size(); i++) {\
-            fout << paths[i].actualPath()[0] << " " << paths[i].actualPath()[paths[i].actualPath().size()-1] << " ";
+        {
+            ifstream config(configFile.data());
+            config >> graphNum;
+            config.close();
         }
-    }
-    fout << "\n\tnode [shape=circle];\n";
+        {
+            ofstream config(configFile.data());
+            config << graphNum+1;
+            config.close();
+        }
+        ofstream fout(".graph.dot");
 
-    if(g.directed()) {
-        for(int i = 0; i < g.returnN(); i++) {
-            for(int j = 0; j < g.returnN(); j++) {
-                if(not(g.totalEdgeCost(i, j).isInfinity())) {
-                    if(i != j) {
-                        fout << "\t" << i << " -> " << j << " ";
+        vector<string> colors;
+        vector<path> paths = g.returnSharedPaths();
+
+        colors.push_back("red");
+        colors.push_back("blue");
+        colors.push_back("green");
+        colors.push_back("orange");
+        colors.push_back("purple");
+        colors.push_back("yellow");
+
+        if(g.directed())
+            fout << "di";
+        fout << "graph G {\n\tgraph [ bgcolor=\""+background+"\" ];\n";
+
+        if(useDoubleEndpoints) {
+            fout << "\tnode [shape=doublecircle] ";
+            for(int i =0 ; i < paths.size(); i++) {\
+                fout << paths[i].actualPath()[0] << " " << paths[i].actualPath()[paths[i].actualPath().size()-1] << " ";
+            }
+        }
+        fout << "\n\tnode [shape=circle];\n";
+
+        if(g.directed()) {
+            for(int i = 0; i < g.returnN(); i++) {
+                for(int j = 0; j < g.returnN(); j++) {
+                    if(not(g.totalEdgeCost(i, j).isInfinity())) {
+                        if(i != j) {
+                            fout << "\t" << i << " -> " << j << " ";
+                            fout << " [ ";
+                            fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
+                            fout << "len = " << g.totalEdgeCost(i, j).value() << ".0 ";
+                            bool edgeUsed = false;
+                            vector<string> edgeColors;
+                            for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
+                                for(int pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
+                                    if((paths[pathNum].actualPath()[pathPart] == j &&
+                                        paths[pathNum].actualPath()[pathPart-1] == i)) {
+                                        edgeColors.push_back(colors[pathNum%colors.size()]);
+                                        edgeUsed = true;
+                                    }
+                                }
+                            }
+                            if(edgeUsed) {
+                                fout << "color=\"";
+                                for(int i = 0; i < edgeColors.size(); i++) {
+                                    fout << edgeColors[i];
+                                    if(i < edgeColors.size()-1)
+                                        fout << ":";
+                                }
+                                fout << "\" ";
+                            }
+                            fout << "];\n";
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            for(int i = 0; i < g.returnN(); i++) {
+                for(int j = i+1; j < g.returnN(); j++) {
+                    if(not(g.totalEdgeCost(i, j).isInfinity())) {
+                        fout << "\t" << i << " -- " << j << " ";
                         fout << " [ ";
                         fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
-                        fout << "len = " << g.totalEdgeCost(i, j).value() << ".0 ";
                         bool edgeUsed = false;
                         vector<string> edgeColors;
                         for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
                             for(int pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
                                 if((paths[pathNum].actualPath()[pathPart] == j &&
-                                    paths[pathNum].actualPath()[pathPart-1] == i)) {
+                                    paths[pathNum].actualPath()[pathPart-1] == i) ||
+                                    (paths[pathNum].actualPath()[pathPart] == i &&
+                                    paths[pathNum].actualPath()[pathPart-1] == j)) {
                                     edgeColors.push_back(colors[pathNum%colors.size()]);
                                     edgeUsed = true;
                                 }
@@ -367,60 +410,27 @@ void dumpGraph(const graphGroup& g) {
                 }
             }
         }
-    }
-    else {
-        for(int i = 0; i < g.returnN(); i++) {
-            for(int j = i+1; j < g.returnN(); j++) {
-                if(not(g.totalEdgeCost(i, j).isInfinity())) {
-                    fout << "\t" << i << " -- " << j << " ";
-                    fout << " [ ";
-                    fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
-                    bool edgeUsed = false;
-                    vector<string> edgeColors;
-                    for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
-                        for(int pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
-                            if((paths[pathNum].actualPath()[pathPart] == j &&
-                                paths[pathNum].actualPath()[pathPart-1] == i) ||
-                                (paths[pathNum].actualPath()[pathPart] == i &&
-                                paths[pathNum].actualPath()[pathPart-1] == j)) {
-                                edgeColors.push_back(colors[pathNum%colors.size()]);
-                                edgeUsed = true;
-                            }
-                        }
-                    }
-                    if(edgeUsed) {
-                        fout << "color=\"";
-                        for(int i = 0; i < edgeColors.size(); i++) {
-                            fout << edgeColors[i];
-                            if(i < edgeColors.size()-1)
-                                fout << ":";
-                        }
-                        fout << "\" ";
-                    }
-                    fout << "];\n";
-                }
+
+        if(printLabelNodes) {
+            for(int i = 0; i < paths.size(); i++) {
+                fout << "node [shape=circle ";
+                fout << "label=\"Journey " << i << "\\n";
+                fout << paths[i].actualPath()[0] << " -> " << paths[i].actualPath()[paths[i].actualPath().size()-1];
+                fout << "\" ";
+                fout << "color=\"" << colors[i%colors.size()] << "\"]; j" << i << ";\n";
             }
         }
+
+        fout << "}\n";
+
+        fout.close();
+
+        string cmd = graphvizCmd  + " -T" + graphFormat +
+            " -o graph" + str(graphNum) + "." + graphFormat + " .graph.dot";
+        system(cmd.data());
+        //system("rm .graph.dot");
+
     }
-
-    if(printLabelNodes) {
-        for(int i = 0; i < paths.size(); i++) {
-            fout << "node [shape=circle ";
-            fout << "label=\"Journey " << i << "\\n";
-            fout << paths[i].actualPath()[0] << " -> " << paths[i].actualPath()[paths[i].actualPath().size()-1];
-            fout << "\" ";
-            fout << "color=\"" << colors[i%colors.size()] << "\"]; j" << i << ";\n";
-        }
-    }
-
-    fout << "}\n";
-
-    fout.close();
-
-    string cmd = graphvizCmd  + " -T" + graphFormat +
-        " -o graph" + str(graphNum) + "." + graphFormat + " .graph.dot";
-    system(cmd.data());
-    //system("rm .graph.dot");
 }
 
 // print a graph
