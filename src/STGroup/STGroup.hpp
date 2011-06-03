@@ -13,7 +13,7 @@ public:
   STGroup(void);
   ~STGroup(void);
   
-  void findMinSpanningTree(const basicEdgeGroup& graph);
+  void findMinSpanningTree(const basicEdgeGroup& graph, int startvertex);
   
   const basicEdgeGroup& returnMinSpanningTree() const; 
   
