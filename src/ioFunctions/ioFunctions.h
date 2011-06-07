@@ -10,10 +10,6 @@
 extern const bool YES;
 extern const bool NO;
 
-enum MODE { STATS = 0, DEMO = 1 };
-
-extern MODE programMode;
-
 ////
 //// Main I/O Functions:
 ////
@@ -28,10 +24,10 @@ string inputString(const string& prompt);
 string str(int);
 
 // Returns the string form of a float
-string str(float);
+string str(float, int precision = 2);
 
 // Returns the string form of a double
-string str(double);
+string str(double, int precision = 2);
 
 // Returns the string form of an unsigned
 string str(unsigned);

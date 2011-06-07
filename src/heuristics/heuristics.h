@@ -19,16 +19,6 @@ struct heuristic {
               int (*f)(graphGroup, const vector<journeyInfo>&));
 };
 
-int runNashEquilibriumHeuristic(graphGroup, const vector<journeyInfo>&);
-
-int runShortestPathHeuristic(graphGroup, const vector<journeyInfo>&);
-
-int subGraphHeuristicHelper(const graphGroup&, const vector<journeyInfo>&, int startPoint);
-
-int runSubGraphHeuristic(const graphGroup, const vector<journeyInfo>&);
-
-int runSpanningTreeHeuristic(graphGroup, const vector<journeyInfo>&);
-
 void setupHeuristics();
 
 extern vector<heuristic> heuristics;

@@ -1,5 +1,10 @@
 #include <iostream>
+#include <FlexLexer.h>
 using namespace std;
+
+enum MODE { STAT = 0, DEMO = 1 };
+
+extern MODE programMode;
 
 //////
 ////// Global Options file for entire project
@@ -38,11 +43,26 @@ const bool useDoubleEndpoints = false;
 // Background color of the graph.
 const string background = "white";
 
+////
+//// Options provided for command line input
+////
+
 // If this value is true, no prompts are written to output for input values.
 // Defaults to false
 extern bool readFromFile;
 // Defaults to NULL
 extern istream* inFile;
+
+extern yyFlexLexer* scanner;
+
+extern int STATcount;
+extern int STATvertices;
+extern int STATjourneys;
+extern int STATminWeight;
+extern int STATmaxWeight;
+extern bool STATdirected;
+extern int numErrors;
+extern string inFileName;
 
 // Should we actually dump the graph when the dumpGraph function is called?
 // Defaults to true

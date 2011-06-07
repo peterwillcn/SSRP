@@ -13,8 +13,6 @@ using namespace std;
 const bool YES = true;
 const bool NO = false;
 
-MODE programMode = DEMO;
-
 ////
 //// Main I/O Functions:
 ////
@@ -70,16 +68,16 @@ string str(int i) {
 }
 
 // Returns the string form of a float
-string str(float f) {
+string str(float f, int precision) {
     ostringstream s;
-    s << f;
+    s << setprecision(precision) << f << fixed;
     return s.str();
 }
 
 // Returns the string form of a double
-string str(double d) {
+string str(double d, int precision) {
     ostringstream s;
-    s << d;
+    s << setprecision(precision) << d << fixed;
     return s.str();
 }
 

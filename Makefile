@@ -1,9 +1,4 @@
-# Christopher Earl
-# Makefile for graphGroup
-
-# Rewritten by Zeal Jagannatha May2011 #
-
-include Makefile.inc
+# Written by Zeal Jagannatha May 2011
 
 .PHONY: clean realclean linecount
 
@@ -12,8 +7,10 @@ EXE =	graph
 graph: Makefile.dep
 	make --no-print-directory -f Makefile.real graph
 
+include Makefile.inc
+
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(SrcDir)/commandParser/parser.cpp $(SrcDir)/commandParser/parser.hpp $(SrcDir)/commandParser/scanner.cpp
 
 realclean: clean
 	rm -f $(EXE) Makefile.dep .graphConfig graph*.pdf

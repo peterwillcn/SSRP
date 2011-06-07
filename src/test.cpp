@@ -1,8 +1,3 @@
-//Christopher Earl
-//test.cpp
-// contains main() to test various classes
-//Version that removed edges from the graph and reroutes
-
 #include <vector>
 #include <iostream>
 #include <iomanip>
@@ -10,6 +5,8 @@
 #include <fstream>
 #include <string>
 #include <limits.h>
+#include <utility>
+#include <FlexLexer.h>
 
 using namespace std;
 
@@ -39,6 +36,41 @@ using namespace std;
 #include "commandParser.h"
 #include "color.h"
 
+int yyparse();
+
+const string usage = "\
+Usage:\n\
+    graph mode modeOptions\n\
+\n\
+Modes:\n\
+\n\
+    graph stat\n\
+\n\
+    Options:\n\
+        -c INT\n\
+            The number of times to run the graph heuristics.\n\
+            Defaults to 10.\n\
+        -v INT\n\
+            The number of vertices in the graph.\n\
+            Defaults to 20.\n\
+        -j INT\n\
+            The number of journeys in the graph.\n\
+            Defaults to 4.\n\
+        -w INT INT\n\
+            The min and max values to use for the graph's weights.\n\
+            Defaults to 1 and 10\n\
+        -d\n\
+            Makes the graph directed.\n\
+        -u\n\
+            Makes the graph undirected. (Default)\n\
+\n\
+    graph demo\n\
+\n\
+    Options:\n\
+        -f FILE\n\
+            Specifies an input file to use. If none is given, uses stdin.\n\
+";
+
 const string welcomeHeader =
 "\n\
 +------------------------------------------------------------------------------+\n\
@@ -52,14 +84,22 @@ const string welcomeHeader =
 | Mentor:  Sean McCulloch                                                      |\n\
 +------------------------------------------------------------------------------+\n";
 
-void doStats(int NUM_TEST_CASES) {
+void doStats() {
 
     // Options
-    const int NUM_VERTICES = 50;
-    const bool DIRECTED = false;
-    const int MIN_WEIGHT = 1;
-    const int MAX_WEIGHT = 10;
-    const int NUM_JOURNEYS = 10;
+    const int NUM_VERTICES = STATvertices;
+    const bool DIRECTED = STATdirected;
+    const int MIN_WEIGHT = STATminWeight;
+    const int MAX_WEIGHT = STATmaxWeight;
+    const int NUM_JOURNEYS = STATjourneys;
+
+    cout << "Using stat mode.\n";
+    cout << "Vertices:   " << NUM_VERTICES << endl;
+    cout << "Journeys:   " << NUM_JOURNEYS << endl;
+    cout << "Min Weight: " << MIN_WEIGHT << endl;
+    cout << "Max Weight: " << MAX_WEIGHT << endl;
+    cout << "Count:      " << STATcount << endl;
+    cout << "Directed:   " << boolalpha << DIRECTED << endl;
 
     // Turn off graph dumping
     //dumpGraphToFile = false;
@@ -72,10 +112,10 @@ void doStats(int NUM_TEST_CASES) {
     }
     output("");
 
-    vector<double> numberCorrect(heuristics.size(), 0.0);
+    vector<pair<int,double> > numberCorrect(heuristics.size(), pair<int,double>(0, 0.0));
 
     // Run the loop
-    for(int i = 0; i < NUM_TEST_CASES; i++) {
+    for(int i = 0; i < STATcount; i++) {
         int graphNum = getGraphNumber();
         output("Case:", "");
         outputRight(str(graphNum),5);
@@ -92,7 +132,6 @@ void doStats(int NUM_TEST_CASES) {
             listOfJourneys[i].setJourneyNum(i);
         generateJourneys(listOfJourneys, NUM_VERTICES);
         mainGraph.set(g, listOfJourneys);
-
 
         vector<int> results(heuristics.size());
 
@@ -114,7 +153,8 @@ void doStats(int NUM_TEST_CASES) {
 
         for(int i = 0; i < heuristics.size(); i++) {
             if(results[i] == best) {
-                numberCorrect[i] += 1.0 / double(numBest);
+                numberCorrect[i].first++;
+                numberCorrect[i].second += 1.0 / double(numBest);
                 outputGreenRight(str(results[i]), heuristics[i].name.size()+2);
                 output("|", "");
             }
@@ -139,7 +179,10 @@ void doStats(int NUM_TEST_CASES) {
     pad(" ", 10);
     output("|", "");
     for(int i = 0; i < heuristics.size(); i++) {
-        outputRight(str(numberCorrect[i]), heuristics[i].name.size()+2);
+        output(str(numberCorrect[i].first), "");
+        outputRight(str(numberCorrect[i].second, 4),
+                    heuristics[i].name.size()+2
+                    -str(numberCorrect[i].first).size());
         output("|", "");
     }
     output("");
@@ -149,29 +192,34 @@ int main(int argc, char* argv[]) {
 
     output(welcomeHeader);
 
-    commandParser c;
-    c.parse(argc, argv);
+    ostringstream temp;
+    for(int i = 1; i < argc; i++) {
+        temp << argv[i] << " ";
+    }
+    istringstream* yyin = new istringstream(temp.str());
+    scanner = new yyFlexLexer(yyin);
+    yyparse();
 
-    if(c.error()) {
-
+    if(numErrors > 0) {
+        output(usage);
         return 1;
-
     }
 
     else {
 
         setupHeuristics();
 
-        if(programMode == STATS) {
+        if(programMode == STAT) {
 
-            doStats(c.statRuns());
+            doStats();
 
         }
 
         else {
+            // programMode == DEMO
 
-            if(c.fileInput()) {
-                inFile = new ifstream(c.inputFile().data());
+            if(true) {
+                inFile = new ifstream("input");
             }
             else {
                 inFile = &cin;
@@ -196,15 +244,15 @@ int main(int argc, char* argv[]) {
                 listOfJourneys[i].setJourneyNum(i);
             mainGraph.set(basicGraph, listOfJourneys);
 
-            int shortest = 0;
+            int shortestPathCost = 0;
             for(int i = 0; i < heuristics.size(); i++) {
                 int result = heuristics[i].func(mainGraph, listOfJourneys);
                 if(i == 0)
-                    shortest = result;
+                    shortestPathCost = result;
                 output("Running heuristic: " + heuristics[i].name);
                 output("\tHas total cost of: " + str(result));
                 if(i > 0)
-                    output("\tImprovement over shortest path: " + str(shortest - result));
+                    output("\tImprovement over shortest path: " + str(shortestPathCost - result));
                 output("");
             }
 

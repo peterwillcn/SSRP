@@ -11,25 +11,23 @@ using namespace std;
 #include "nashTest.hpp"
 #include "STGroup.hpp"
 
-/*
-#include "basicStructures.h"
-#include "vertex.h"
-#include "path.h"
-#include "edge.h"
-#include "basicEdgeGroup.h"
-#include "journeyInfo.h"
-#include "journey.h"
-#include "journeyGroup.h"
-#include "edgeGroup.h"
-#include "graphGroup.h"
-#include "ioFunctions.h"
-#include "FWGroup.h"
-#include "STGroup.hpp"
-#include "nashTest.hpp"
-#include "debug.h"
-#include "options.h"
-#include "rand.h"
-*/
+//////
+////// Function Declarations
+//////
+
+int runNashEquilibriumHeuristic(graphGroup, const vector<journeyInfo>&);
+
+int runShortestPathHeuristic(graphGroup, const vector<journeyInfo>&);
+
+int subGraphHeuristicHelper(const graphGroup&, const vector<journeyInfo>&, int startPoint);
+
+int runSubGraphHeuristic(const graphGroup, const vector<journeyInfo>&);
+
+int runSpanningTreeHeuristic(graphGroup, const vector<journeyInfo>&);
+
+//////
+////// Function Definitions
+//////
 
 //returns the index of (the first instance of)"key" in v,
 // or -1 if it's not there
@@ -51,13 +49,6 @@ heuristic::heuristic(string initName,
 
 int runNashEquilibriumHeuristic(graphGroup mainGraph,
                                 const vector<journeyInfo>& listOfJourneys) {
-//                                 bool printGraphInfo = false,
-//                                 bool show_reroutings = false,
-//                                 int num_passes = 5,
-//                                 int journey_threshold = 3,
-//                                 bool coalition_one = false,
-//                                 bool outsider_one = false) {
-    //output("Running Nash Equilibrium Heuristic");
 
     bool printGraphInfo = false;
     bool show_reroutings = false;
@@ -369,8 +360,33 @@ int runSubGraphHeuristic(const graphGroup mainGraph, const vector<journeyInfo>& 
 }
 
 int runSpanningTreeHeuristic(graphGroup g, const vector<journeyInfo>& journeyInfos) {
+    
+    int lowestSoFar = INT_MAX;
+    int lowestStartVertex = -1;
+    for(int startVertex = 0; startVertex < g.returnN(); startVertex++) {
+        STGroup st;
+        st.findMinSpanningTree(g.returnGraph(), startVertex);
+
+        graphGroup spanningTree(st.returnMinSpanningTree(), journeyInfos);
+
+        for(int i = 0; i < journeyInfos.size(); i++) {
+            spanningTree.addJourneySP(i);
+            spanningTree.refindSharedCosts();
+        }
+
+        int total = 0;
+        for(int i = 0; i < journeyInfos.size(); i++) {
+            total += spanningTree.returnSharedCost(i).value();
+        }
+
+        if(total < lowestSoFar) {
+            lowestSoFar = total;
+            lowestStartVertex = startVertex;
+        }
+    }
+
     STGroup st;
-    st.findMinSpanningTree(g.returnGraph());
+    st.findMinSpanningTree(g.returnGraph(), lowestStartVertex);
 
     graphGroup spanningTree(st.returnMinSpanningTree(), journeyInfos);
 
@@ -378,15 +394,11 @@ int runSpanningTreeHeuristic(graphGroup g, const vector<journeyInfo>& journeyInf
         spanningTree.addJourneySP(i);
         spanningTree.refindSharedCosts();
     }
+    
+    dumpGraph(spanningTree, "spanTree");
+    
 
-    dumpGraph(spanningTree, "SpanTree");
-
-    int total = 0;
-    for(int i = 0; i < journeyInfos.size(); i++) {
-        total += spanningTree.returnSharedCost(i).value();
-    }
-
-    return total;
+    return lowestSoFar;
 }
 
 const heuristic shortestPathH("Shortest Path", runShortestPathHeuristic);

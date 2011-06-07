@@ -26,17 +26,25 @@ Includes = \
 CXX	= g++
 LD	= g++
 
+# Bison
+YACC = bison
+YFLAGS = -d
+
+# Flex
+LEX = flex
+LFLAGS = -+
+
 # For normal compiling
-#CXXFLAGS = -g $(Includes)
-#LDFLAGS = -g
+CXXFLAGS = -g -Wno-write-strings $(Includes)
+LDFLAGS = -g
 
 # For debugging and debug flags
-#CXXFLAGS = -g -DDEBUG $(Includes)
+#CXXFLAGS = -g -Wno-write-strings -DDEBUG $(Includes)
 #LDFLAGS = -g
 
 # For compiler and linker optimizations
-CXXFLAGS = -O3 $(Includes)
-LDFLAGS = -O3
+#CXXFLAGS = -O3 -Wno-write-strings $(Includes)
+#LDFLAGS = -O3
 
 # Makedepend
 DEP = makedepend
@@ -60,8 +68,9 @@ OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/STGroup/STGroup.o \
 	$(SrcDir)/options/options.o \
 	$(SrcDir)/heuristics/heuristics.o \
-	$(SrcDir)/commandParser/commandParser.o \
-	$(SrcDir)/ioFunctions/color.o
+	$(SrcDir)/ioFunctions/color.o \
+	$(SrcDir)/commandParser/parser.o \
+	$(SrcDir)/commandParser/scanner.o
 
 SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/FWGroup/FWGroup.cpp \
@@ -99,7 +108,32 @@ SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/options/options.cpp \
 	$(SrcDir)/heuristics/heuristics.h \
 	$(SrcDir)/heuristics/heuristics.cpp \
-	$(SrcDir)/commandParser/commandParser.h \
-	$(SrcDir)/commandParser/commandParser.cpp \
 	$(SrcDir)/ioFunctions/color.h \
-	$(SrcDir)/ioFunctions/color.cpp
+	$(SrcDir)/ioFunctions/color.cpp \
+	$(SrcDir)/commandParser/parser.cpp \
+	$(SrcDir)/commandParser/parser.hpp \
+	$(SrcDir)/commandParser/scanner.cpp
+
+# makedepend can't handle flex or bison files,
+# so we need to explictly say how to build these
+
+# bison the parser file
+$(SrcDir)/commandParser/parser.hpp $(SrcDir)/commandParser/parser.cpp: $(SrcDir)/commandParser/parser.yy
+	$(YACC) $(YFLAGS) -o $(SrcDir)/commandParser/parser.cpp $(SrcDir)/commandParser/parser.yy
+	bisonfix $(SrcDir)/commandParser/parser.cpp $(SrcDir)/commandParser/parser.hpp
+
+# Empty rule for the actual parser source file
+$(SrcDir)/commandParser/parser.yy:
+
+# compile the parser object file
+$(SrcDir)/commandParser/parser.o: $(SrcDir)/commandParser/parser.hpp $(SrcDir)/commandParser/parser.cpp
+
+# flex the scanner file
+$(SrcDir)/commandParser/scanner.cpp: $(SrcDir)/commandParser/scanner.ll
+	$(LEX) $(LFLAGS) -o $(SrcDir)/commandParser/scanner.cpp $(SrcDir)/commandParser/scanner.ll
+
+# empty rule for the actual scanner source file
+$(SrcDir)/commandParser/scanner.ll:
+
+# compile the scanner object file
+$(SrcDir)/commandParser/scanner.o: $(SrcDir)/commandParser/scanner.cpp
