@@ -2,6 +2,7 @@
 #include "rand.h"
 #include "graphGroup.h"
 #include "options.h"
+#include "color.h"
 #include <limits.h>
 #include <signal.h>
 #include <fstream>
@@ -11,6 +12,8 @@ using namespace std;
 
 const bool YES = true;
 const bool NO = false;
+
+MODE programMode = DEMO;
 
 ////
 //// Main I/O Functions:
@@ -104,6 +107,14 @@ void outputPrompt(const string& s, const string& suffix) {
         cout << s << suffix;
 }
 
+void outputRed(const string& s, const string& suffix) {
+    cout << FGRED << s << ENDC << suffix;
+}
+
+void outputGreen(const string& s, const string& suffix) {
+    cout << FGGREEN << s << ENDC << suffix;
+}
+
 // Outputs a string to cout with a particular alignment and width
 void outputLeft(const string& s, int w) {
     if(w <= s.size())
@@ -132,6 +143,67 @@ void outputCenter(const string& s, int w) {
         cout << " ";
     }
 }
+
+void outputGreenLeft(const string& s, int w) {
+    if(w <= s.size())
+        cout << FGGREEN << s << ENDC;
+    else {
+        outputGreenLeft(s, w-1);
+        cout << " ";
+    }
+}
+
+void outputGreenRight(const string& s, int w) {
+    if(w <= s.size())
+        cout << FGGREEN << s << ENDC;
+    else {
+        cout << " ";
+        outputGreenRight(s, w-1);
+    }
+}
+
+void outputGreenCenter(const string& s, int w) {
+    if(w <= s.size())
+        cout << FGGREEN << s << ENDC;
+    else if(w == s.size()+1)
+        cout << s << " ";
+    else {
+        cout << " ";
+        outputGreenCenter(s, w-2);
+        cout << " ";
+    }
+}
+
+void outputRedLeft(const string& s, int w) {
+    if(w <= s.size())
+        cout << FGRED << s << ENDC;
+    else {
+        outputRedLeft(s, w-1);
+        cout << " ";
+    }
+}
+
+void outputRedRight(const string& s, int w) {
+    if(w <= s.size())
+        cout << FGRED << s << ENDC;
+    else {
+        cout << " ";
+        outputRedRight(s, w-1);
+    }
+}
+
+void outputRedCenter(const string& s, int w) {
+    if(w <= s.size())
+        cout << FGRED << s << ENDC;
+    else if(w == s.size()+1)
+        cout << s << " ";
+    else {
+        cout << " ";
+        outputRedCenter(s, w-2);
+        cout << " ";
+    }
+}
+
 void pad(const string& s, int w) {
     if(w <= 0)
         return;
@@ -163,14 +235,46 @@ bool getChoice(string prompt) {
             default:
                 if(cin.fail())
                     cin.clear();
-                //if(not(readFromFile)) {
-                //    cout << "Illegal choice.\n";
-                //}
-                //else {
+                if(not(readFromFile)) {
+                   cout << "Illegal choice.\n";
+                }
+                else {
                     cout << '"' << temp << "\"\n";
                     throw SIGSEGV;
-                //}
+                }
         }
+    }
+}
+
+static bool graphNumberFound = false;
+static int graphNumber = -1;
+int getGraphNumber() {
+    if(not(graphNumberFound)) {
+        graphNumberFound = true;
+        {
+            ifstream config(configFile.data());
+            if(config.fail())
+                graphNumber = 0;
+            else {
+                config >> graphNumber;
+                config.close();
+            }
+        }
+        {
+            ofstream config(configFile.data());
+            config << graphNumber+1;
+            config.close();
+        }
+    }
+    return graphNumber;
+}
+
+void incrementGraphNumber() {
+    graphNumber++;
+    {
+        ofstream config(configFile.data());
+        config << graphNumber;
+        config.close();
     }
 }
 
@@ -303,20 +407,9 @@ void exportGraph(basicEdgeGroup& outputGroup){
 
 // Dumps a graph to a file named "graph.dot"
 // Then runs graphviz on the file to produce an output file.
-void dumpGraph(const graphGroup& g) {
+void dumpGraph(const graphGroup& g, const string& fileLabel) {
     if(dumpGraphToFile) {
-        int graphNum = 0;
-
-        {
-            ifstream config(configFile.data());
-            config >> graphNum;
-            config.close();
-        }
-        {
-            ofstream config(configFile.data());
-            config << graphNum+1;
-            config.close();
-        }
+        int graphNum = getGraphNumber();
         ofstream fout(".graph.dot");
 
         vector<string> colors;
@@ -425,8 +518,10 @@ void dumpGraph(const graphGroup& g) {
 
         fout.close();
 
-        string cmd = graphvizCmd  + " -T" + graphFormat +
-            " -o graph" + str(graphNum) + "." + graphFormat + " .graph.dot";
+        string cmd;
+        cmd = graphvizCmd  + " -T" + graphFormat +
+            " -o graph" + str(graphNum) + "_" + fileLabel + "." +
+            graphFormat + " .graph.dot";
         system(cmd.data());
         //system("rm .graph.dot");
 

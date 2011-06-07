@@ -47,7 +47,3 @@ extern istream* inFile;
 // Should we actually dump the graph when the dumpGraph function is called?
 // Defaults to true
 extern bool dumpGraphToFile;
-
-// Should we run statistics or do normal testing
-// Defaults to false
-extern bool doStatistics;

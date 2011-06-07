@@ -18,7 +18,7 @@ using namespace std;
 #include "journeyGroup.h"
 #include "edgeGroup.h"
 #include "graphGroup.h"
-#include "match.h"
+//#include "match.h"
 #include "rand.h"
 #include "ioFunctions.h"
 
@@ -62,7 +62,7 @@ graphGroup::graphGroup(basicEdgeGroup const & inputGroup, vector< journeyInfo > 
 
 // Copy Constructor
 graphGroup::graphGroup(const graphGroup& other)
-    : journeys(other.journeys), edges(other.edges), graph(other.graph) {
+: journeys(other.journeys), edges(other.edges), graph(other.graph) {
 }
 
 //graphGroup::returnN()
@@ -382,16 +382,16 @@ vector< vector< path > > graphGroup::Dijkstra(int ii, int journeyNum)
             if((Q[i] == true)                                    //if ( (Q[i] is true)
         &&((Q[u] == false)                                 //and ( (Q[u] is false)
         ||(vertices[i].cost() < vertices[u].cost())))      //or (i < u)))
-{
-    u = i;                                //replace u with i
-}
+        {
+            u = i;                                //replace u with i
+        }
 
-Q[u] = false;
+        Q[u] = false;
 
-//relax other vertices
-for(int v = 0; v < returnN(); v++)
-{
-    if(vertices[v].cost() > (vertices[u].cost() + graph.cost(u, v)))  //(v > u + w(u, v))
+        //relax other vertices
+        for(int v = 0; v < returnN(); v++)
+        {
+            if(vertices[v].cost() > (vertices[u].cost() + graph.cost(u, v)))  //(v > u + w(u, v))
         {
             greater=true;
             vertices[v].setCost(vertices[u].cost() + graph.cost(u, v));
@@ -407,7 +407,7 @@ for(int v = 0; v < returnN(); v++)
                     tempU.setValue(u);
                     vertices[v].setPredecessors(tempU, greater);
                 }
-}
+        }
     }
 
     //costs = vertices;
@@ -435,73 +435,73 @@ for(int v = 0; v < returnN(); v++)
          *        for( int k(0); k< answers[i][j].length(); k++)
          *            cout << answers[i][j].returnVertex(k) << "  ";
          *        cout << endl;
-}
-cout << endl;
-}
-cout << "\n\nEND ANSWERS***\n\n";*/
+         }
+         cout << endl;
+         }
+         cout << "\n\nEND ANSWERS***\n\n";*/
 
         return answers;
 }
 
 //graphGroup::dijkstraCost()
-    // finds the cost of the shortest paths from given vertex for a given journey
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -ii is a valid vertex number
-    // -journeyNum is a valid number of a journey
-    // -vertices has been created and resized
-    //
-    //post:
-    // -vertices is set to the cost of the shortest paths from given vertex for a given journey
-    //
-    void graphGroup::dijkstraCost(int ii, int journeyNum, vector< vertex > & vertices)
+// finds the cost of the shortest paths from given vertex for a given journey
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -ii is a valid vertex number
+// -journeyNum is a valid number of a journey
+// -vertices has been created and resized
+//
+//post:
+// -vertices is set to the cost of the shortest paths from given vertex for a given journey
+//
+void graphGroup::dijkstraCost(int ii, int journeyNum, vector< vertex > & vertices)
+{
+    floatWInf infiniteFloat;
+    floatWInf zeroFloat;
+    intWInf infiniteInt;
+    zeroFloat.setValue(0);
+    bool greater;
+
+    //prepare vertices for Dijkstra
+    vertices.resize(returnN());
+
+    for(int i = 0; i < returnN(); i++)
     {
-        floatWInf infiniteFloat;
-        floatWInf zeroFloat;
-        intWInf infiniteInt;
-        zeroFloat.setValue(0);
-        bool greater;
+        greater=false;
+        vertices[i].setCost(infiniteFloat);  //set cost to infinity
+        vertices[i].setPredecessors(infiniteInt, greater);  //set predecessor to null
+    }
 
-        //prepare vertices for Dijkstra
-        vertices.resize(returnN());
+    vertices[ii].setCost(zeroFloat);  //set cost of source to be 0
 
+    //if Q[i] == true, then vertex i has not yet been extracted
+    bool Q[returnN()];
+    for(int i = 0; i < returnN(); i++)
+        Q[i] = true;
+    int u; //current vertex being looked at
+    intWInf tempU;
+
+    //Dijkstra's algorithm:
+    for(int j = 0; j < returnN(); j++)
+    {
+        u = ii;
+
+        //select lowest cost vertex to reach
         for(int i = 0; i < returnN(); i++)
-        {
-            greater=false;
-            vertices[i].setCost(infiniteFloat);  //set cost to infinity
-            vertices[i].setPredecessors(infiniteInt, greater);  //set predecessor to null
-        }
-
-        vertices[ii].setCost(zeroFloat);  //set cost of source to be 0
-
-        //if Q[i] == true, then vertex i has not yet been extracted
-        bool Q[returnN()];
-        for(int i = 0; i < returnN(); i++)
-            Q[i] = true;
-        int u; //current vertex being looked at
-        intWInf tempU;
-
-        //Dijkstra's algorithm:
-        for(int j = 0; j < returnN(); j++)
-        {
-            u = ii;
-
-            //select lowest cost vertex to reach
-            for(int i = 0; i < returnN(); i++)
-                if((Q[i] == true)                                    //if ( (Q[i] is true)
+            if((Q[i] == true)                                    //if ( (Q[i] is true)
         &&((Q[u] == false)                                 //and ( (Q[u] is false)
         ||(vertices[i].cost() < vertices[u].cost())))      //or (i < u)))
-            {
-                u = i;                                //replace u with i
-            }
+        {
+            u = i;                                //replace u with i
+        }
 
-            Q[u] = false;
+        Q[u] = false;
 
-            //relax other vertices
-            for(int v = 0; v < returnN(); v++)
-            {
-                if(vertices[v].cost() > (vertices[u].cost() + graph.cost(u, v)))  //(v > u + w(u, v))
+        //relax other vertices
+        for(int v = 0; v < returnN(); v++)
+        {
+            if(vertices[v].cost() > (vertices[u].cost() + graph.cost(u, v)))  //(v > u + w(u, v))
         {
             greater=true;
             vertices[v].setCost(vertices[u].cost() + graph.cost(u, v));
@@ -517,80 +517,81 @@ cout << "\n\nEND ANSWERS***\n\n";*/
                     tempU.setValue(u);
                     vertices[v].setPredecessors(tempU, greater);
                 }
-            }
         }
     }
+}
 
 
-    //graphGroup::groupDijkstras()
-    //groups the dijkstra paths of each journey to provide optimal pairings along common paths
-    //
-    //pre:
-    // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-    // -journeysInformation has been properly initialized with real values
-    //
-    //post:
-    // -groups the dijkstra paths of each journey to provide optimal pairings along common paths
-    //
-    vector< vector< path > > graphGroup::groupDijkstras(vector< journeyInfo > & journeysInformation/*, vector< vertex > & vertices*/)
+//graphGroup::groupDijkstras()
+//groups the dijkstra paths of each journey to provide optimal pairings along common paths
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -journeysInformation has been properly initialized with real values
+//
+//post:
+// -groups the dijkstra paths of each journey to provide optimal pairings along common paths
+/*
+vector< vector< path > > graphGroup::groupDijkstras(vector< journeyInfo > & journeysInformation)
+{
+    vector< vector< path > > groupings;
+    vector< vector< path > > newGroupings;
+    vector< vector< path > > temp;
+    vector< vector< path > > dijkstraJourneys;
+    groupings.resize(0);
+    newGroupings.resize(0);
+    dijkstraJourneys.resize(0);
+
+    //sets 2D vector with dijkstra paths
+    for(int i(0); i<journeysInformation.size(); i++)
     {
-        vector< vector< path > > groupings;
-        vector< vector< path > > newGroupings;
-        vector< vector< path > > temp;
-        vector< vector< path > > dijkstraJourneys;
-        groupings.resize(0);
-        newGroupings.resize(0);
-        dijkstraJourneys.resize(0);
-
-        //sets 2D vector with dijkstra paths
-        for(int i(0); i<journeysInformation.size(); i++)
-        {
-            temp = (Dijkstra(journeysInformation[i].source(), journeysInformation[i].journeyNum()));
-            dijkstraJourneys.push_back(temp[journeysInformation[i].destination()]);
-        }
-
-        //finds shared vertices between dijkstra paths of journeys
-        for(int i(0); i<dijkstraJourneys.size(); i++)
-            for(int j(i+1); j<dijkstraJourneys.size(); j++)
-            {
-                match commonPaths(dijkstraJourneys[i], dijkstraJourneys[j]);
-
-                //initializes the respective 2D vector to hold the newest groupings
-                if(groupings.size()==0)
-                    groupings = commonPaths.findMatch(i, j);
-                else
-                    newGroupings = commonPaths.findMatch(i, j);
-
-                //Compares newGroupings with Groupings and determines whether or not a group should collaborate with another already
-                    //created group, or if it should be added as a completely new group
-                    for(int u(0); u<newGroupings.size(); u++)
-                    {
-                        int ngIndex;
-                        path subset;
-
-                        ngIndex=u;
-                        checkOverlap(groupings, newGroupings, subset, ngIndex);
-                    }
-            }
-
-            //Tests what is recorded in groupings, during the process of collaborating newGroupings with groupings
-            cout << "\n\nTHIS IS WHAT'S IN GROUPINGS:\n\n";
-
-            for(int i(0); i<groupings.size(); i++)
-            {
-                for(int j(0); j<groupings[i].size(); j++)
-                {
-                    for(int k(0); k<groupings[i][j].length(); k++)
-                        cout << groupings[i][j].returnVertex(k) << " ";
-                    cout << endl;
-                }
-                cout << endl << endl;
-            }
-
-            return groupings;
+        temp = (Dijkstra(journeysInformation[i].source(), journeysInformation[i].journeyNum()));
+        dijkstraJourneys.push_back(temp[journeysInformation[i].destination()]);
     }
 
-    //checkOverlap(vector< vector< path > > const & groupings, vector< vector< path > > const & newGroupings, path & subset, int ngIndex, vector< int > & gIndex)
+    //finds shared vertices between dijkstra paths of journeys
+    for(int i(0); i<dijkstraJourneys.size(); i++)
+        for(int j(i+1); j<dijkstraJourneys.size(); j++)
+        {
+            match commonPaths(dijkstraJourneys[i], dijkstraJourneys[j]);
+
+            //initializes the respective 2D vector to hold the newest groupings
+            if(groupings.size()==0)
+                groupings = commonPaths.findMatch(i, j);
+            else
+                newGroupings = commonPaths.findMatch(i, j);
+
+            //Compares newGroupings with Groupings and determines whether or not a group should collaborate with another already
+                //created group, or if it should be added as a completely new group
+                for(int u(0); u<newGroupings.size(); u++)
+                {
+                    int ngIndex;
+                    path subset;
+
+                    ngIndex=u;
+                    checkOverlap(groupings, newGroupings, subset, ngIndex);
+                }
+        }
+
+        //Tests what is recorded in groupings, during the process of collaborating newGroupings with groupings
+        cout << "\n\nTHIS IS WHAT'S IN GROUPINGS:\n\n";
+
+        for(int i(0); i<groupings.size(); i++)
+        {
+            for(int j(0); j<groupings[i].size(); j++)
+            {
+                for(int k(0); k<groupings[i][j].length(); k++)
+                    cout << groupings[i][j].returnVertex(k) << " ";
+                cout << endl;
+            }
+            cout << endl << endl;
+        }
+
+        return groupings;
+}
+*/
+
+//checkOverlap(vector< vector< path > > const & groupings, vector< vector< path > > const & newGroupings, path & subset, int ngIndex, vector< int > & gIndex)
 //sets a flag to keep track of what kind of overlap, if any, occurs between groups from newGroupings and groupings
 //
 //pre:
@@ -1615,155 +1616,218 @@ void graphGroup::update_journeys(vector<journeyInfo> const& listOfJourneys,
     for(int i = 0; i < changed_journey_numbers.size(); i++){
         journeys.setSAD(listOfJourneys[changed_journey_numbers[i]]);
     }
-                                 }
+}
 
 
 
-                                 //graphGroup::update_edge_cost()
-                                 //changes the cost of the edge from i to j into "new_cost"
-                                 // pre: i and j are vertices in the graph.
-                                 //      There are no journes along the (i,j) edge currently.
-                                 // post: the cost of edge (i,j) is now "new_cost"
-                                 void graphGroup::update_edge_cost(int i, int j, floatWInf new_cost){
-                                     graph.addEdge(i,j,new_cost);
-                                     edges.update_edge_cost(i,j,new_cost);
-                                 }
+    //graphGroup::update_edge_cost()
+//changes the cost of the edge from i to j into "new_cost"
+// pre: i and j are vertices in the graph.
+//      There are no journes along the (i,j) edge currently.
+// post: the cost of edge (i,j) is now "new_cost"
+void graphGroup::update_edge_cost(int i, int j, floatWInf new_cost){
+    graph.addEdge(i,j,new_cost);
+    edges.update_edge_cost(i,j,new_cost);
+}
 
-                                 //graphGroup::tryJourneys()
-                                 // finds shortest shared paths for given journeys if each journey is added in order given
-                                 //
-                                 //pre:
-                                 // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-                                 // -journeysNum is a vector of valid journey numbers
-                                 //
-                                 //post:
-                                 // -returns a vector of paths of shortest shared paths of given journeys in the same order as they were given
-                                 // -everything is changed back to the way it was before function was called
-                                 //
-                                 //O(numJourneys() * max(returnN() ^2, numJourneys() * returnN()))
-                                 vector< path > graphGroup::tryJourneys(vector< int > journeysNum)
-                                 {
+//graphGroup::tryJourneys()
+// finds shortest shared paths for given journeys if each journey is added in order given
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -journeysNum is a vector of valid journey numbers
+//
+//post:
+// -returns a vector of paths of shortest shared paths of given journeys in the same order as they were given
+// -everything is changed back to the way it was before function was called
+//
+//O(numJourneys() * max(returnN() ^2, numJourneys() * returnN()))
+vector< path > graphGroup::tryJourneys(vector< int > journeysNum)
+{
 
-                                     vector< path > answers;
-                                     vector< path > needToReplace;
-                                     vector<int> numToReplace;
-                                     answers.resize(0);
-                                     needToReplace.resize(0);
+    vector< path > answers;
+    vector< path > needToReplace;
+    vector<int> numToReplace;
+    answers.resize(0);
+    needToReplace.resize(0);
 
-                                     //save current paths
-                                     for(int i = 0; i < numJourneys(); i++){
-                                         needToReplace.push_back(returnSharedPath(i));
-                                         numToReplace.push_back(i);
-                                     }
+    //save current paths
+    for(int i = 0; i < numJourneys(); i++){
+        needToReplace.push_back(returnSharedPath(i));
+        numToReplace.push_back(i);
+    }
 
-                                     //remove current paths
-                                     removeAllJourneys();
+    //remove current paths
+    removeAllJourneys();
 
-                                     //make new paths
-                                     addJourneysSP(journeysNum);
+    //make new paths
+    addJourneysSP(journeysNum);
 
-                                     /*cout << "journey" << journeysNum[0] << endl;
-                                      *    printJourney(journeysNum[0]);*/
-                                     //save new paths
-                                     for(int i = 0; i < journeysNum.size(); i++)
-                                         answers.push_back(returnSharedPath(journeysNum[i]));
+    /*cout << "journey" << journeysNum[0] << endl;
+        *    printJourney(journeysNum[0]);*/
+    //save new paths
+    for(int i = 0; i < journeysNum.size(); i++)
+        answers.push_back(returnSharedPath(journeysNum[i]));
 
-                                     //write over new paths with previous (current) paths
-                                         addJourneys(numToReplace, needToReplace);
+    //write over new paths with previous (current) paths
+        addJourneys(numToReplace, needToReplace);
 
-                                         return answers;
+        return answers;
 
-                                 }
+}
 
-                                 //findPath()
-                                 // recursively finds path of given information
-                                 //
-                                 //pre:
-                                 // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-                                 // -source is the source of the path to find
-                                 // -destination is the destination of the path to find
-                                 // -vertices is a vector of vertex's that have a full predecessor tree
-                                 //
-                                 //post:
-                                 // -actualPath contains the path from source to destination, including source but NOT including destination
-                                 //
-                                 void graphGroup::findPath(int source, int destination, vector< vertex > const & vertices, vector< int > & actualPath, vector< vector< path > > & answers, int const v) const
-                                 {
-                                     if(vertices[destination].cost().isInfinity() == false)
-                                         if(source != destination)
-                                         {
-                                             int size;
-                                             size = vertices[destination].predecessors().size();
-                                             if(size==1)
-                                                 if((vertices[destination].predecessors(0).isInfinity() == false)
-                                                     &&(source == vertices[destination].predecessors(0).value()))
-                                                 {
-                                                     actualPath.push_back(source);
-                                                     vector< int > temp;
-                                                     temp.resize(0);
-                                                     for(int i(actualPath.size()); i>0; i--)
-                                                         temp.push_back(actualPath[i-1]);
-                                                     actualPath=temp;
-                                                     if(!(answers[v][answers[v].size()-1].isNull()))
-                                                         answers[v].resize(answers[v].size()+1);
-                                                     answers[v][answers[v].size()-1].setPath(actualPath, vertices[v].cost());
-                                                 }
-                                                 else
-                                                 {
-                                                     actualPath.push_back(vertices[destination].predecessors(0).value());//switch
-                                                     findPath(source, vertices[destination].predecessors(0).value(), vertices, actualPath, answers, v);
-                                                 }
-                                                 else if(size!=0)
-                                                     //tiedDijkstra(source, destination, vertices, actualPath, answers, v);
-                                                 {
-                                                     for(int i(0); i<size; i++)
-                                                     {
-                                                         //cout << "\nNumber of Predecessors for vertex " << destination << ": " << size << "\n";
-                                                         for(int j(0); j<answers[vertices[destination].predecessors(i).value()].size(); j++)//
+//findPath()
+// recursively finds path of given information
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -source is the source of the path to find
+// -destination is the destination of the path to find
+// -vertices is a vector of vertex's that have a full predecessor tree
+//
+//post:
+// -actualPath contains the path from source to destination, including source but NOT including destination
+//
+void graphGroup::findPath(int source, int destination, vector< vertex > const & vertices, vector< int > & actualPath, vector< vector< path > > & answers, int const v) const
+{
+    if(vertices[destination].cost().isInfinity() == false)
+    {
+        if(source != destination)
+        {
+            int size;
+            size = vertices[destination].predecessors().size();
+            if(size==1)
+            {
+                if((vertices[destination].predecessors(0).isInfinity() == false)
+                    &&(source == vertices[destination].predecessors(0).value()))
                 {
-                    //cout << "\nNumber of Predecessors for vertex " << vertices[destination].predecessors(i).value() << ": " << answers[vertices[destination].predecessors(i).value()].size() << "\n";
-                    int index;
-                    index=vertices[destination].predecessors(i).value();
+                    actualPath.push_back(source);
                     vector< int > temp;
-                    temp=answers[index][answers[index].size()-(j+1)].actualPath();
-                    for(int k(0); k<actualPath.size(); k++)
-                        temp.push_back(actualPath[actualPath.size()-(k+1)]);
+                    temp.resize(0);
+                    for(int i(actualPath.size()); i>0; i--)
+                        temp.push_back(actualPath[i-1]);
+                    actualPath=temp;
                     if(!(answers[v][answers[v].size()-1].isNull()))
                         answers[v].resize(answers[v].size()+1);
-                    answers[v][answers[v].size()-1].setPath(temp, vertices[v].cost());
+                    answers[v][answers[v].size()-1].setPath(actualPath, vertices[v].cost());
                 }
-                                                     }
-                                                 }
-                                         }
-                                 }
+                else
+                {
+                    actualPath.push_back(vertices[destination].predecessors(0).value());//switch
+                    findPath(source, vertices[destination].predecessors(0).value(), vertices, actualPath, answers, v);
+                }
+            }
+            else if(size!=0)
+                //tiedDijkstra(source, destination, vertices, actualPath, answers, v);
+            {
+                for(int i(0); i<size; i++)
+                {
+                    //cout << "\nNumber of Predecessors for vertex " << destination << ": " << size << "\n";
+                    for(int j(0); j<answers[vertices[destination].predecessors(i).value()].size(); j++)//
+                    {
+                        //cout << "\nNumber of Predecessors for vertex " << vertices[destination].predecessors(i).value() << ": " << answers[vertices[destination].predecessors(i).value()].size() << "\n";
+                        int index;
+                        index=vertices[destination].predecessors(i).value();
+                        vector< int > temp;
+                        temp=answers[index][answers[index].size()-(j+1)].actualPath();
+                        for(int k(0); k<actualPath.size(); k++)
+                            temp.push_back(actualPath[actualPath.size()-(k+1)]);
+                        if(!(answers[v][answers[v].size()-1].isNull()))
+                            answers[v].resize(answers[v].size()+1);
+                        answers[v][answers[v].size()-1].setPath(temp, vertices[v].cost());
+                    }
+                }
+            }
+        }
+    }
+}
 
 
-                                 //findReversedPath()
-                                 // recursively finds path of given information
-                                 //
-                                 //pre:
-                                 // -this has been set with a basicEdgeGroup and a vector of journeyInfos
-                                 // -source is the source of the path to find
-                                 // -destination is the destination of the path to find
-                                 // -vertices is a vector of vertex's that have a full predecessor tree
-                                 //
-                                 //post:
-                                 // -actualPath contains the path from source to destination, including destination but NOT including source
-                                 //
-                                 void graphGroup::findReversedPath(int source, int destination, vector< vertex > const & vertices, vector< int > & actualPath, vector< vector< path > > & answers, int const u) const
-                                 {
+//findReversedPath()
+// recursively finds path of given information
+//
+//pre:
+// -this has been set with a basicEdgeGroup and a vector of journeyInfos
+// -source is the source of the path to find
+// -destination is the destination of the path to find
+// -vertices is a vector of vertex's that have a full predecessor tree
+//
+//post:
+// -actualPath contains the path from source to destination, including destination but NOT including source
+//
+void graphGroup::findReversedPath(int source, int destination, vector< vertex > const & vertices, vector< int > & actualPath, vector< vector< path > > & answers, int const u) const
+{
 
-                                     if(vertices[source].cost().isInfinity() == false)
-                                         if(source != destination)
-                                             if((vertices[source].predecessor().isInfinity() == false)
-                                                 &&(destination == vertices[source].predecessor().value()))
-                                                 actualPath.push_back(destination);
-                                             else
-                                             {
-                                                 actualPath.push_back(vertices[source].predecessor().value());
-                                                 findPath(vertices[source].predecessor().value(), destination, vertices, actualPath, answers, u);
-                                             }
+    if(vertices[source].cost().isInfinity() == false) {
+        if(source != destination) {
+            if((vertices[source].predecessor().isInfinity() == false)
+                &&(destination == vertices[source].predecessor().value()))
+                actualPath.push_back(destination);
+            else
+            {
+                actualPath.push_back(vertices[source].predecessor().value());
+                findPath(vertices[source].predecessor().value(), destination, vertices, actualPath, answers, u);
+            }
+        }
+    }
+}
 
-                                 }
+//KMP(vector< int > const & text, vector< int > const & pattern) const
+// member function
+//
+//pre:
+// -text and pattern have been properly set
+//
+//post:
+// -returns any subset of the two given vectors
+//
+path KMP(vector< int > const & text, vector< int > const & pattern)
+{
 
-                                 
+     path intersection;
+	vector< int > newPattern;
+	newPattern=pattern;
+     //finds consecutively matched vertices
+     while(newPattern.size()>1)
+     {
+     //creates shift table
+     vector< int > T(newPattern.size() + 1, -1);
+     for(int i = 1; i <= newPattern.size(); i++)
+     {
+          int pos = T[i - 1];
+          while(pos != -1 && newPattern[pos] != newPattern[i - 1])
+               pos = T[pos];
+          T[i] = pos + 1;
+     }
+
+     //finds consecutively matched vertices
+     path matches;
+     path temp;
+     int textp = 0;
+     int patternp = 0;
+     while(textp < text.size())
+     {
+          while(patternp != -1 && (patternp == newPattern.size() || newPattern[patternp] != text[textp]))
+               patternp = T[patternp];
+          if((newPattern[patternp] == text[textp]) && (patternp != -1))
+               matches = matches+newPattern[patternp];
+
+          if(patternp == newPattern.size())
+               break;
+
+          patternp++;
+          textp++;
+     }
+
+     if(matches.length()>intersection.length())
+          intersection = matches;
+
+     vector< int > tempPattern;
+     tempPattern.resize(0);
+     for(int i(1); i<newPattern.size(); i++)
+          tempPattern.push_back(newPattern[i]);
+     newPattern = tempPattern;
+     }
+
+     return intersection;
+}

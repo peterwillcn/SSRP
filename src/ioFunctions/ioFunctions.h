@@ -10,6 +10,10 @@
 extern const bool YES;
 extern const bool NO;
 
+enum MODE { STATS = 0, DEMO = 1 };
+
+extern MODE programMode;
+
 ////
 //// Main I/O Functions:
 ////
@@ -40,15 +44,33 @@ void output(const string&, const string& suffix = "\n");
 // Like output, but doesn't print when reading from a file.
 void outputPrompt(const string&, const string& suffix = "\n");
 
+void outputRed(const string&, const string& suffix = "\n");
+void outputGreen(const string&, const string& suffix = "\n");
+
+string colorGreen(const string&);
+string colorRed(const string&);
+
 // Outputs a string to cout with a particular alignment and width
 void outputLeft(const string&, int);
 void outputRight(const string&, int);
 void outputCenter(const string&, int);
+
+void outputGreenLeft(const string&, int);
+void outputGreenRight(const string&, int);
+void outputGreenCenter(const string&, int);
+
+void outputRedLeft(const string&, int);
+void outputRedRight(const string&, int);
+void outputRedCenter(const string&, int);
+
 void pad(const string&, int);
 
 // Reads in a boolean answer from cin.
 // Yes/No answer
 bool getChoice(string prompt);
+
+int getGraphNumber();
+void incrementGraphNumber();
 
 ////
 //// Graph I/O Functions:
@@ -60,7 +82,7 @@ void readGraphFromFile(basicEdgeGroup & inputGroup);
 void exportGraph(basicEdgeGroup& outputGroup);
 
 // Prints a graph to a file.
-void dumpGraph(const graphGroup&);
+void dumpGraph(const graphGroup&, const string& fileLabel);
 
 // print a graph
 void printGraph(const graphGroup&);

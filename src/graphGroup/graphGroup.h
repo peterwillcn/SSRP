@@ -16,7 +16,7 @@ using namespace std;
 #include "journeyInfo.h"
 #include "journeyGroup.h"
 #include "edgeGroup.h"
-#include "match.h"
+//#include "match.h"
 
 class graphGroup
 {
@@ -69,7 +69,11 @@ public:
     int numJourneysUsing(int i, int j) const;
     vector< vector< path > > Dijkstra(int ii, int journeyNum);
     void dijkstraCost(int ii, int journeyNum, vector< vertex > & vertices);
-    vector< vector< path > > groupDijkstras(vector< journeyInfo > & journeysInformation/*, vector< vertex > & vertices*/);
+
+
+    //vector< vector< path > > groupDijkstras(vector< journeyInfo > & journeysInformation);
+
+
     void backtrackPaths(vector< journeyInfo > & journeysInformation, vector< path > dijkstraGroup, vector< vertex > vertices);
     vector< vector< path > > reversedDijkstra(int jj, int journeyNum) const;
 
@@ -123,5 +127,7 @@ void originalGroup(vector< vector< path > > & groupings, vector< vector< path > 
 void repeatedGroup(vector< vector< path > > & groupings, vector< vector< path > > & newGroupings, int ngIndex, int gIndex);
 void subsetGroup(vector< vector< path > > & groupings, vector< vector< path > > & newGroupings, int ngIndex, int gIndex);
 void intersectionGroup(vector< vector< path > > & groupings, vector< vector< path > > & newGroupings, int ngIndex, int gIndex);
+
+path KMP(vector< int > const & text, vector< int > const & pattern);
 
 #endif

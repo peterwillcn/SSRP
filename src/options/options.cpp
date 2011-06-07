@@ -6,6 +6,4 @@ bool readFromFile = false;
 
 istream* inFile = NULL;
 
-bool dumpGraphToFile = true;
-
-bool doStatistics = false;
+bool dumpGraphToFile = false;

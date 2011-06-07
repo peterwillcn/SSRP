@@ -7,7 +7,6 @@ Includes = \
 	-I$(SrcDir)/basicEdgeGroup \
 	-I$(SrcDir)/edge \
 	-I$(SrcDir)/journeyGroup \
-	-I$(SrcDir)/match \
 	-I$(SrcDir)/basicStructures \
 	-I$(SrcDir)/journeyInfo \
 	-I$(SrcDir)/path \
@@ -20,11 +19,24 @@ Includes = \
 	-I$(SrcDir)/STGroup \
 	-I$(SrcDir)/equilib \
 	-I$(SrcDir)/debug \
-	-I$(SrcDir)/options
+	-I$(SrcDir)/options \
+	-I$(SrcDir)/heuristics \
+	-I$(SrcDir)/commandParser
 
 CXX	= g++
-CXXFLAGS = -g $(Includes)
+LD	= g++
+
+# For normal compiling
+#CXXFLAGS = -g $(Includes)
+#LDFLAGS = -g
+
+# For debugging and debug flags
 #CXXFLAGS = -g -DDEBUG $(Includes)
+#LDFLAGS = -g
+
+# For compiler and linker optimizations
+CXXFLAGS = -O3 $(Includes)
+LDFLAGS = -O3
 
 # Makedepend
 DEP = makedepend
@@ -33,7 +45,6 @@ DEPFLAGS = -m -Y
 OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/edge/edge.o \
 	$(SrcDir)/journeyGroup/journeyGroup.o \
-	$(SrcDir)/match/match.o \
 	$(SrcDir)/test.o \
 	$(SrcDir)/basicStructures/basicStructures.o \
 	$(SrcDir)/FWGroup/FWGroup.o \
@@ -47,7 +58,10 @@ OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/ioFunctions/ioFunctions.o \
 	$(SrcDir)/equilib/nashTest.o \
 	$(SrcDir)/STGroup/STGroup.o \
-	$(SrcDir)/options/options.o
+	$(SrcDir)/options/options.o \
+	$(SrcDir)/heuristics/heuristics.o \
+	$(SrcDir)/commandParser/commandParser.o \
+	$(SrcDir)/ioFunctions/color.o
 
 SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/FWGroup/FWGroup.cpp \
@@ -72,8 +86,6 @@ SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/vertex/vertex.h \
 	$(SrcDir)/basicStructures/basicStructures.h \
 	$(SrcDir)/basicStructures/basicStructures.cpp \
-	$(SrcDir)/match/match.cpp \
-	$(SrcDir)/match/match.h \
 	$(SrcDir)/ioFunctions/ioFunctions.h \
 	$(SrcDir)/ioFunctions/ioFunctions.cpp \
 	$(SrcDir)/rand/rand.h \
@@ -84,4 +96,10 @@ SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/equilib/nashTest.cpp \
 	$(SrcDir)/debug/debug.h \
 	$(SrcDir)/options/options.h \
-	$(SrcDir)/options/options.cpp
+	$(SrcDir)/options/options.cpp \
+	$(SrcDir)/heuristics/heuristics.h \
+	$(SrcDir)/heuristics/heuristics.cpp \
+	$(SrcDir)/commandParser/commandParser.h \
+	$(SrcDir)/commandParser/commandParser.cpp \
+	$(SrcDir)/ioFunctions/color.h \
+	$(SrcDir)/ioFunctions/color.cpp

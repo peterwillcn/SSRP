@@ -16,7 +16,7 @@ clean:
 	rm -f $(OBJS)
 
 realclean: clean
-	rm -f $(EXE) Makefile.dep
+	rm -f $(EXE) Makefile.dep .graphConfig graph*.pdf
 	rm -f `find . | grep "\.*~"`
 
 Makefile.dep: $(SRCS)

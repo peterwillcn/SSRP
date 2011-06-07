@@ -5,7 +5,7 @@
 include Makefile.inc
 
 graph: Makefile.dep $(OBJS)
-	g++ -o $(EXE) $(OBJS)
+	$(LD) $(LDFLAGS) -o $(EXE) $(OBJS)
 
 include Makefile.dep
 
