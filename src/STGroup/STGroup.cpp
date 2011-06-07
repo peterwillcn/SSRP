@@ -11,13 +11,13 @@ STGroup::~STGroup(void)
 
 }
 
-void STGroup::findMinSpanningTree(const basicEdgeGroup& graph)
+void STGroup::findMinSpanningTree(const basicEdgeGroup& graph, int startvertex)
 {
   this->resultantTree = basicEdgeGroup(graph.returnN());
   this->resultantTree.setUndirected();
 
   std::vector<int> curVerticies;
-  curVerticies.push_back(0);
+  curVerticies.push_back(startvertex);
   int edgesAdded = 0;
 
   //loop until tree is full
