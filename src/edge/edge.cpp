@@ -140,15 +140,15 @@ floatWInf edge::currentCosts(vector< int > journeysNum) const
 {
   
   floatWInf temp;
-  int tempCount = currentNumJourneys;
+  //int tempCount = currentNumJourneys;
   
   if(internalCost.isInfinity() == true)
     temp.setValue();
   else
     {
-      for(int i = 0; i < journeysNum.size(); i++)
-	if(journeysThrough[journeysNum[i]] == false)
-	  tempCount = tempCount + 1;
+      //for(int i = 0; i < journeysNum.size(); i++)
+	//if(journeysThrough[journeysNum[i]] == false)
+	  //tempCount = tempCount + 1;
       
       temp.setValue(internalCost.value() / currentNumJourneys);
     }

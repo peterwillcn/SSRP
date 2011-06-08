@@ -7,8 +7,6 @@ const bool debug = true;
 const bool debug = false;
 #endif
 
-#define NASH_OUT
-
 #ifdef NASH_OUT
 const bool nash_out = true;
 #else
