@@ -157,11 +157,14 @@ void doStats() {
 
         vector<int> results(heuristics.size());
 
+        vector<clock_t> times(heuristics.size(), 0);
+
         for(int i = 0; i < heuristics.size(); i++) {
             clock_t startTime = clock();
             results[i] = heuristics[i].func(mainGraph, listOfJourneys);
             clock_t endTime = clock();
-            numberCorrect[i].third = endTime - startTime;
+            times[i] = endTime - startTime;
+            numberCorrect[i].third += times[i];
         }
 
         int best = INT_MAX;
@@ -178,7 +181,7 @@ void doStats() {
 
         clock_t totalTime = 0;
         for(int i = 0; i < heuristics.size(); i++) {
-            totalTime += numberCorrect[i].third;
+            totalTime += times[i];
             if(results[i] == best) {
                 numberCorrect[i].first++;
                 numberCorrect[i].second += 1.0 / double(numBest);
@@ -214,6 +217,16 @@ void doStats() {
                     -str(numberCorrect[i].first).size());
         output("|", "");
     }
+    output("");
+
+    outputLeft("Time:", 10);
+    output("|", "");
+    for(int i = 0; i < heuristics.size(); i++) {
+        outputRight(str(double(numberCorrect[i].third) / CLOCKS_PER_SEC),
+                    heuristics[i].name.size()+2);
+        output("|", "");
+    }
+
     output("");
 }
 
