@@ -78,7 +78,9 @@ FGWHITE + "Modes:\n" + ENDC +
 "        -np\n" +
 "            Do not print graphs to files. (Default)\n" +
 "        -h\n" +
-"            Print this message and exit. (Should be used without a mode)\n";
+"            Print this message and exit. (Should be used without a mode)\n" +
+"        -b\n" +
+"            Use bi-directional sharing.\n";
 
 const string welcomeHeader =
 "\n\
@@ -92,6 +94,17 @@ const string welcomeHeader =
 |          Zeal Jagannatha (2011)                                              |\n\
 | Mentor:  Sean McCulloch                                                      |\n\
 +------------------------------------------------------------------------------+\n";
+
+template <typename T1, typename T2, typename T3>
+struct triple {
+    T1 first;
+    T2 second;
+    T3 third;
+    triple(T1 initFirst, T2 initSecond, T3 initThird)
+        : first(initFirst), second(initSecond), third(initThird)
+        {
+    }
+};
 
 void doStats() {
 
@@ -121,7 +134,7 @@ void doStats() {
     }
     output(" Time (s)");
 
-    vector<pair<int,double> > numberCorrect(heuristics.size(), pair<int,double>(0, 0.0));
+    vector<triple<int,double,clock_t> > numberCorrect(heuristics.size(), triple<int,double,clock_t>(0, 0.0, 0));
 
     // Run the loop
     for(int i = 0; i < STATcount; i++) {
@@ -144,11 +157,12 @@ void doStats() {
 
         vector<int> results(heuristics.size());
 
-        clock_t startTime = clock();
         for(int i = 0; i < heuristics.size(); i++) {
+            clock_t startTime = clock();
             results[i] = heuristics[i].func(mainGraph, listOfJourneys);
+            clock_t endTime = clock();
+            numberCorrect[i].third = endTime - startTime;
         }
-        clock_t endTime = clock();
 
         int best = INT_MAX;
         int numBest = 0;
@@ -162,7 +176,9 @@ void doStats() {
             }
         }
 
+        clock_t totalTime;
         for(int i = 0; i < heuristics.size(); i++) {
+            totalTime += numberCorrect[i].third;
             if(results[i] == best) {
                 numberCorrect[i].first++;
                 numberCorrect[i].second += 1.0 / double(numBest);
@@ -174,7 +190,8 @@ void doStats() {
                 output("|", "");
             }
         }
-        output(string(" ") + str(double((endTime-startTime)/CLOCKS_PER_SEC)));
+        double runTime = double(totalTime) / double(CLOCKS_PER_SEC);
+        output(string(" ") + str(runTime));
 
         incrementGraphNumber();
     }

@@ -33,6 +33,7 @@ int numberUnreportedErrors = 0;
 %token PRINTFLAG
 %token NOPRINTFLAG
 %token HELP
+%token BISHARING
 
 %union {
     int int_val;
@@ -76,7 +77,8 @@ STATARGLIST
     ;
 
 STATARG
-    : COUNTFLAG INTEGER
+    : COMMONARG
+    | COUNTFLAG INTEGER
         {
             STATcount = yylval.int_val;
         }
@@ -113,14 +115,6 @@ STATARG
         {
             reportError("Invalid weight operand(s)");
         }
-    | PRINTFLAG
-        {
-            dumpGraphToFile = true;
-        }
-    | NOPRINTFLAG
-        {
-            dumpGraphToFile = false;
-        }
     ;
 
 DEMOARGLIST
@@ -129,10 +123,18 @@ DEMOARGLIST
     ;
 
 DEMOARG
-    : FILEFLAG STRING
+    : COMMONARG
+    | FILEFLAG STRING
     | FILEFLAG error
         {
             reportErrorYYText("Invalid file operand: ");
+        }
+    ;
+
+COMMONARG
+    : error
+        {
+            reportErrorYYText("Invalid option: ");
         }
     | PRINTFLAG
         {
@@ -141,6 +143,10 @@ DEMOARG
     | NOPRINTFLAG
         {
             dumpGraphToFile = false;
+        }
+    | BISHARING
+        {
+            biSharing = true;
         }
     ;
 

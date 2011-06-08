@@ -39,6 +39,8 @@ demo            { return DEMOMODE; }
 
 "-h"            { return HELP; }
 
+"-b"            { return BISHARING; }
+
 [a-zA-Z0-9.]*   { yylval.str_val = new string(yytext); return STRING; }
 
 \ |\t|\n        { ; }
