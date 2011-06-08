@@ -38,16 +38,16 @@ LEX = flex
 LFLAGS = -+
 
 # For normal compiling
-CXXFLAGS = -g -Wno-write-strings $(Includes)
-LDFLAGS = -g
+#CXXFLAGS = -g -Wno-write-strings $(Includes)
+#LDFLAGS = -g
 
 # For debugging and debug flags
 #CXXFLAGS = -g -Wno-write-strings -DDEBUG $(Includes)
 #LDFLAGS = -g
 
 # For compiler and linker optimizations
-#CXXFLAGS = -O3 -Wno-write-strings $(Includes)
-#LDFLAGS = -O3
+CXXFLAGS = -O3 -Wno-write-strings $(Includes)
+LDFLAGS = -O3
 
 # Makedepend
 DEP = makedepend

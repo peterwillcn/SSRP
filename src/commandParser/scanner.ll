@@ -15,6 +15,7 @@ using namespace std;
 [0-9]*          { yylval.int_val = atoi(yytext); return INTEGER; }
 
 stat            { return STATMODE; }
+stats           { return STATMODE; }
 
 demo            { return DEMOMODE; }
 
@@ -35,6 +36,8 @@ demo            { return DEMOMODE; }
 "-p"            { return PRINTFLAG; }
 
 "-np"           { return NOPRINTFLAG; }
+
+"-h"            { return HELP; }
 
 [a-zA-Z0-9.]*   { yylval.str_val = new string(yytext); return STRING; }
 

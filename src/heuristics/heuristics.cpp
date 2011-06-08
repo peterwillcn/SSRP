@@ -412,6 +412,6 @@ vector<heuristic> heuristics;
 void setupHeuristics() {
     heuristics.push_back(shortestPathH);
     heuristics.push_back(nashEquilibriumH);
-    heuristics.push_back(subGraphH);
+    //heuristics.push_back(subGraphH);
     heuristics.push_back(spanningTreeH);
 }

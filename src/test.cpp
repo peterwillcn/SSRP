@@ -34,45 +34,51 @@ using namespace std;
 // -- after --
 
 #include "color.h"
+#include <ctime>
 
 int yyparse();
 
-const string usage = "\
-Usage:\n\
-    graph mode modeOptions\n\
-\n\
-Modes:\n\
-\n\
-    graph stat\n\
-\n\
-    Options:\n\
-        -c INT\n\
-            The number of times to run the graph heuristics.\n\
-            Defaults to 10.\n\
-        -v INT\n\
-            The number of vertices in the graph.\n\
-            Defaults to 20.\n\
-        -j INT\n\
-            The number of journeys in the graph.\n\
-            Defaults to 4.\n\
-        -w INT INT\n\
-            The min and max values to use for the graph's weights.\n\
-            Defaults to 1 and 10\n\
-        -d\n\
-            Makes the graph directed.\n\
-        -u\n\
-            Makes the graph undirected. (Default)\n\
-        -p\n\
-            Prints all graphs to a pdf file.\n\
-        -np\n\
-            Do not print graphs to pdf files. (Default)\n\
-\n\
-    graph demo\n\
-\n\
-    Options:\n\
-        -f FILE\n\
-            Specifies an input file to use. If none is given, uses stdin.\n\
-";
+const string usage =
+string("") +
+FGWHITE + "Usage:\n" + ENDC +
+"    " + FGGREEN + "graph mode modeOptions\n" + ENDC +
+"\n" +
+FGWHITE + "Modes:\n" + ENDC +
+"\n" +
+"    " + FGGREEN + "graph stat\n" + ENDC +
+"    " + FGGREEN + "graph stats\n" + ENDC +
+"\n" +
+"    " + FGWHITE + "Options:\n" + ENDC +
+"        -c INT\n" +
+"            The number of times to run the graph heuristics.\n" +
+"            Defaults to 10.\n" +
+"        -v INT\n" +
+"            The number of vertices in the graph.\n" +
+"            Defaults to 20.\n" +
+"        -j INT\n" +
+"            The number of journeys in the graph.\n" +
+"            Defaults to 4.\n" +
+"        -w INT INT\n" +
+"            The min and max values to use for the graph's weights.\n" +
+"            Defaults to 1 and 10\n" +
+"        -d\n" +
+"            Makes the graph directed.\n" +
+"        -u\n" +
+"            Makes the graph undirected. (Default)\n" +
+"\n" +
+"    " + FGGREEN + "graph demo\n" + ENDC + "" +
+"\n" +
+"    " + FGWHITE + "Options:\n" + ENDC +
+"        -f FILE\n" +
+"            Specifies an input file to use. If none is given, uses stdin.\n" +
+"\n" +
+"    " + FGWHITE + "Options Common to Both Modes:\n" + ENDC +
+"        -p\n" +
+"            Prints all graphs to a file.\n" +
+"        -np\n" +
+"            Do not print graphs to files. (Default)\n" +
+"        -h\n" +
+"            Print this message and exit. (Should be used without a mode)\n";
 
 const string welcomeHeader =
 "\n\
@@ -113,7 +119,7 @@ void doStats() {
         outputCenter(heuristics[i].name, heuristics[i].name.size()+2);
         output("|", "");
     }
-    output("");
+    output(" Time (s)");
 
     vector<pair<int,double> > numberCorrect(heuristics.size(), pair<int,double>(0, 0.0));
 
@@ -138,9 +144,11 @@ void doStats() {
 
         vector<int> results(heuristics.size());
 
+        clock_t startTime = clock();
         for(int i = 0; i < heuristics.size(); i++) {
             results[i] = heuristics[i].func(mainGraph, listOfJourneys);
         }
+        clock_t endTime = clock();
 
         int best = INT_MAX;
         int numBest = 0;
@@ -166,7 +174,7 @@ void doStats() {
                 output("|", "");
             }
         }
-        output("");
+        output(string(" ") + str(double((endTime-startTime)/CLOCKS_PER_SEC)));
 
         incrementGraphNumber();
     }
@@ -221,7 +229,7 @@ int main(int argc, char* argv[]) {
         else {
             // programMode == DEMO
 
-            if(true) {
+            if(false) {
                 inFile = new ifstream("input");
             }
             else {

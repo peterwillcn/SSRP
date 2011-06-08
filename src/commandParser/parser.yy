@@ -32,6 +32,7 @@ int numberUnreportedErrors = 0;
 %token FILEFLAG
 %token PRINTFLAG
 %token NOPRINTFLAG
+%token HELP
 
 %union {
     int int_val;
@@ -46,7 +47,11 @@ int numberUnreportedErrors = 0;
 // Grammar:
 
 MODE
-    : STATMODE STATARGLIST
+    : HELP
+        {
+            numErrors++;
+        }
+    | STATMODE STATARGLIST
         {
             programMode = STAT;
         }
