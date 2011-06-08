@@ -137,7 +137,7 @@ void doStats() {
     vector<triple<int,double,clock_t> > numberCorrect(heuristics.size(), triple<int,double,clock_t>(0, 0.0, 0));
 
     // Run the loop
-    for(int i = 0; i < STATcount; i++) {
+    for(int caseNumber = 0; caseNumber < STATcount; caseNumber++) {
         int graphNum = getGraphNumber();
         output("Case:", "");
         outputRight(str(graphNum),5);
@@ -176,7 +176,7 @@ void doStats() {
             }
         }
 
-        clock_t totalTime;
+        clock_t totalTime = 0;
         for(int i = 0; i < heuristics.size(); i++) {
             totalTime += numberCorrect[i].third;
             if(results[i] == best) {
@@ -190,7 +190,8 @@ void doStats() {
                 output("|", "");
             }
         }
-        double runTime = double(totalTime) / double(CLOCKS_PER_SEC);
+        const long int CLOCK_TICKS = CLOCKS_PER_SEC;
+        double runTime = double(totalTime) / double(CLOCK_TICKS);
         output(string(" ") + str(runTime));
 
         incrementGraphNumber();
