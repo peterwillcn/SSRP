@@ -32,7 +32,11 @@ demo            { return DEMOMODE; }
 
 "-f"            { return FILEFLAG; }
 
-[_a-zA-Z0-9]*   { yylval.str_val = new string(yytext); return STRING; }
+"-p"            { return PRINTFLAG; }
+
+"-np"           { return NOPRINTFLAG; }
+
+[a-zA-Z0-9.]*   { yylval.str_val = new string(yytext); return STRING; }
 
 \ |\t|\n        { ; }
 

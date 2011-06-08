@@ -10,8 +10,6 @@ bool readFromFile = false;
 
 istream* inFile = NULL;
 
-bool dumpGraphToFile = false;
-
 yyFlexLexer* scanner = NULL;
 
 int STATcount = 10;
@@ -22,3 +20,4 @@ int STATmaxWeight = 10;
 bool STATdirected = false;
 int numErrors = 0;
 string inFileName = "";
+bool dumpGraphToFile = false;

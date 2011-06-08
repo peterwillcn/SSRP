@@ -63,7 +63,4 @@ extern int STATmaxWeight;
 extern bool STATdirected;
 extern int numErrors;
 extern string inFileName;
-
-// Should we actually dump the graph when the dumpGraph function is called?
-// Defaults to true
 extern bool dumpGraphToFile;

@@ -33,7 +33,6 @@ using namespace std;
 
 // -- after --
 
-#include "commandParser.h"
 #include "color.h"
 
 int yyparse();
@@ -63,6 +62,10 @@ Modes:\n\
             Makes the graph directed.\n\
         -u\n\
             Makes the graph undirected. (Default)\n\
+        -p\n\
+            Prints all graphs to a pdf file.\n\
+        -np\n\
+            Do not print graphs to pdf files. (Default)\n\
 \n\
     graph demo\n\
 \n\

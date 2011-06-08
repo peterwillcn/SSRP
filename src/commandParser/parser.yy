@@ -30,6 +30,8 @@ int numberUnreportedErrors = 0;
 %token UNDIRECTEDFLAG
 %token WEIGHTFLAG
 %token FILEFLAG
+%token PRINTFLAG
+%token NOPRINTFLAG
 
 %union {
     int int_val;
@@ -106,6 +108,14 @@ STATARG
         {
             reportError("Invalid weight operand(s)");
         }
+    | PRINTFLAG
+        {
+            dumpGraphToFile = true;
+        }
+    | NOPRINTFLAG
+        {
+            dumpGraphToFile = false;
+        }
     ;
 
 DEMOARGLIST
@@ -118,6 +128,14 @@ DEMOARG
     | FILEFLAG error
         {
             reportErrorYYText("Invalid file operand: ");
+        }
+    | PRINTFLAG
+        {
+            dumpGraphToFile = true;
+        }
+    | NOPRINTFLAG
+        {
+            dumpGraphToFile = false;
         }
     ;
 
