@@ -30,6 +30,9 @@ LD	= g++
 YACC = bison
 YFLAGS = -d
 
+# Bisonfix
+BISONFIX = ./bisonfix
+
 # Flex
 LEX = flex
 LFLAGS = -+
@@ -120,7 +123,7 @@ SRCS =	$(SrcDir)/test.cpp \
 # bison the parser file
 $(SrcDir)/commandParser/parser.hpp $(SrcDir)/commandParser/parser.cpp: $(SrcDir)/commandParser/parser.yy
 	$(YACC) $(YFLAGS) -o $(SrcDir)/commandParser/parser.cpp $(SrcDir)/commandParser/parser.yy
-	bisonfix $(SrcDir)/commandParser/parser.cpp $(SrcDir)/commandParser/parser.hpp
+	$(BISONFIX) $(SrcDir)/commandParser/parser.cpp $(SrcDir)/commandParser/parser.hpp
 
 # Empty rule for the actual parser source file
 $(SrcDir)/commandParser/parser.yy:
