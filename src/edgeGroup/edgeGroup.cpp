@@ -13,6 +13,7 @@ using namespace std;
 #include "basicEdgeGroup.h"
 #include "journeyInfo.h"
 #include "edgeGroup.h"
+#include "options.h"
 
 //edgeGroup::edgeGroup()
 // c'tor
@@ -416,7 +417,12 @@ void edgeGroup::addJourney(int journeyNum, path const & newPath)
     removeJourney(journeyNum);
 
     for(int i = 0; i < newPath.length() - 1; i++)
+    {
         edges[newPath.returnVertex(i)][newPath.returnVertex(i + 1)].addJourney(journeyNum);
+        if(biSharing)
+          edges[newPath.returnVertex(i + 1)][newPath.returnVertex(i)].addJourney(journeyNum);
+    }
+        
 
 }
 
