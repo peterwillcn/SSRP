@@ -64,3 +64,4 @@ extern bool STATdirected;
 extern int numErrors;
 extern string inFileName;
 extern bool dumpGraphToFile;
+extern bool biSharing;
