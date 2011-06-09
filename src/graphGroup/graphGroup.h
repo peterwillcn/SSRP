@@ -49,11 +49,9 @@ public:
     const journey& getJourney(const int) const;
     const journeyGroup& getJourneys() const;
 
-
     basicEdgeGroup returnGraph() const;
 
     //journey-dependent member func's
-
 
     ///edge accessor member func's
     bool isEdgeUsable(int i, int j) const;
@@ -69,10 +67,6 @@ public:
     int numJourneysUsing(int i, int j) const;
     vector< vector< path > > Dijkstra(int ii, int journeyNum);
     void dijkstraCost(int ii, int journeyNum, vector< vertex > & vertices);
-
-
-    //vector< vector< path > > groupDijkstras(vector< journeyInfo > & journeysInformation);
-
 
     void backtrackPaths(vector< journeyInfo > & journeysInformation, vector< path > dijkstraGroup, vector< vertex > vertices);
     vector< vector< path > > reversedDijkstra(int jj, int journeyNum) const;

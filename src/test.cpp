@@ -84,27 +84,20 @@ struct triple {
     T2 second;
     T3 third;
     triple(T1 initFirst, T2 initSecond, T3 initThird)
-        : first(initFirst), second(initSecond), third(initThird)
-        {
+    : first(initFirst), second(initSecond), third(initThird)
+    {
     }
 };
 
 void doStats() {
 
-    // Options
-    const int NUM_VERTICES = STATvertices;
-    const bool DIRECTED = STATdirected;
-    const int MIN_WEIGHT = STATminWeight;
-    const int MAX_WEIGHT = STATmaxWeight;
-    const int NUM_JOURNEYS = STATjourneys;
-
     cout << "Using stat mode.\n";
-    cout << "Vertices:   " << NUM_VERTICES << endl;
-    cout << "Journeys:   " << NUM_JOURNEYS << endl;
-    cout << "Min Weight: " << MIN_WEIGHT << endl;
-    cout << "Max Weight: " << MAX_WEIGHT << endl;
+    cout << "Vertices:   " << STATvertices << endl;
+    cout << "Journeys:   " << STATjourneys << endl;
+    cout << "Min Weight: " << STATminWeight << endl;
+    cout << "Max Weight: " << STATmaxWeight << endl;
     cout << "Count:      " << STATcount << endl;
-    cout << "Directed:   " << boolalpha << DIRECTED << endl;
+    cout << "Directed:   " << boolalpha << STATdirected << endl;
 
     // Turn off graph dumping
     //dumpGraphToFile = false;
@@ -130,12 +123,12 @@ void doStats() {
         graphGroup mainGraph;
         vector<journeyInfo> listOfJourneys;
 
-        generateSparseGraph(g, NUM_VERTICES, DIRECTED, MIN_WEIGHT, MAX_WEIGHT);
+        generateSparseGraph(g, STATvertices, STATdirected, STATminWeight, STATmaxWeight);
 
-        listOfJourneys.resize(NUM_JOURNEYS);
-        for(int i = 0; i < NUM_JOURNEYS; i++)
+        listOfJourneys.resize(STATjourneys);
+        for(int i = 0; i < STATjourneys; i++)
             listOfJourneys[i].setJourneyNum(i);
-        generateJourneys(listOfJourneys, NUM_VERTICES);
+        generateJourneys(listOfJourneys, STATvertices);
         mainGraph.set(g, listOfJourneys);
 
         vector<int> results(heuristics.size());
@@ -209,9 +202,9 @@ void doStats() {
         outputRight(str(double(numberCorrect[i].third) / CLOCKS_PER_SEC),
                     heuristics[i].name.size()+2);
         output("|", "");
-	totalTime += double(numberCorrect[i].third) / CLOCKS_PER_SEC;
+        totalTime += double(numberCorrect[i].third) / CLOCKS_PER_SEC;
     }
-    output("");
+    output(" " + str(totalTime));
 
     outputLeft("Time (%):", 10);
     output("|", "");

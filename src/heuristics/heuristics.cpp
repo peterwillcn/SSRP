@@ -10,6 +10,7 @@ using namespace std;
 #include "FWGroup.h"
 #include "nashTest.hpp"
 #include "STGroup.hpp"
+#include "heuristics.h"
 
 //returns the index of (the first instance of)"key" in v,
 // or -1 if it's not there
@@ -23,26 +24,28 @@ int find_in_vector(const vector<t>& v, t key){
     return -1;
 }
 
-// Include the heuristic files
-#include "dease.h"
-#include "heuristics.h"
-#include "shortestPath.h"
-#include "spanningTree.h"
-#include "subGraph.h"
-#include "nashEquilib.h"
-#include "spanNash.h"
-
 heuristic::heuristic(string initName,
                      int (*f)(graphGroup, const vector<journeyInfo>&))
     : func(f), name(initName), numberCorrect(0) {
     // Do Nothing
 }
 
+#include "shortestPath.h"
 const heuristic shortestPathH("Shortest Path", runShortestPathHeuristic);
+
+#include "nashEquilib.h"
 const heuristic nashEquilibriumH("Nash-Equilib", runNashEquilibriumHeuristic);
+
+#include "subGraph.h"
 const heuristic subGraphH("Sub-Graph", runSubGraphHeuristic);
+
+#include "spanningTree.h"
 const heuristic spanningTreeH("Spanning Tree", runSpanningTreeHeuristic);
+
+#include "dease.h"
 const heuristic deaseAlgH("Dease Alg", runDeaseHeuristic);
+
+#include "spanNash.h"
 const heuristic spanningNashH("SpanNash", runSpanningNashHeuristic);
 
 vector<heuristic> heuristics;
@@ -50,7 +53,6 @@ vector<heuristic> heuristics;
 void setupHeuristics() {
     heuristics.push_back(shortestPathH);
     heuristics.push_back(nashEquilibriumH);
-    heuristics.push_back(spanningTreeH);
     heuristics.push_back(deaseAlgH);
     heuristics.push_back(spanningNashH);
 }
