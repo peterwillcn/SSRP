@@ -1,10 +1,5 @@
-int runDeaseHeuristic(graphGroup mainGraph,
-                      const vector<journeyInfo>& listOfJourneys) {
+graphGroup runDeaseHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
 
-    bool printGraphInfo = false;
-    bool show_reroutings = false;
-    int num_passes = 5;
-    int journey_threshold = 3;
     bool coalition_one = false;
     bool outsider_one = false;
 
@@ -24,9 +19,6 @@ int runDeaseHeuristic(graphGroup mainGraph,
     if(debug)
         output("Running tests...");
 
-    if(printGraphInfo)
-        printGraph(mainGraph);
-
     //route each journey by it's FW path
     for(int j = 0; j < listOfJourneys.size(); j++){
         mainGraph.addJourney(listOfJourneys[j].journeyNum(),
@@ -36,22 +28,14 @@ int runDeaseHeuristic(graphGroup mainGraph,
 
     for(int cur_pass = 0; cur_pass < num_passes; cur_pass++){
 
-        if(show_reroutings){
-            // then show the current journeys paths
-            if(debug)
-                output("About to rip some stuff up...");
-            for(int cur_printing = 0;
-                cur_printing < mainGraph.numJourneys();
-                cur_printing++)
-                printJourney(mainGraph.getJourney(cur_printing));
-        }
-
 
         //for each edge...
         for(int j = 0; j < mainGraph.returnN(); j++) {
             for(int k = 0; k < mainGraph.returnN(); k++) {
                 // if edge (j,k) has > 1 journey on it
-                if(mainGraph.numJourneysUsing(j,k) >= journey_threshold ){
+                if (mainGraph.numJourneysUsing(j,k) >= journey_threshold &&
+                    mainGraph.totalEdgeCost(j,k) / mainGraph.numJourneysUsing(j,k) >= weight_threshold
+                    ){
                     //then delete the edge- first remove the journeys using it
                     if(debug){
                         output("removing journeys from edge ("
@@ -80,8 +64,7 @@ int runDeaseHeuristic(graphGroup mainGraph,
 
                     //now reroute everyone that was displaced
                     mainGraph.addJourneysSP(journeys_rerouted);
-                    bool displaced_improvement = false; // do any dispalced journeys
-                    //get better?
+                    bool displaced_improvement = false; // do any dispalced journeys get better?
                     int displaced_improvement_num = 0;
                     bool outside_improvement = false;    //do any outsiders get better?
                     int outsider_improvement_num = 0;
@@ -120,11 +103,6 @@ int runDeaseHeuristic(graphGroup mainGraph,
 
                     //put the edge back
                     mainGraph.update_edge_cost(j,k,saved_edge_cost);
-                    if(show_reroutings){
-                        // then show the current journeys paths
-                        for(int cur_printing = 0; cur_printing < mainGraph.numJourneys(); cur_printing++)
-                            printJourney(mainGraph.getJourney(cur_printing));
-                    }
                     // did enough displaced journeys improve?
                     if(coalition_one && displaced_improvement_num >0)
                         displaced_improvement = true;
@@ -160,19 +138,9 @@ int runDeaseHeuristic(graphGroup mainGraph,
         } // end "for all edges"
     } // end # of passes
 
-
-//     for(int j = 0; j < mainGraph.numJourneys(); j++) {
-//         output("Journey " + str(j) + ":");
-//         printJourney(mainGraph.getJourney(j));
-//     }
-
     floatWInf final_total_cost = 0;
     for(int j = 0; j < mainGraph.numJourneys(); j++)
         final_total_cost += mainGraph.returnSharedCost(j);
 
-    dumpGraph(mainGraph, "DeaseAlg");
-
-    if(debug)
-        output("Final total cost: " + str(final_total_cost));
-    return final_total_cost.value();
+    return mainGraph;
 }

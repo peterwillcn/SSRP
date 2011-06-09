@@ -1,4 +1,4 @@
-int subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<journeyInfo>& listOfJourneys, int startPoint) {
+graphGroup subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<journeyInfo>& listOfJourneys, int startPoint) {
     basicEdgeGroup subGraph;
     subGraph.setUndirected();
     graphGroup newGraph;
@@ -59,23 +59,10 @@ int subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<journeyInf
         newGraph.refindSharedCosts();
     }
 
-    //dumpGraph(newGraph);
-    //nashEquilibrium(newGraph);
-
-    int totalCost(0);
-    for(int i = 0; i < listOfJourneys.size(); i++) {
-        floatWInf cost = newGraph.returnSharedCost(i);
-        if(cost.isInfinity()) {
-            //output("Journey " +str(i)+ " is not routable.");
-        }
-        else
-            totalCost += cost.value();
-    }
-
-    return totalCost;
+    return newGraph;
 }
 
-int runSubGraphHeuristic(const graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
+graphGroup runSubGraphHeuristic(const graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
     //output("Running Subgraph Heuristic");
 
     if(mainGraph.directed()) {
@@ -86,7 +73,10 @@ int runSubGraphHeuristic(const graphGroup mainGraph, const vector<journeyInfo>& 
     int bestCost = INT_MAX;
     for(int startPoint = 0; startPoint < mainGraph.returnN(); startPoint++) {
 
-        int cost = subGraphHeuristicHelper(mainGraph, listOfJourneys, startPoint);
+        graphGroup g = subGraphHeuristicHelper(mainGraph, listOfJourneys, startPoint);
+        int cost = 0;
+        for(int i = 0; i < listOfJourneys.size(); i++)
+            cost += g.returnSharedCost(i).value();
 
         if(cost < bestCost) {
             //output("Found a better solution.");
@@ -95,6 +85,5 @@ int runSubGraphHeuristic(const graphGroup mainGraph, const vector<journeyInfo>& 
         }
     }
 
-    return bestCost;
-
+    return subGraphHeuristicHelper(mainGraph, listOfJourneys, bestStart);
 }

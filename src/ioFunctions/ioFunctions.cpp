@@ -408,7 +408,7 @@ void exportGraph(basicEdgeGroup& outputGroup){
 void dumpGraph(const graphGroup& g, const string& fileLabel) {
     if(dumpGraphToFile) {
         int graphNum = getGraphNumber();
-        ofstream fout(".graph.dot");
+        ofstream fout(string(".graph" + str(graphNum) + "_" + fileLabel + ".dot").data());
 
         vector<string> colors;
         vector<path> paths = g.returnSharedPaths();
@@ -519,7 +519,7 @@ void dumpGraph(const graphGroup& g, const string& fileLabel) {
         string cmd;
         cmd = graphvizCmd  + " -T" + graphFormat +
             " -o graph" + str(graphNum) + "_" + fileLabel + "." +
-            graphFormat + " .graph.dot";
+            graphFormat + " .graph" + str(graphNum) + "_" + fileLabel + ".dot &";
         system(cmd.data());
         //system("rm .graph.dot");
 

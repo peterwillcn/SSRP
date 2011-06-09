@@ -34,6 +34,7 @@ int numberUnreportedErrors = 0;
 %token NOPRINTFLAG
 %token HELP
 %token BISHARING
+%token DEASEFLAG
 
 %union {
     int int_val;
@@ -147,6 +148,12 @@ COMMONARG
     | BISHARING
         {
             biSharing = true;
+        }
+    | DEASEFLAG INTEGER INTEGER INTEGER
+        {
+            weight_threshold = $2;
+            num_passes = $3;
+            journey_threshold = $4;
         }
     ;
 

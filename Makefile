@@ -13,7 +13,7 @@ clean:
 	rm -f $(OBJS) $(SrcDir)/commandParser/parser.cpp $(SrcDir)/commandParser/parser.hpp $(SrcDir)/commandParser/scanner.cpp
 
 deleteGraphs:
-	rm -f .graphConfig graph*.pdf
+	rm -f .graphConfig graph*.pdf .graph*
 
 realclean: clean deleteGraphs
 	rm -f $(EXE) Makefile.dep

@@ -63,7 +63,10 @@ String("Modes:\n", Color::White) +
 "        -h\n" +
 "            Print this message and exit. (Should be used without a mode)\n" +
 "        -b\n" +
-"            Use bi-directional sharing.\n";
+"            Use bi-directional sharing.\n" +
+"        --dease INT INT INT\n" +
+"            Specify the weight thresdhold, number of passes, and journey\n" +
+"            threshold, respectively, for the dease algorithm.\n";
 
 const string welcomeHeader =
 "\n\
@@ -138,7 +141,11 @@ void doStats() {
 	graphGroup copiedGraph = graphGroup(mainGraph);
         for(int i = 0; i < heuristics.size(); i++) {
             clock_t startTime = clock();
-            results[i] = heuristics[i].func(copiedGraph, listOfJourneys);
+            graphGroup g = heuristics[i].func(copiedGraph, listOfJourneys);
+            dumpGraph(g,heuristics[i].name);
+            results[i] = 0;
+            for(int n = 0; n < listOfJourneys.size(); n++)
+                results[i] += g.returnSharedCost(n).value();
             clock_t endTime = clock();
             times[i] = endTime - startTime;
             numberCorrect[i].third += times[i];
@@ -205,7 +212,7 @@ void doStats() {
         output("|", "");
         totalTime += double(numberCorrect[i].third) / CLOCKS_PER_SEC;
     }
-    output(" " + str(totalTime));
+    output(" " + str(totalTime, 3));
 
     outputLeft("Time (%):", 10);
     output("|", "");
@@ -276,7 +283,11 @@ int main(int argc, char* argv[]) {
 
             int shortestPathCost = 0;
             for(int i = 0; i < heuristics.size(); i++) {
-                int result = heuristics[i].func(mainGraph, listOfJourneys);
+                graphGroup g = heuristics[i].func(mainGraph, listOfJourneys);
+                dumpGraph(g,heuristics[i].name);
+                int result = 0;
+                for(int n = 0; n < listOfJourneys.size(); n++)
+                    result += g.returnSharedCost(n).value();
                 if(i == 0)
                     shortestPathCost = result;
                 output("Running heuristic: " + heuristics[i].name);

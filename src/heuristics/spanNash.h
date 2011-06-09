@@ -1,4 +1,4 @@
-int runSpanningNashHeuristic(graphGroup g, const vector<journeyInfo>& journeyInfos) {
+graphGroup runSpanningNashHeuristic(graphGroup g, const vector<journeyInfo>& journeyInfos) {
 
     int mySmallestStartVertex = smallestStartVertex;
     if(mySmallestStartVertex == -1) {
@@ -44,12 +44,5 @@ int runSpanningNashHeuristic(graphGroup g, const vector<journeyInfo>& journeyInf
 
     bool nash = nashEquilibrium(g);
 
-    dumpGraph(g, "SpanNash");
-
-    int totalCost = 0;
-    for(int i = 0; i < journeyInfos.size(); i++) {
-        totalCost += g.returnSharedCost(i).value();
-    }
-
-    return totalCost;
+    return g;
 }

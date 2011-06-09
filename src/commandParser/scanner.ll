@@ -41,6 +41,8 @@ demo            { return DEMOMODE; }
 
 "-b"            { return BISHARING; }
 
+"--dease"       { return DEASEFLAG; }
+
 [a-zA-Z0-9.]*   { yylval.str_val = new string(yytext); return STRING; }
 
 \ |\t|\n        { ; }

@@ -1,4 +1,4 @@
-int runSpanningTreeHeuristic(graphGroup g, const vector<journeyInfo>& journeyInfos) {
+graphGroup runSpanningTreeHeuristic(graphGroup g, const vector<journeyInfo>& journeyInfos) {
 
     int lowestSoFar = INT_MAX;
     smallestStartVertex = -1;
@@ -34,8 +34,5 @@ int runSpanningTreeHeuristic(graphGroup g, const vector<journeyInfo>& journeyInf
         spanningTree.refindSharedCosts();
     }
 
-    dumpGraph(spanningTree, "spanTree");
-
-
-    return lowestSoFar;
+    return spanningTree;
 }

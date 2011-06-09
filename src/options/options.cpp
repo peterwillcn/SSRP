@@ -22,3 +22,9 @@ int numErrors = 0;
 string inFileName = "";
 bool dumpGraphToFile = false;
 bool biSharing = false;
+
+// Stuff for Dease
+
+int weight_threshold = 5;
+int num_passes = 5;
+int journey_threshold = 3;

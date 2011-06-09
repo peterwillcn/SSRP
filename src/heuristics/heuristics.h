@@ -9,14 +9,14 @@ using namespace std;
 
 struct heuristic {
 // Public:
-    int (*func)(graphGroup, const vector<journeyInfo>&);
+    graphGroup (*func)(graphGroup, const vector<journeyInfo>&);
 
     string name;
 
     int numberCorrect;
 
     heuristic(string initName,
-              int (*f)(graphGroup, const vector<journeyInfo>&));
+              graphGroup (*f)(graphGroup, const vector<journeyInfo>&));
 };
 
 void setupHeuristics();

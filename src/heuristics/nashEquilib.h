@@ -1,4 +1,4 @@
-int runNashEquilibriumHeuristic(graphGroup mainGraph,
+graphGroup runNashEquilibriumHeuristic(graphGroup mainGraph,
                                 const vector<journeyInfo>& listOfJourneys) {
 
     bool printGraphInfo = false;
@@ -37,13 +37,5 @@ int runNashEquilibriumHeuristic(graphGroup mainGraph,
     // this checks if the final solution is a Nash Equilibrium
     bool nash_equilibrium = nashEquilibrium(mainGraph);
 
-    dumpGraph(mainGraph, "NashEquilib");
-
-    floatWInf final_total_cost = 0;
-    for(int j = 0; j < mainGraph.numJourneys(); j++)
-        final_total_cost += mainGraph.returnSharedCost(j);
-
-    if(debug)
-        output("Final total cost: " + str(final_total_cost));
-    return final_total_cost.value();
+    return mainGraph;
 }

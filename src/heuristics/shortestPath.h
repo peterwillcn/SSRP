@@ -1,4 +1,4 @@
-int runShortestPathHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
+graphGroup runShortestPathHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
     //output("Running Shortest Path Heuristic");
 
     floatWInf final_total_cost(0);
@@ -17,12 +17,5 @@ int runShortestPathHeuristic(graphGroup mainGraph, const vector<journeyInfo>& li
                                                    listOfJourneys[j].destination()));
     }
 
-    dumpGraph(mainGraph, "Shortest");
-
-    for(int j = 0; j < listOfJourneys.size(); j++) {
-        floatWInf res = mainGraph.returnSharedCost(j);
-        final_total_cost += res;
-    }
-
-    return final_total_cost.value();
+    return mainGraph;
 }
