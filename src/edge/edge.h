@@ -23,6 +23,7 @@ class edge
  public:
   
   edge();
+  edge(const edge& other);
   edge(int totalNumJourneys);
   edge(floatWInf cost, int totalNumJourneys);
   

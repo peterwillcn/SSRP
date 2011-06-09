@@ -42,7 +42,7 @@ intWInf::intWInf()
 // -intWInf constructed to newIntWInf
 //
 //O(1)
-intWInf::intWInf(intWInf const & newIntWInf)
+intWInf::intWInf(const intWInf& newIntWInf)
 :internalInfinity(newIntWInf.isInfinity()), internalInt(newIntWInf.value())
 {
     

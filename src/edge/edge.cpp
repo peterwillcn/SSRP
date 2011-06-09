@@ -27,6 +27,15 @@ edge::edge()
   
 }
 
+
+edge::edge(const edge& other):
+internalCost(other.internalCost),
+currentNumJourneys(other.currentNumJourneys),
+journeysThrough(other.journeysThrough)
+{
+	
+}
+
 //edge::edge()
 // c'tor
 //

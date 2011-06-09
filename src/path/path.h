@@ -24,7 +24,7 @@ class path
  public:
   
   path();
-  path(path const & newPath);
+  path(const path& newPath);
   path(path const & pathA, path const & pathB); //combines two paths together
   path(vector< int > const & actualPath, floatWInf cost);
   

@@ -25,6 +25,7 @@ class journey
  public:
   
   journey();
+  journey(const journey& other);
   journey(int source, int destination);
   
   //journey member func's

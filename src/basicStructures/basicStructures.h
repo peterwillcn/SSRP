@@ -22,7 +22,7 @@ private:
     
 public:
     intWInf();
-    intWInf(intWInf const & newIntWInf);
+    intWInf(const intWInf & newIntWInf);
     intWInf(int newInt);
     intWInf(bool inf, int value);
     

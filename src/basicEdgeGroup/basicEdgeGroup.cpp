@@ -39,7 +39,7 @@ basicEdgeGroup::basicEdgeGroup()
 // -basicEdgeGroup constructed with newGroup's values
 //
 //O(newGroup.returnN() ^2)
-basicEdgeGroup::basicEdgeGroup(basicEdgeGroup const & newGroup)
+basicEdgeGroup::basicEdgeGroup(const basicEdgeGroup& newGroup)
   :type(newGroup.returnType()), style(newGroup.returnStyle()), isDirected(newGroup.directed())
 {
   
