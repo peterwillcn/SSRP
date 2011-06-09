@@ -72,6 +72,7 @@ OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/options/options.o \
 	$(SrcDir)/heuristics/heuristics.o \
 	$(SrcDir)/ioFunctions/color.o \
+	$(SrcDir)/ioFunctions/colorString.o \
 	$(SrcDir)/commandParser/parser.o \
 	$(SrcDir)/commandParser/scanner.o
 
@@ -115,7 +116,18 @@ SRCS =	$(SrcDir)/test.cpp \
 	$(SrcDir)/ioFunctions/color.cpp \
 	$(SrcDir)/commandParser/parser.cpp \
 	$(SrcDir)/commandParser/parser.hpp \
-	$(SrcDir)/commandParser/scanner.cpp
+	$(SrcDir)/commandParser/scanner.cpp \
+	$(SrcDir)/ioFunctions/colorString.h \
+	$(SrcDir)/ioFunctions/colorString.cpp \
+	$(SrcDir)/heuristics/dease.h \
+	$(SrcDir)/heuristics/heuristics.h \
+	$(SrcDir)/heuristics/nashEquilib.h \
+	$(SrcDir)/heuristics/spanNash.h \
+	$(SrcDir)/heuristics/subGraph.h \
+	$(SrcDir)/heuristics/heuristics.cpp \
+	$(SrcDir)/heuristics/heuristics.o \
+	$(SrcDir)/heuristics/shortestPath.h \
+	$(SrcDir)/heuristics/spanningTree.h
 
 # makedepend can't handle flex or bison files,
 # so we need to explictly say how to build these

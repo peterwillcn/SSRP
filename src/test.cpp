@@ -7,48 +7,31 @@
 #include <limits.h>
 #include <utility>
 #include <FlexLexer.h>
+#include <ctime>
 
 using namespace std;
 
-// -- before --
-
-#include "basicStructures.h"
-#include "vertex.h"
-#include "path.h"
-#include "edge.h"
+#include "colorString.h"
+#include "options.h"
 #include "basicEdgeGroup.h"
-#include "journeyInfo.h"
-#include "journey.h"
-#include "journeyGroup.h"
-#include "edgeGroup.h"
 #include "graphGroup.h"
 #include "ioFunctions.h"
-#include "FWGroup.h"
-#include "STGroup.hpp"
-#include "nashTest.hpp"
-#include "debug.h"
-#include "options.h"
-#include "rand.h"
 #include "heuristics.h"
-
-// -- after --
-
-#include "color.h"
-#include <ctime>
+#include "rand.h"
 
 int yyparse();
 
 const string usage =
-string("") +
-FGWHITE + "Usage:\n" + ENDC +
-"    " + FGGREEN + "graph mode modeOptions\n" + ENDC +
+String("") +
+String("Usage:\n", Color::White) +
+"    " + String("graph mode modeOptions\n", Color::Green) +
 "\n" +
-FGWHITE + "Modes:\n" + ENDC +
+String("Modes:\n", Color::White) +
 "\n" +
-"    " + FGGREEN + "graph stat\n" + ENDC +
-"    " + FGGREEN + "graph stats\n" + ENDC +
+"    " + String("graph stat\n", Color::Green) +
+"    " + String("graph stats\n", Color::Green) +
 "\n" +
-"    " + FGWHITE + "Options:\n" + ENDC +
+"    " + String("Options:\n", Color::White) +
 "        -c INT\n" +
 "            The number of times to run the graph heuristics.\n" +
 "            Defaults to 10.\n" +
@@ -66,13 +49,13 @@ FGWHITE + "Modes:\n" + ENDC +
 "        -u\n" +
 "            Makes the graph undirected. (Default)\n" +
 "\n" +
-"    " + FGGREEN + "graph demo\n" + ENDC + "" +
+"    " + String("graph demo\n", Color::Green) +
 "\n" +
-"    " + FGWHITE + "Options:\n" + ENDC +
+"    " + String("Options:\n", Color::White) +
 "        -f FILE\n" +
 "            Specifies an input file to use. If none is given, uses stdin.\n" +
 "\n" +
-"    " + FGWHITE + "Options Common to Both Modes:\n" + ENDC +
+"    " + String("Options Common to Both Modes:\n", Color::White) +
 "        -p\n" +
 "            Prints all graphs to a file.\n" +
 "        -np\n" +
@@ -92,7 +75,7 @@ const string welcomeHeader =
 |          Nicole Peterson (2010)                                              |\n\
 |          Ronald Fenelus (2011)                                               |\n\
 |          Zeal Jagannatha (2011)                                              |\n\
-| Mentor:  Sean McCulloch                                                      |\n\
+| Mentor:  " + String("Sean McCulloch", Color::Red) + "                                                      |\n\
 +------------------------------------------------------------------------------+\n";
 
 template <typename T1, typename T2, typename T3>
@@ -219,10 +202,21 @@ void doStats() {
     }
     output("");
 
-    outputLeft("Time:", 10);
+    outputLeft("Time (s):", 10);
     output("|", "");
+    double totalTime = 0;
     for(int i = 0; i < heuristics.size(); i++) {
         outputRight(str(double(numberCorrect[i].third) / CLOCKS_PER_SEC),
+                    heuristics[i].name.size()+2);
+        output("|", "");
+	totalTime += double(numberCorrect[i].third) / CLOCKS_PER_SEC;
+    }
+    output("");
+
+    outputLeft("Time (%):", 10);
+    output("|", "");
+    for(int i = 0; i < heuristics.size(); i++) {
+        outputRight(str(((double(numberCorrect[i].third) / CLOCKS_PER_SEC) * 100.0)  / totalTime),
                     heuristics[i].name.size()+2);
         output("|", "");
     }

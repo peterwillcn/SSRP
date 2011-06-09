@@ -1,6 +1,6 @@
 # Written by Zeal Jagannatha May 2011
 
-.PHONY: clean realclean linecount
+.PHONY: clean realclean linecount deleteGraphs
 
 EXE =	graph
 
@@ -12,8 +12,11 @@ include Makefile.inc
 clean:
 	rm -f $(OBJS) $(SrcDir)/commandParser/parser.cpp $(SrcDir)/commandParser/parser.hpp $(SrcDir)/commandParser/scanner.cpp
 
-realclean: clean
-	rm -f $(EXE) Makefile.dep .graphConfig graph*.pdf
+deleteGraphs:
+	rm -f .graphConfig graph*.pdf
+
+realclean: clean deleteGraphs
+	rm -f $(EXE) Makefile.dep
 	rm -f `find . | grep "\.*~"`
 
 Makefile.dep: $(SRCS)
