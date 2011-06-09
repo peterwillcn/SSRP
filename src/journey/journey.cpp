@@ -26,6 +26,15 @@ journey::journey()
   
 }
 
+
+journey::journey(const journey& other):
+internalSource(other.internalSource), 
+internalDestination(other.internalDestination),
+internalSharedPath(other.internalSharedPath),
+internalSinglePath(other.internalSinglePath)
+{
+}
+
 //journey::journey()
 // c'tor
 //

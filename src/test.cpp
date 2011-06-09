@@ -142,9 +142,10 @@ void doStats() {
 
         vector<clock_t> times(heuristics.size(), 0);
 
+	graphGroup copiedGraph = graphGroup(mainGraph);
         for(int i = 0; i < heuristics.size(); i++) {
             clock_t startTime = clock();
-            results[i] = heuristics[i].func(mainGraph, listOfJourneys);
+            results[i] = heuristics[i].func(copiedGraph, listOfJourneys);
             clock_t endTime = clock();
             times[i] = endTime - startTime;
             numberCorrect[i].third += times[i];

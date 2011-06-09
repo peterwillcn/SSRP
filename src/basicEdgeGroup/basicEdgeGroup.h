@@ -26,7 +26,7 @@ class basicEdgeGroup
  public:
   
   basicEdgeGroup();
-  basicEdgeGroup(basicEdgeGroup const & newGroup);
+  basicEdgeGroup(const basicEdgeGroup& newGroup);
   basicEdgeGroup(int numVertices);
   basicEdgeGroup(int numVertices, int type, int style);
   
