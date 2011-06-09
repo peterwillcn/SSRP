@@ -39,6 +39,7 @@ const heuristic nashEquilibriumH("Nash-Equilib", runNashEquilibriumHeuristic);
 #include "subGraph.h"
 const heuristic subGraphH("Sub-Graph", runSubGraphHeuristic);
 
+int smallestStartVertex = -1;
 #include "spanningTree.h"
 const heuristic spanningTreeH("Spanning Tree", runSpanningTreeHeuristic);
 

@@ -1,7 +1,7 @@
 int runSpanningTreeHeuristic(graphGroup g, const vector<journeyInfo>& journeyInfos) {
 
     int lowestSoFar = INT_MAX;
-    int lowestStartVertex = -1;
+    smallestStartVertex = -1;
     for(int startVertex = 0; startVertex < g.returnN(); startVertex++) {
         STGroup st;
         st.findMinSpanningTree(g.returnGraph(), startVertex);
@@ -20,12 +20,12 @@ int runSpanningTreeHeuristic(graphGroup g, const vector<journeyInfo>& journeyInf
 
         if(total < lowestSoFar) {
             lowestSoFar = total;
-            lowestStartVertex = startVertex;
+            smallestStartVertex = startVertex;
         }
     }
 
     STGroup st;
-    st.findMinSpanningTree(g.returnGraph(), lowestStartVertex);
+    st.findMinSpanningTree(g.returnGraph(), smallestStartVertex);
 
     graphGroup spanningTree(st.returnMinSpanningTree(), journeyInfos);
 
