@@ -60,8 +60,8 @@ public:
     floatWInf totalSectionCost(vector< int > section) const;
     floatWInf currentEdgeCost(int i, int j, int journeyNum) const;
     floatWInf currentSectionCost(vector< int > section, int journeyNum) const;
-    floatWInf currentEdgeCosts(int i, int j, vector< int > journeysNum) const;
-    floatWInf currentSectionCosts(vector< int > section, vector< int > journeysNum) const;
+    //floatWInf currentEdgeCosts(int i, int j, vector< int > journeysNum) const;
+    //floatWInf currentSectionCosts(vector< int > section, vector< int > journeysNum) const;
     bool isJourneyIn(int i, int j, int journeyNum) const;
     bool isJourneyInSection(vector< int > section, int journeyNum) const;
     int numJourneysUsing(int i, int j) const;

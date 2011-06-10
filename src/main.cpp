@@ -77,7 +77,7 @@ void doStats() {
         generateJourneys(listOfJourneys, STATvertices);
         mainGraph.set(g, listOfJourneys);
 
-        vector<int> results(heuristics.size());
+        vector<floatWInf> results(heuristics.size());
 
         vector<clock_t> times(heuristics.size(), 0);
 
@@ -87,13 +87,17 @@ void doStats() {
             dumpGraph(g,heuristics[i].name);
             results[i] = 0;
             for(int n = 0; n < listOfJourneys.size(); n++)
+            {
                 results[i] += g.returnSharedCost(n).value();
+                //cout << "i = " << i << " n = " << n << " results[i] = " << results[i] << endl;
+                //cout << g.returnSharedCost(n).value() << endl;
+            }
             clock_t endTime = clock();
             times[i] = endTime - startTime;
             numberCorrect[i].third += times[i];
         }
 
-        int best = INT_MAX;
+        floatWInf best = floatWInf(true, 0);
         int numBest = 0;
         for(int i = 0; i < heuristics.size(); i++) {
             if(results[i] < best) {

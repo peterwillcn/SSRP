@@ -145,6 +145,7 @@ floatWInf edge::currentCost(int journeyNum) const
 // -returns cost of trraversing edge with all given journeys traversing it
 //
 //O(length of journeysNum)
+/*
 floatWInf edge::currentCosts(vector< int > journeysNum) const
 {
   
@@ -165,6 +166,7 @@ floatWInf edge::currentCosts(vector< int > journeysNum) const
   return temp;
   
 }
+*/
 
 //edge::isJourneyIn()
 // returns true if journey is currently traversing edge

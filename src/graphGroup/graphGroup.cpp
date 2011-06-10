@@ -246,13 +246,14 @@ floatWInf graphGroup::currentSectionCost(vector< int > section, int journeyNum) 
 //post:
 // -returns current cost of traversing given edge for given journeysNum
 //
-//O(1)
-floatWInf graphGroup::currentEdgeCosts(int i, int j, vector< int > journeysNum) const
+/*/O(1)
+/floatWInf graphGroup::currentEdgeCosts(int i, int j, vector< int > journeysNum) const
 {
 
     return edges.currentEdgeCosts(i, j, journeysNum);
 
 }
+*/
 
 //graphGroup::currentSectionCosts()
 // returns current cost of traversing given section for given journeysNum
@@ -266,12 +267,14 @@ floatWInf graphGroup::currentEdgeCosts(int i, int j, vector< int > journeysNum) 
 // -returns current cost of traversing given section for given journeysNum
 //
 //O(length of section)
+/*
 floatWInf graphGroup::currentSectionCosts(vector< int > section, vector< int > journeysNum) const
 {
 
     return edges.currentSectionCosts(section, journeysNum);
 
 }
+*/
 
 //graphGroup::isJourneyIn()
 // returns true if given edge has given journey

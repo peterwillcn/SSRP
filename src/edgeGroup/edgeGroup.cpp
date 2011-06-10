@@ -203,12 +203,14 @@ floatWInf edgeGroup::currentSectionCost(vector< int > section, int journeyNum) c
     floatWInf answer(0);
 
     if(isSectionUsable(section) == true)
+    {
         for(int i = 0; i < section.size() - 1; i++)
             answer += currentEdgeCost(section[i], section[i + 1], journeyNum);
-        else
-            answer.setValue();
+    }
+    else
+        answer.setValue();
 
-        return answer;
+    return answer;
 
 }
 
@@ -224,12 +226,14 @@ floatWInf edgeGroup::currentSectionCost(vector< int > section, int journeyNum) c
 // -returns current cost for given journeys to traverse given edge
 //
 //O(length of journeysNum)
+/*
 floatWInf edgeGroup::currentEdgeCosts(int i, int j, vector< int > journeysNum) const
 {
 
     return edges[i][j].currentCosts(journeysNum);
 
 }
+*/
 
 //edgeGroup::currentSectionCosts()
 // returns current cost for given journeys to traverse given section
@@ -243,6 +247,8 @@ floatWInf edgeGroup::currentEdgeCosts(int i, int j, vector< int > journeysNum) c
 // -returns current cost for given journeys to traverse given section
 //
 //O((length of section) * (length of journeysNum))
+
+/*
 floatWInf edgeGroup::currentSectionCosts(vector< int > section, vector< int > journeysNum) const
 {
 
@@ -257,6 +263,7 @@ floatWInf edgeGroup::currentSectionCosts(vector< int > section, vector< int > jo
         return answer;
 
 }
+*/
 
 //edgeGroup::isJourneyIn()
 // returns true if given journey is in given edge
