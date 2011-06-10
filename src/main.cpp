@@ -7,7 +7,7 @@
 #include <limits.h>
 #include <utility>
 #include <FlexLexer.h>
-#include <ctime>
+#include <time.h>
 
 using namespace std;
 
@@ -55,7 +55,7 @@ void doStats() {
     }
     output(" Time (s)");
 
-    vector<triple<int,double,clock_t> > numberCorrect(heuristics.size(), triple<int,double,clock_t>(0, 0.0, 0));
+    vector<triple<int,double,double> > numberCorrect(heuristics.size(), triple<int,double,double>(0, 0.0, 0.0));
 
     // Run the loop
     for(int caseNumber = 0; caseNumber < STATcount; caseNumber++) {
@@ -78,12 +78,22 @@ void doStats() {
 
         vector<floatWInf> results(heuristics.size());
 
-        vector<clock_t> times(heuristics.size(), 0);
+        vector<double> times(heuristics.size(), 0.0);
 
         for(int i = 0; i < heuristics.size(); i++) {
-            clock_t startTime = clock();
+            //timer start
+            timespec sTime;
+            clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &sTime);
+            
             graphGroup g = heuristics[i].func(mainGraph, listOfJourneys);
-            clock_t endTime = clock();
+
+            //timer end
+            timespec eTime;
+            clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &eTime);
+	    
+            double startTime = sTime.tv_sec + ((double)sTime.tv_nsec/ 1000000000.0);
+	    double endTime = eTime.tv_sec + ((double)eTime.tv_nsec/ 1000000000.0);
+	    
             dumpGraph(g,heuristics[i].name);
             results[i] = 0;
             for(int n = 0; n < listOfJourneys.size(); n++)
@@ -106,7 +116,7 @@ void doStats() {
             }
         }
 
-        clock_t totalTime = 0;
+        double totalTime = 0;
         for(int i = 0; i < heuristics.size(); i++) {
             totalTime += times[i];
             if(results[i] == best) {
@@ -120,9 +130,8 @@ void doStats() {
                 output("|", "");
             }
         }
-        const long int CLOCK_TICKS = CLOCKS_PER_SEC;
-        double runTime = double(totalTime) / double(CLOCK_TICKS);
-        output(string(" ") + str(runTime));
+        
+        output(string(" ") + str(totalTime));
 
         incrementGraphNumber();
     }
@@ -150,17 +159,17 @@ void doStats() {
     output("|", "");
     double totalTime = 0;
     for(int i = 0; i < heuristics.size(); i++) {
-        outputRight(str(double(numberCorrect[i].third) / CLOCKS_PER_SEC),
+        outputRight(str(double(numberCorrect[i].third)),
                     heuristics[i].name.size()+2);
         output("|", "");
-        totalTime += double(numberCorrect[i].third) / CLOCKS_PER_SEC;
+        totalTime += double(numberCorrect[i].third);
     }
     output(" " + str(totalTime, 3));
 
     outputLeft("Time (%):", 10);
     output("|", "");
     for(int i = 0; i < heuristics.size(); i++) {
-        outputRight(str(((double(numberCorrect[i].third) / CLOCKS_PER_SEC) * 100.0)  / totalTime),
+        outputRight(str(((double(numberCorrect[i].third)) * 100.0)  / totalTime),
                     heuristics[i].name.size()+2);
         output("|", "");
     }
