@@ -11,8 +11,10 @@ STGroup::~STGroup(void)
 
 }
 
+//find a minimum spanning tree using prim's algorithim with a specified start vertex
 void STGroup::findMinSpanningTree(const basicEdgeGroup& graph, int startvertex)
 {
+  //the resultant tree will have v - 1 edges
   this->resultantTree = basicEdgeGroup(graph.returnN());
   this->resultantTree.setUndirected();
 

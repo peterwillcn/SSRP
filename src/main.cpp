@@ -21,6 +21,8 @@ using namespace std;
 
 #include "messages.h"
 
+#define ONE_BILLION 1000000000.0
+
 int yyparse();
 
 template <typename T1, typename T2, typename T3>
@@ -57,8 +59,9 @@ void doStats() {
 
     vector<triple<int,double,double> > numberCorrect(heuristics.size(), triple<int,double,double>(0, 0.0, 0.0));
 
-    // Run the loop
+    //Run through each case(newly generated graph)
     for(int caseNumber = 0; caseNumber < STATcount; caseNumber++) {
+        //print case #
         int graphNum = getGraphNumber();
         output("Case:", "");
         outputRight(str(graphNum),5);
@@ -68,42 +71,55 @@ void doStats() {
         graphGroup mainGraph;
         vector<journeyInfo> listOfJourneys;
 
+        //generate the graph
         generateSparseGraph(g, STATvertices, STATdirected, STATminWeight, STATmaxWeight);
 
+        //generate random journeys
         listOfJourneys.resize(STATjourneys);
         for(int i = 0; i < STATjourneys; i++)
             listOfJourneys[i].setJourneyNum(i);
         generateJourneys(listOfJourneys, STATvertices);
         mainGraph.set(g, listOfJourneys);
 
+        //create a vector to store score results
         vector<floatWInf> results(heuristics.size());
 
+        //create a vector to store time information
         vector<double> times(heuristics.size(), 0.0);
 
+        //run each "heuristic"
         for(int i = 0; i < heuristics.size(); i++) {
             //timer start
             timespec sTime;
             clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &sTime);
             
+            //run heuristic
             graphGroup g = heuristics[i].func(mainGraph, listOfJourneys);
 
             //timer end
             timespec eTime;
             clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &eTime);
-	    
-            double startTime = sTime.tv_sec + ((double)sTime.tv_nsec/ 1000000000.0);
-	    double endTime = eTime.tv_sec + ((double)eTime.tv_nsec/ 1000000000.0);
-	    
+
+            //convert time
+            double startTime = sTime.tv_sec + ((double)sTime.tv_nsec/ ONE_BILLION);
+            double endTime = eTime.tv_sec + ((double)eTime.tv_nsec/ ONE_BILLION);
+
+            //print graph PDF
             dumpGraph(g,heuristics[i].name);
+            
+            //calculate total cost of shared path
             results[i] = 0;
             for(int n = 0; n < listOfJourneys.size(); n++)
             {
                 results[i] += g.returnSharedCost(n).value();
             }
+            
+            //calculate and store time taken for "heuristic"
             times[i] = endTime - startTime;
             numberCorrect[i].third += times[i];
         }
 
+        //find best(lowest total cost) "heuristic"(s)
         floatWInf best = floatWInf(true, 0);
         int numBest = 0;
         for(int i = 0; i < heuristics.size(); i++) {
@@ -116,6 +132,7 @@ void doStats() {
             }
         }
 
+        //calculate the total time taken for the heuristics on case, print results and time
         double totalTime = 0;
         for(int i = 0; i < heuristics.size(); i++) {
             totalTime += times[i];
@@ -133,9 +150,11 @@ void doStats() {
         
         output(string(" ") + str(totalTime));
 
+        //increment case number for file consitency
         incrementGraphNumber();
     }
 
+    //output heuristic names for totals data
     outputLeft("Totals:", 10);
     output("|", "");
     for(int i = 0; i < heuristics.size(); i++) {
@@ -144,6 +163,7 @@ void doStats() {
     }
     output("");
 
+    //output total "wins for each heuristic
     pad(" ", 10);
     output("|", "");
     for(int i = 0; i < heuristics.size(); i++) {
@@ -155,6 +175,7 @@ void doStats() {
     }
     output("");
 
+    //output total time for each heuristic
     outputLeft("Time (s):", 10);
     output("|", "");
     double totalTime = 0;
@@ -166,6 +187,7 @@ void doStats() {
     }
     output(" " + str(totalTime, 3));
 
+    //output time percentage for each heuristic
     outputLeft("Time (%):", 10);
     output("|", "");
     for(int i = 0; i < heuristics.size(); i++) {
