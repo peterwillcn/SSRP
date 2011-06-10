@@ -50,7 +50,8 @@ String("Modes:\n", Color::White) +
 "        --nash\n" +
 "            Run the nash finding algorithm after running heuristics.\n" +
 "\n" +
-    "    " + String("For information on heuristics, run ", Color::White) + String("graph --heuristics-info", Color::Green) + "\n";
+"    " + String("For information on heuristics, run ", Color::White) +
+String("graph --heuristics-info", Color::Green) + "\n";
 
 const string welcomeHeader = "\
 +------------------------------------------------------------------------------+\n\
