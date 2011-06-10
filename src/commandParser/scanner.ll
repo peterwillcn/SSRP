@@ -43,6 +43,8 @@ demo            { return DEMOMODE; }
 
 "--dease"       { return DEASEFLAG; }
 
+"--nash"        { return NASHFLAG; }
+
 [a-zA-Z0-9.]*   { yylval.str_val = new string(yytext); return STRING; }
 
 \ |\t|\n        { ; }

@@ -35,6 +35,7 @@ int numberUnreportedErrors = 0;
 %token HELP
 %token BISHARING
 %token DEASEFLAG
+%token NASHFLAG
 
 %union {
     int int_val;
@@ -154,6 +155,10 @@ COMMONARG
             weight_threshold = $2;
             num_passes = $3;
             journey_threshold = $4;
+        }
+    | NASHFLAG
+        {
+            findNash = true;
         }
     ;
 

@@ -22,7 +22,7 @@ int numErrors = 0;
 string inFileName = "";
 bool dumpGraphToFile = false;
 bool biSharing = false;
-bool findNash = true;
+bool findNash = false;
 
 // Stuff for Dease
 

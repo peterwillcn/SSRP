@@ -46,7 +46,9 @@ String("Modes:\n", Color::White) +
 "            Use bi-directional sharing.\n" +
 "        --dease INT INT INT\n" +
 "            Specify the weight thresdhold, number of passes, and journey\n" +
-"            threshold, respectively, for the dease algorithm.\n";
+"            threshold, respectively, for the dease algorithm.\n" +
+"        --nash\n" +
+"            Run the nash finding algorithm after running heuristics.\n";
 
 const string welcomeHeader =
 "\n\
