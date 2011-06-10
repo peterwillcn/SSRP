@@ -65,6 +65,7 @@ extern int numErrors;
 extern string inFileName;
 extern bool dumpGraphToFile;
 extern bool biSharing;
+extern bool findNash;
 
 // Stuff for Dease algorithm
 extern int weight_threshold;

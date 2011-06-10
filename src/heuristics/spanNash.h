@@ -49,7 +49,10 @@ graphGroup runSpanningNashHeuristic(graphGroup g, const vector<journeyInfo>& jou
         g.addJourney(i, p);
     }
 
-    bool nash = nashEquilibrium(g);
+    //bool nash = nashEquilibrium(g);
+    
+    if(findNash)
+        nashEquilibrium(g);
 
     return g;
 }

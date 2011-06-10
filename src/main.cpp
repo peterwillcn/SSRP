@@ -18,6 +18,7 @@ using namespace std;
 #include "ioFunctions.h"
 #include "heuristics.h"
 #include "rand.h"
+#include "nashTest.hpp"
 
 #include "messages.h"
 
@@ -80,10 +81,9 @@ void doStats() {
 
         vector<clock_t> times(heuristics.size(), 0);
 
-	graphGroup copiedGraph = graphGroup(mainGraph);
         for(int i = 0; i < heuristics.size(); i++) {
             clock_t startTime = clock();
-            graphGroup g = heuristics[i].func(copiedGraph, listOfJourneys);
+            graphGroup g = heuristics[i].func(mainGraph, listOfJourneys);  
             dumpGraph(g,heuristics[i].name);
             results[i] = 0;
             for(int n = 0; n < listOfJourneys.size(); n++)

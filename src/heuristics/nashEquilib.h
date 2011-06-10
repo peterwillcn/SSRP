@@ -42,7 +42,9 @@ graphGroup runNashEquilibriumHeuristic(graphGroup mainGraph,
     }
 
     // this checks if the final solution is a Nash Equilibrium
-    bool nash_equilibrium = nashEquilibrium(mainGraph);
+    //bool nash_equilibrium = nashEquilibrium(mainGraph);
+   
+    nashEquilibrium(mainGraph);
 
     return mainGraph;
 }
