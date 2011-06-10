@@ -23,6 +23,7 @@ string inFileName = "";
 bool dumpGraphToFile = false;
 bool biSharing = false;
 bool findNash = false;
+bool printHeuristicsInfo = false;
 
 // Stuff for Dease
 

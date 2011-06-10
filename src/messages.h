@@ -48,11 +48,12 @@ String("Modes:\n", Color::White) +
 "            Specify the weight thresdhold, number of passes, and journey\n" +
 "            threshold, respectively, for the dease algorithm.\n" +
 "        --nash\n" +
-"        -n\n" + 
-"            Run the nash finding algorithm after running heuristics.\n";
+"            Run the nash finding algorithm after running heuristics.\n" +
+"\n" +
+"    " + String("For information on heuristics, run ", Color::White) +
+String("graph --heuristics-info", Color::Green) + "\n";
 
-const string welcomeHeader =
-"\n\
+const string welcomeHeader = "\
 +------------------------------------------------------------------------------+\n\
 |                          Shared Shorest Path Project                         |\n\
 | Authors: Christopher Earl (2006)                                             |\n\
@@ -63,5 +64,36 @@ const string welcomeHeader =
 |          Zeal Jagannatha (2011)                                              |\n\
 | Mentor:  " + String("Sean McCulloch", Color::Red) + "                                                      |\n\
 +------------------------------------------------------------------------------+\n";
+
+
+const string heuristicsInfo = string("") +
+String("Heuristic Information:", Color::Green) + "\n" +
+"\n"
+"    " + String("Dease Algorithm:", Color::White) + " (Dease)\n" +
+"        Finds edges that are commonly shared and deletes them. This is to\n" +
+"        encourage sharing and try to find a nash equilibrium.\n" +
+"\n"
+"    " + String("Nash Equilibrium:", Color::White) + " (Nash-Equilib)\n" +
+"        This is the vanilla version of the nash equilibrium algorithm.\n" +
+"        Everything is routed by their shortest paths, and then the nash\n" +
+"        equilibrium algorithm is run on them.\n" +
+"\n"
+"    " + String("Shortest Path:", Color::White) + " (Shortest)\n" +
+"        This is the basis of comparison for our other algorithms. It routes\n" +
+"        things by their shortest paths.\n" +
+"\n"
+"    " + String("Spanning Tree:", Color::White) + " (SpanTree)\n" +
+"        This is the vanilla version of the spanning tree algorithm. It finds the\n" +
+"        spanning tree for a graph, then routes journeys on the spanning tree.\n" +
+"\n"
+"    " + String("Spanning Tree / Nash Equilibrium:", Color::White) + " (SpanNash)\n" +
+"        This algorithm finds the spanning tree for a graph and then routes\n" +
+"        journeys on this spanning tree. It then transforms these routes back\n" +
+"        into the original graph, and runs the nash equilibrium heuristic.\n" +
+"\n"
+"    " + String("Sub-Graph:", Color::White) + " (Sub-Graph)\n" +
+"        This is a theoretical algorithm used to prove statistically that there\n" +
+"        is always a nash equilibrium in certain types of graphs. This algorithm\n" +
+"        does considerably worse than most other algorithms, and so is not in use.\n";
 
 #endif

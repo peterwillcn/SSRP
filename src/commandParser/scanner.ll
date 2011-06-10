@@ -38,6 +38,7 @@ demo            { return DEMOMODE; }
 "-np"           { return NOPRINTFLAG; }
 
 "-h"            { return HELP; }
+"--help"        { return HELP; }
 
 "-b"            { return BISHARING; }
 
@@ -46,6 +47,8 @@ demo            { return DEMOMODE; }
 "--dease"       { return DEASEFLAG; }
 
 "--nash"        { return NASHFLAG; }
+
+"--heuristics-info" { return HEURISTICSINFO; }
 
 [a-zA-Z0-9.]*   { yylval.str_val = new string(yytext); return STRING; }
 

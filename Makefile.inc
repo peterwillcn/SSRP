@@ -1,5 +1,5 @@
 
-EXE	= graph
+EXE	= sspp
 SrcDir	= src
 
 Includes = \
@@ -127,7 +127,8 @@ SRCS =	$(SrcDir)/main.cpp \
 	$(SrcDir)/heuristics/heuristics.cpp \
 	$(SrcDir)/heuristics/heuristics.o \
 	$(SrcDir)/heuristics/shortestPath.h \
-	$(SrcDir)/heuristics/spanningTree.h
+	$(SrcDir)/heuristics/spanningTree.h \
+	$(SrcDir)/messages.h
 
 # makedepend can't handle flex or bison files,
 # so we need to explictly say how to build these

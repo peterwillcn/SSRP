@@ -36,6 +36,7 @@ int numberUnreportedErrors = 0;
 %token BISHARING
 %token DEASEFLAG
 %token NASHFLAG
+%token HEURISTICSINFO
 
 %union {
     int int_val;
@@ -53,6 +54,10 @@ MODE
     : HELP
         {
             numErrors++;
+        }
+    | HEURISTICSINFO
+        {
+            printHeuristicsInfo = true;
         }
     | STATMODE STATARGLIST
         {
