@@ -41,6 +41,8 @@ demo            { return DEMOMODE; }
 
 "-b"            { return BISHARING; }
 
+"-n"        { return NASHFLAG; }
+
 "--dease"       { return DEASEFLAG; }
 
 "--nash"        { return NASHFLAG; }

@@ -48,6 +48,7 @@ String("Modes:\n", Color::White) +
 "            Specify the weight thresdhold, number of passes, and journey\n" +
 "            threshold, respectively, for the dease algorithm.\n" +
 "        --nash\n" +
+"        -n\n" + 
 "            Run the nash finding algorithm after running heuristics.\n";
 
 const string welcomeHeader =
