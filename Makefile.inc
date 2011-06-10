@@ -56,7 +56,7 @@ DEPFLAGS = -m -Y
 OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/edge/edge.o \
 	$(SrcDir)/journeyGroup/journeyGroup.o \
-	$(SrcDir)/test.o \
+	$(SrcDir)/main.o \
 	$(SrcDir)/basicStructures/basicStructures.o \
 	$(SrcDir)/FWGroup/FWGroup.o \
 	$(SrcDir)/journeyInfo/journeyInfo.o \
@@ -76,7 +76,7 @@ OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/commandParser/parser.o \
 	$(SrcDir)/commandParser/scanner.o
 
-SRCS =	$(SrcDir)/test.cpp \
+SRCS =	$(SrcDir)/main.cpp \
 	$(SrcDir)/FWGroup/FWGroup.cpp \
 	$(SrcDir)/FWGroup/FWGroup.h \
 	$(SrcDir)/graphGroup/graphGroup.cpp \

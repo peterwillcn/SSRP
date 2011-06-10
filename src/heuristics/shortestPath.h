@@ -1,3 +1,9 @@
+/*
+ * Shortest Path
+ *
+ * This is the basis of comparison for our other algorithms. It routes things
+ * by their shortest paths.
+ */
 graphGroup runShortestPathHeuristic(graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
     //output("Running Shortest Path Heuristic");
 

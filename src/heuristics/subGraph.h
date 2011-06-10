@@ -1,3 +1,10 @@
+/*
+ * Sub-Graph heuristic
+ *
+ * This is a theoretical algorithm used to prove statistically that there is
+ * always a nash equilibrium in certain types of graphs. This algorithm does
+ * considerably worse than most other algorithms, and so is not in use.
+ */
 graphGroup subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<journeyInfo>& listOfJourneys, int startPoint) {
     basicEdgeGroup subGraph;
     subGraph.setUndirected();
