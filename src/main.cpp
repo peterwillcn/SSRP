@@ -80,19 +80,16 @@ void doStats() {
 
         vector<clock_t> times(heuristics.size(), 0);
 
-	graphGroup copiedGraph = graphGroup(mainGraph);
         for(int i = 0; i < heuristics.size(); i++) {
             clock_t startTime = clock();
-            graphGroup g = heuristics[i].func(copiedGraph, listOfJourneys);
+            graphGroup g = heuristics[i].func(mainGraph, listOfJourneys);
+            clock_t endTime = clock();
             dumpGraph(g,heuristics[i].name);
             results[i] = 0;
             for(int n = 0; n < listOfJourneys.size(); n++)
             {
                 results[i] += g.returnSharedCost(n).value();
-                //cout << "i = " << i << " n = " << n << " results[i] = " << results[i] << endl;
-                //cout << g.returnSharedCost(n).value() << endl;
             }
-            clock_t endTime = clock();
             times[i] = endTime - startTime;
             numberCorrect[i].third += times[i];
         }
