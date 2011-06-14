@@ -8,6 +8,7 @@
 bool nashEquilibrium(graphGroup& g) 
 {
     bool result = true;
+    int count = 0;
     
     vector<path> final_paths = g.returnSharedPaths();
     vector<floatWInf> final_costs = g.returnSharedCosts();
@@ -38,6 +39,7 @@ bool nashEquilibrium(graphGroup& g)
             }
             final_paths = g.returnSharedPaths();
             final_costs = g.returnSharedCosts();
+            ++count;
             j = 0;
             continue;
         }
@@ -46,7 +48,7 @@ bool nashEquilibrium(graphGroup& g)
     }
 
     if(nash_out)
-      output("This solution is a nash equilibrium");
+      output("Found an NE after " + str(count) + " deviation(s)");
     
     result = true;
     return result;
