@@ -19,7 +19,9 @@ void STGroup::findMinSpanningTree(const basicEdgeGroup& graph, int startvertex)
   this->resultantTree.setUndirected();
 
   std::vector<int> curVerticies;
+  std::vector<bool> inTree(graph.returnN(), false);
   curVerticies.push_back(startvertex);
+  inTree[startvertex] = true;
   int edgesAdded = 0;
 
   //loop until tree is full
@@ -47,7 +49,7 @@ void STGroup::findMinSpanningTree(const basicEdgeGroup& graph, int startvertex)
           continue;
         
         //don't check verticies already added
-        if(std::find(curVerticies.begin(), curVerticies.end(), i) != curVerticies.end())
+        if(inTree[i])
           continue;
         
         //if we find a closer edge and not already in the tree plan to add it to the tree
@@ -74,6 +76,7 @@ void STGroup::findMinSpanningTree(const basicEdgeGroup& graph, int startvertex)
     }
 
     curVerticies.push_back(curAdjacentMin);
+    inTree[curAdjacentMin] = true;
 
     ++edgesAdded;
   }
