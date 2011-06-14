@@ -15,8 +15,12 @@ struct heuristic {
 
     int numberCorrect;
 
+    bool useNashAlgorithm;
+
     heuristic(string initName,
-              graphGroup (*f)(graphGroup, const vector<journeyInfo>&));
+              graphGroup (*f)(graphGroup, const vector<journeyInfo>&),
+              bool nashAlg
+             );
 };
 
 void setupHeuristics();

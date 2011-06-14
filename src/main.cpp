@@ -18,6 +18,7 @@ using namespace std;
 #include "ioFunctions.h"
 #include "heuristics.h"
 #include "rand.h"
+#include "nashTest.hpp"
 
 #include "messages.h"
 
@@ -92,9 +93,12 @@ void doStats() {
             //timer start
             timespec sTime;
             clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &sTime);
-            
+
             //run heuristic
             graphGroup g = heuristics[i].func(mainGraph, listOfJourneys);
+
+            if(heuristics[i].useNashAlgorithm)
+                nashEquilibrium(mainGraph);
 
             //timer end
             timespec eTime;
@@ -106,14 +110,10 @@ void doStats() {
 
             //print graph PDF
             dumpGraph(g,heuristics[i].name);
-            
+
             //calculate total cost of shared path
-            results[i] = 0;
-            for(int n = 0; n < listOfJourneys.size(); n++)
-            {
-                results[i] += g.returnSharedCost(n).value();
-            }
-            
+            results[i] = g.totalSharedCost();
+
             //calculate and store time taken for "heuristic"
             times[i] = endTime - startTime;
             numberCorrect[i].third += times[i];
@@ -211,11 +211,6 @@ int main(int argc, char* argv[]) {
     scanner = new yyFlexLexer(yyin);
     yyparse();
 
-    if(printHeuristicsInfo) {
-        output(heuristicsInfo);
-        return 0;
-    }
-
     if(numErrors > 0) {
         output("");
         output(usage);
@@ -235,11 +230,14 @@ int main(int argc, char* argv[]) {
         else {
             // programMode == DEMO
 
-            if(false) {
-                inFile = new ifstream("input");
+            if(readFromFile) {
+                inFile = new ifstream(inFileName.data());
             }
-            else {
-                inFile = &cin;
+            else inFile = &cin;
+
+            if(printHeuristicsInfo) {
+                output(heuristicsInfo);
+                return 0;
             }
 
             graphGroup mainGraph;

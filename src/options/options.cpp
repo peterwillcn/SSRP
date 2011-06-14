@@ -22,8 +22,8 @@ int numErrors = 0;
 string inFileName = "";
 bool dumpGraphToFile = false;
 bool biSharing = false;
-bool findNash = false;
 bool printHeuristicsInfo = false;
+int DEPTH_VALUE = 2;
 
 // Stuff for Dease
 

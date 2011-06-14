@@ -1229,6 +1229,14 @@ path const & graphGroup::returnSharedPath(int journeyNum) const
 
 }
 
+floatWInf graphGroup::totalSharedCost() const {
+    floatWInf final_total_cost = 0;
+    for(int j = 0; j < numJourneys(); j++)
+        final_total_cost += returnSharedCost(j);
+
+    return final_total_cost;
+}
+
 //graphGroup::hasSinglePath()
 // returns true if given journey has a single path
 //

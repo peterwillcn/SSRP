@@ -47,8 +47,6 @@ String("Modes:\n", Color::White) +
 "        --dease INT INT INT\n" +
 "            Specify the weight thresdhold, number of passes, and journey\n" +
 "            threshold, respectively, for the dease algorithm.\n" +
-"        --nash\n" +
-"            Run the nash finding algorithm after running heuristics.\n" +
 "\n" +
 "    " + String("For information on heuristics, run ", Color::White) +
 String("graph --heuristics-info", Color::Green) + "\n";

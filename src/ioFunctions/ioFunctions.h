@@ -68,6 +68,13 @@ bool getChoice(string prompt);
 int getGraphNumber();
 void incrementGraphNumber();
 
+template <typename T>
+void outputVector(const vector<T>& v) {
+    for(int i = 0; i < v.size(); i++)
+        cout << v[i] << " ";
+    cout << endl;
+}
+
 ////
 //// Graph I/O Functions:
 ////

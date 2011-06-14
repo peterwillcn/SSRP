@@ -21,7 +21,8 @@ Includes = \
 	-I$(SrcDir)/debug \
 	-I$(SrcDir)/options \
 	-I$(SrcDir)/heuristics \
-	-I$(SrcDir)/commandParser
+	-I$(SrcDir)/commandParser \
+	-I$(SrcDir)/treeSearch
 
 CXX	= g++
 LD	= g++
@@ -38,16 +39,16 @@ LEX = flex
 LFLAGS = -+
 
 # For normal compiling
-#CXXFLAGS = -g -Wno-write-strings $(Includes)
-#LDFLAGS = -g -lrt
+CXXFLAGS = -g -Wno-write-strings $(Includes)
+LDFLAGS = -g -lrt
 
 # For debugging and debug flags
 #CXXFLAGS = -g -Wno-write-strings -DDEBUG $(Includes)
 #LDFLAGS = -g -lrt
 
 # For compiler and linker optimizations
-CXXFLAGS = -O3 -Wno-write-strings $(Includes)
-LDFLAGS = -O3 -lrt
+#CXXFLAGS = -O3 -Wno-write-strings $(Includes)
+#LDFLAGS = -O3 -lrt
 
 # Makedepend
 DEP = makedepend
@@ -74,7 +75,8 @@ OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/ioFunctions/color.o \
 	$(SrcDir)/ioFunctions/colorString.o \
 	$(SrcDir)/commandParser/parser.o \
-	$(SrcDir)/commandParser/scanner.o
+	$(SrcDir)/commandParser/scanner.o \
+	$(SrcDir)/treeSearch/treeSearch.o
 
 SRCS =	$(SrcDir)/main.cpp \
 	$(SrcDir)/FWGroup/FWGroup.cpp \
@@ -128,6 +130,9 @@ SRCS =	$(SrcDir)/main.cpp \
 	$(SrcDir)/heuristics/heuristics.o \
 	$(SrcDir)/heuristics/shortestPath.h \
 	$(SrcDir)/heuristics/spanningTree.h \
+	$(SrcDir)/heuristics/traversal.h \
+	$(SrcDir)/treeSearch/treeSearch.h \
+	$(SrcDir)/treeSearch/treeSearch.cpp \
 	$(SrcDir)/messages.h
 
 # makedepend can't handle flex or bison files,

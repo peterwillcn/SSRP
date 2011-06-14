@@ -41,10 +41,5 @@ graphGroup runNashEquilibriumHeuristic(graphGroup mainGraph,
                                                    listOfJourneys[j].destination()));
     }
 
-    // this checks if the final solution is a Nash Equilibrium
-    //bool nash_equilibrium = nashEquilibrium(mainGraph);
-   
-    nashEquilibrium(mainGraph);
-
     return mainGraph;
 }

@@ -50,9 +50,6 @@ graphGroup runSpanningNashHeuristic(graphGroup g, const vector<journeyInfo>& jou
     }
 
     //bool nash = nashEquilibrium(g);
-    
-    if(findNash)
-        nashEquilibrium(g);
 
     return g;
 }

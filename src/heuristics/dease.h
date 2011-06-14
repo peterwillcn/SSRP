@@ -144,13 +144,5 @@ graphGroup runDeaseHeuristic(graphGroup mainGraph, const vector<journeyInfo>& li
         } // end "for all edges"
     } // end # of passes
 
-    floatWInf final_total_cost = 0;
-    for(int j = 0; j < mainGraph.numJourneys(); j++)
-        final_total_cost += mainGraph.returnSharedCost(j);
-    
-    
-    if(findNash)
-        nashEquilibrium(mainGraph);
-
     return mainGraph;
 }

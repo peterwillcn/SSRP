@@ -80,6 +80,8 @@ public:
     vector< path > returnSharedPaths() const;
     path const & returnSharedPath(int journeyNum) const;
 
+    floatWInf totalSharedCost() const;
+
     ///single path accessor member func's
     bool hasSinglePath(int journeyNum) const;
     vector< floatWInf > returnSingleCosts() const;

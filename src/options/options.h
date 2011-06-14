@@ -47,11 +47,9 @@ const string background = "white";
 //// Options provided for command line input
 ////
 
-// If this value is true, no prompts are written to output for input values.
-// Defaults to false
 extern bool readFromFile;
-// Defaults to NULL
 extern istream* inFile;
+extern string inFileName;
 
 extern yyFlexLexer* scanner;
 
@@ -62,11 +60,10 @@ extern int STATminWeight;
 extern int STATmaxWeight;
 extern bool STATdirected;
 extern int numErrors;
-extern string inFileName;
 extern bool dumpGraphToFile;
 extern bool biSharing;
-extern bool findNash;
 extern bool printHeuristicsInfo;
+extern int DEPTH_VALUE;
 
 // Stuff for Dease algorithm
 extern int weight_threshold;

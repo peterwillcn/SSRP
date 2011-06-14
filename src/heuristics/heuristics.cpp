@@ -12,6 +12,7 @@ using namespace std;
 #include "STGroup.hpp"
 #include "heuristics.h"
 #include "options.h"
+#include "treeSearch.h"
 
 //returns the index of (the first instance of)"key" in v,
 // or -1 if it's not there
@@ -26,29 +27,34 @@ int find_in_vector(const vector<t>& v, t key){
 }
 
 heuristic::heuristic(string initName,
-                     graphGroup (*f)(graphGroup, const vector<journeyInfo>&))
-    : func(f), name(initName), numberCorrect(0) {
+                     graphGroup (*f)(graphGroup, const vector<journeyInfo>&),
+                     bool nashAlg
+                    )
+    : func(f), name(initName), numberCorrect(0), useNashAlgorithm(nashAlg) {
     // Do Nothing
 }
 
 #include "shortestPath.h"
-const heuristic shortestPathH("Shortest", runShortestPathHeuristic);
+const heuristic shortestPathH("Shortest", runShortestPathHeuristic, false);
 
 #include "nashEquilib.h"
-const heuristic nashEquilibriumH("Nash-Equilib", runNashEquilibriumHeuristic);
+const heuristic nashEquilibriumH("Nash-Equilib", runNashEquilibriumHeuristic, true);
 
 #include "subGraph.h"
-const heuristic subGraphH("Sub-Graph", runSubGraphHeuristic);
+const heuristic subGraphH("Sub-Graph", runSubGraphHeuristic, true);
 
 int smallestStartVertex = -1;
 #include "spanningTree.h"
-const heuristic spanningTreeH("SpanTree", runSpanningTreeHeuristic);
+const heuristic spanningTreeH("SpanTree", runSpanningTreeHeuristic, true);
 
 #include "dease.h"
-const heuristic deaseAlgH("Dease", runDeaseHeuristic);
+const heuristic deaseAlgH("Dease", runDeaseHeuristic, true);
 
 #include "spanNash.h"
-const heuristic spanningNashH("SpanNash", runSpanningNashHeuristic);
+const heuristic spanningNashH("SpanNash", runSpanningNashHeuristic, true);
+
+#include "traversal.h"
+const heuristic traversalH("Traversal", runTraversalHeuristic, true);
 
 vector<heuristic> heuristics;
 
@@ -57,4 +63,5 @@ void setupHeuristics() {
     heuristics.push_back(nashEquilibriumH);
     heuristics.push_back(deaseAlgH);
     heuristics.push_back(spanningNashH);
+    heuristics.push_back(traversalH);
 }

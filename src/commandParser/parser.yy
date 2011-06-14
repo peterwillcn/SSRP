@@ -35,7 +35,6 @@ int numberUnreportedErrors = 0;
 %token HELP
 %token BISHARING
 %token DEASEFLAG
-%token NASHFLAG
 %token HEURISTICSINFO
 
 %union {
@@ -132,6 +131,10 @@ DEMOARGLIST
 DEMOARG
     : COMMONARG
     | FILEFLAG STRING
+        {
+            readFromFile = true;
+            inFileName = *$2;
+        }
     | FILEFLAG error
         {
             reportErrorYYText("Invalid file operand: ");
@@ -160,10 +163,6 @@ COMMONARG
             weight_threshold = $2;
             num_passes = $3;
             journey_threshold = $4;
-        }
-    | NASHFLAG
-        {
-            findNash = true;
         }
     ;
 
