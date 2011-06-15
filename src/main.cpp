@@ -58,7 +58,10 @@ void doStats() {
     }
     output(" Time (s)");
 
-    vector<triple<int,double,double> > numberCorrect(heuristics.size(), triple<int,double,double>(0, 0.0, 0.0));
+    vector<triple<int,double,double> > numberCorrect(heuristics.size(),
+                                                     triple<int,double,double>(0,
+                                                                               0.0,
+                                                                               0.0));
 
     //Run through each case(newly generated graph)
     for(int caseNumber = 0; caseNumber < STATcount; caseNumber++) {
@@ -73,7 +76,11 @@ void doStats() {
         vector<journeyInfo> listOfJourneys;
 
         //generate the graph
-        generateSparseGraph(g, STATvertices, STATdirected, STATminWeight, STATmaxWeight);
+        generateSparseGraph(g,
+                            STATvertices,
+                            STATdirected,
+                            STATminWeight,
+                            STATmaxWeight);
 
         //generate random journeys
         listOfJourneys.resize(STATjourneys);
@@ -95,7 +102,8 @@ void doStats() {
             clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &sTime);
 
             //run heuristic
-            graphGroup g = heuristics[i].func(mainGraph, listOfJourneys);
+            graphGroup g = heuristics[i].func(mainGraph,
+                                              listOfJourneys);
 
             if(heuristics[i].useNashAlgorithm)
                 nashEquilibrium(mainGraph);
@@ -132,7 +140,8 @@ void doStats() {
             }
         }
 
-        //calculate the total time taken for the heuristics on case, print results and time
+        //calculate the total time taken for the heuristics on case,
+        //print results and time
         double totalTime = 0;
         for(int i = 0; i < heuristics.size(); i++) {
             totalTime += times[i];
@@ -163,7 +172,7 @@ void doStats() {
     }
     output("");
 
-    //output total "wins for each heuristic
+    //output total wins for each heuristic
     pad(" ", 10);
     output("|", "");
     for(int i = 0; i < heuristics.size(); i++) {
@@ -250,7 +259,8 @@ int main(int argc, char* argv[]) {
 
             for(int i = 0; i < listOfJourneys.size(); i++) {
                 output("Journey " +str(i)+ ": ", "");
-                output(str(listOfJourneys[i].source()) + " -> " + str(listOfJourneys[i].destination()));
+                output(str(listOfJourneys[i].source()) + " -> " +
+                       str(listOfJourneys[i].destination()));
             }
 
             // Set the journey numbers for each journey:
@@ -271,7 +281,8 @@ int main(int argc, char* argv[]) {
                 output("Running heuristic: " + heuristics[i].name);
                 output("\tHas total cost of: " + str(result));
                 if(i > 0)
-                    output("\tImprovement over shortest path: " + str(shortestPathCost - result));
+                    output("\tImprovement over shortest path: " +
+                           str(shortestPathCost - result));
                 output("");
             }
 

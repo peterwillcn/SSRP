@@ -5,13 +5,27 @@
 
 using namespace std;
 
-treeNode::treeNode(int journeyNum, int d, vector<int> journeysNotRouted, graphGroup& associatedGraph)
-    : journey(journeyNum), depth(d), journeys(journeysNotRouted), graph(associatedGraph) {
+bool treeNode::rootNode() {
+    return journey == -1;
+}
+
+treeNode::treeNode(int journeyNum, vector<int> journeysNotRouted, graphGroup& associatedGraph)
+    : journey(journeyNum), graph(associatedGraph) {
     // Do Nothing
-    for(int i = 0; i < journeys.size(); i++) {
-        vector<int> temp = journeys;
+    for(int i = 0; i < journeysNotRouted.size(); i++) {
+        vector<int> temp = journeysNotRouted;
         temp.erase(temp.begin()+i);
-        children.push_back(new treeNode(journeys[i], d+1, temp, graph));
+        children.push_back(new treeNode(journeysNotRouted[i], temp, graph));
+    }
+}
+
+treeNode::treeNode(vector<int> journeysNotRouted, graphGroup& associatedGraph)
+    : journey(-1), graph(associatedGraph) {
+    // Do Nothing
+    for(int i = 0; i < journeysNotRouted.size(); i++) {
+        vector<int> temp = journeysNotRouted;
+        temp.erase(temp.begin()+i);
+        children.push_back(new treeNode(journeysNotRouted[i], temp, graph));
     }
 }
 
@@ -39,47 +53,64 @@ int treeNode::numChildren() const {
     return children.size();
 }
 
+treeNode* treeNode::findChild(int journeyNumber) {
+    for(int i = 0; i < numChildren(); i++) {
+        if(child(i)->journeyNumber() == journeyNumber)
+            return child(i);
+    }
+    return NULL;
+}
+
 treeNode* treeNode::child(int i) {
     return children[i];
 }
 
+int treeNode::journeyNumber() const {
+    return journey;
+}
+
 pair<int,vector<int> > treeNode::search(int d) {
-    pair<int,vector<int> > retVal;
-    //print(); cout << endl;
-    // Recursive function
     // Base case:
     //          d == 0
     //          return < 0, < journey > >
     // Recursive case:
     //          find min cost of the children
     //          return it's search result with our journey preappended to it.
-    if(journey != -1)
-        graph.addJourneySP(journey);
-    if(d == 0 || children.size() == 0) {
-        if(journey == -1)
-            retVal = pair<int,vector<int> >(-1, vector<int>());
-        else
-            retVal = pair<int,vector<int> >(graph.totalSharedCost().value(),
-                                            vector<int>(1, journey));
+    if(numChildren() == 1) {
+        int cost;
+        graph.addJourneySP(child(0)->journeyNumber());
+        cost = graph.totalSharedCost().value();
+        graph.removeJourney(child(0)->journeyNumber());
+
+        return pair<int,vector<int> >(cost, vector<int>(1, child(0)->journeyNumber()));
+    }
+    if(d == 0) {
+        int bestCost;
+        int bestChild;
+        for(int i = 0; i < numChildren(); i++) {
+            graph.addJourneySP(child(i)->journeyNumber());
+            if(graph.totalSharedCost() < bestCost || i == 0) {
+                bestCost = graph.totalSharedCost().value();
+                bestChild = child(i)->journeyNumber();
+            }
+            graph.removeJourney(child(i)->journeyNumber());
+        }
+
+        return pair<int,vector<int> >(bestCost, vector<int>(1, bestChild));
     }
     else {
         int bestCost;
         vector<int> bestPath;
-        for(int i = 0; i < children.size(); i++) {
-            pair<int,vector<int> > temp = children[i]->search(d-1);
+        for(int i = 0; i < numChildren(); i++) {
+            graph.addJourneySP(child(i)->journeyNumber());
+            pair<int,vector<int> > temp = child(i)->search(d-1);
             if(temp.first < bestCost || i == 0) {
                 bestCost = temp.first;
                 bestPath = temp.second;
             }
+            graph.removeJourney(child(i)->journeyNumber());
         }
 
-        // If we aren't the root node
-        if(journey != -1)
-            // Preappend our journey number
-            bestPath.insert(bestPath.begin(), journey);
-        retVal = pair<int, vector<int> >(bestCost, bestPath);
+        return pair<int,vector<int> >(bestCost, bestPath);
     }
-    if(journey != -1)
-        graph.removeJourney(journey);
-    return retVal;
 }
