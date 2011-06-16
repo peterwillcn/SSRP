@@ -11,8 +11,6 @@ private:
 
     treeNode* parent;
 
-    int depth;
-
     vector<treeNode*> children;
 
     graphGroup& graph;
@@ -21,9 +19,13 @@ private:
 
     int journey;
 
+    bool rootNode();
+
+    treeNode(int journeyNum, vector<int> journeysNotRouted, graphGroup& associatedGraph);
+
 public:
 
-    treeNode(int journeyNum, int d, vector<int> journeysNotRouted, graphGroup& associatedGraph);
+    treeNode(vector<int> journeys, graphGroup& associatedGraph);
 
     ~treeNode();
 
@@ -31,7 +33,11 @@ public:
 
     int numChildren() const;
 
+    treeNode* findChild(int journeyNumber);
+
     treeNode* child(int i);
+
+    int journeyNumber() const;
 
     pair<int, vector<int> > search(int d);
 };
