@@ -1,8 +1,21 @@
 #ifndef _MESSAGES_H_
 #define _MESSAGES_H_
 
-const string usage =
-String("") +
+/**
+ * @file: messages.h
+ *
+ * Contains common messages for the user including the usage information,
+ * the welcome banner, and the heuristic information.
+ */
+
+#include <string>
+
+using namespace std;
+
+#include "ioFunctions.h"
+
+const string usage
+= String("") +
 String("Usage:\n", Color::White) +
 "    " + String("graph mode modeOptions\n", Color::Green) +
 "\n" +

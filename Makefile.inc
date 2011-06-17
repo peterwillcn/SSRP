@@ -75,7 +75,14 @@ OBJS =  $(SrcDir)/basicEdgeGroup/basicEdgeGroup.o \
 	$(SrcDir)/ioFunctions/colorString.o \
 	$(SrcDir)/commandParser/parser.o \
 	$(SrcDir)/commandParser/scanner.o \
-	$(SrcDir)/treeSearch/treeSearch.o
+	$(SrcDir)/treeSearch/treeSearch.o \
+	$(SrcDir)/heuristics/traversal/traversal.o \
+	$(SrcDir)/heuristics/spanNash/spanNash.o \
+	$(SrcDir)/heuristics/dease/dease.o \
+	$(SrcDir)/heuristics/spanningTree/spanningTree.o \
+	$(SrcDir)/heuristics/subGraph/subGraph.o \
+	$(SrcDir)/heuristics/shortestPath/shortestPath.o \
+	$(SrcDir)/heuristics/nashEquilib/nashEquilib.o
 
 SRCS =	$(SrcDir)/main.cpp \
 	$(SrcDir)/FWGroup/FWGroup.cpp \
@@ -120,19 +127,25 @@ SRCS =	$(SrcDir)/main.cpp \
 	$(SrcDir)/commandParser/scanner.cpp \
 	$(SrcDir)/ioFunctions/colorString.h \
 	$(SrcDir)/ioFunctions/colorString.cpp \
-	$(SrcDir)/heuristics/dease.h \
 	$(SrcDir)/heuristics/heuristics.h \
-	$(SrcDir)/heuristics/nashEquilib.h \
-	$(SrcDir)/heuristics/spanNash.h \
-	$(SrcDir)/heuristics/subGraph.h \
 	$(SrcDir)/heuristics/heuristics.cpp \
-	$(SrcDir)/heuristics/heuristics.o \
-	$(SrcDir)/heuristics/shortestPath.h \
-	$(SrcDir)/heuristics/spanningTree.h \
-	$(SrcDir)/heuristics/traversal.h \
 	$(SrcDir)/treeSearch/treeSearch.h \
 	$(SrcDir)/treeSearch/treeSearch.cpp \
-	$(SrcDir)/messages.h
+	$(SrcDir)/messages.h \
+	$(SrcDir)/heuristics/traversal/traversal.cpp \
+	$(SrcDir)/heuristics/traversal/traversal.h \
+	$(SrcDir)/heuristics/spanNash/spanNash.cpp \
+	$(SrcDir)/heuristics/spanNash/spanNash.h \
+	$(SrcDir)/heuristics/dease/dease.cpp \
+	$(SrcDir)/heuristics/dease/dease.h \
+	$(SrcDir)/heuristics/spanningTree/spanningTree.cpp \
+	$(SrcDir)/heuristics/spanningTree/spanningTree.h \
+	$(SrcDir)/heuristics/subGraph/subGraph.cpp \
+	$(SrcDir)/heuristics/subGraph/subGraph.h \
+	$(SrcDir)/heuristics/nashEquilib/nashEquilib.h \
+	$(SrcDir)/heuristics/nashEquilib/nashEquilib.cpp \
+	$(SrcDir)/heuristics/shortestPath/shortestPath.h \
+	$(SrcDir)/heuristics/shortestPath/shortestPath.cpp
 
 # makedepend can't handle flex or bison files,
 # so we need to explictly say how to build these

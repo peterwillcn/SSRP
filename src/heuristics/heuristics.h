@@ -1,11 +1,20 @@
 #ifndef _HEURISTICS_H_
 #define _HEURISTICS_H_
 
+/**
+ * @file: heuristics.h
+ *
+ * This file contains the declaration for the heuristic type.
+ *
+ * See heuristics.cpp for more information on heuristics.
+ */
+
 #include <vector>
-#include "graphGroup.h"
-#include "journeyInfo.h"
 
 using namespace std;
+
+#include "graphGroup.h"
+#include "journeyInfo.h"
 
 struct heuristic {
 // Public:

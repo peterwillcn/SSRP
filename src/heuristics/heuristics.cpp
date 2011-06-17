@@ -1,31 +1,23 @@
-#include <limits.h>
+/**
+ *
+ * @file: src/heuristics/heuristics.cpp
+ *
+ * This file holds the definitions for the heuristic type's members and
+ * the definitions of the built-in heuristics.
+ *
+ * To add new heuristics, create a heuristic function of type:
+ *      graphGroup f(graphGroup, const vector<journeyInfo>&);
+ * After this is done, create a constant heuristic with this function and a name,
+ * then push it onto the heuristics vector inside setupHeuristics().
+ */
+
+#include "heuristics.h"
+
 #include <string>
-#include <vector>
-#include "STGroup.hpp"
-#include <cmath>
 
 using namespace std;
 
-#include "heuristics.h"
-#include "ioFunctions.h"
-#include "debug.h"
-#include "FWGroup.h"
-#include "nashTest.hpp"
-#include "heuristics.h"
-#include "options.h"
-#include "treeSearch.h"
-
-//returns the index of (the first instance of)"key" in v,
-// or -1 if it's not there
-template<typename t>
-int find_in_vector(const vector<t>& v, t key){
-    for(int i = 0; i < v.size(); i++){
-        if(v[i] == key)
-            return i;
-    }
-    // if we get here, it's not there
-    return -1;
-}
+#include "graphGroup.h"
 
 heuristic::heuristic(string initName,
                      graphGroup (*f)(graphGroup, const vector<journeyInfo>&),
@@ -35,25 +27,25 @@ heuristic::heuristic(string initName,
     // Do Nothing
 }
 
-#include "shortestPath.h"
+#include "shortestPath/shortestPath.h"
 const heuristic shortestPathH("Shortest", runShortestPathHeuristic, false);
 
-#include "nashEquilib.h"
+#include "nashEquilib/nashEquilib.h"
 const heuristic nashEquilibriumH("Nash-Equilib", runNashEquilibriumHeuristic, true);
 
-#include "subGraph.h"
+#include "subGraph/subGraph.h"
 const heuristic subGraphH("Sub-Graph", runSubGraphHeuristic, true);
 
-#include "spanningTree.h"
+#include "spanningTree/spanningTree.h"
 const heuristic spanningTreeH("SpanTree", runSpanningTreeHeuristic, true);
 
-#include "dease.h"
+#include "dease/dease.h"
 const heuristic deaseAlgH("Dease", runDeaseHeuristic, true);
 
-#include "spanNash.h"
+#include "spanNash/spanNash.h"
 const heuristic spanningNashH("SpanNash", runSpanningNashHeuristic, true);
 
-#include "traversal.h"
+#include "traversal/traversal.h"
 const heuristic traversalH("Traversal", runTraversalHeuristic, true);
 
 vector<heuristic> heuristics;

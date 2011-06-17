@@ -1,6 +1,6 @@
 # Written by Zeal Jagannatha May 2011
 
-.PHONY: clean realclean linecount deleteGraphs
+.PHONY: clean realclean linecount deleteGraphs doc
 
 EXE =	graph
 
@@ -26,3 +26,6 @@ Makefile.dep: $(SRCS)
 
 linecount:
 	wc -l $(SRCS) Makefile Makefile.inc Makefile.real
+
+doc:	clean
+	doxygen .Doxyfile

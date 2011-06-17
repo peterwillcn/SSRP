@@ -1,0 +1,138 @@
+\hypertarget{classjourneyGroup}{
+\section{journeyGroup Class Reference}
+\label{classjourneyGroup}\index{journeyGroup@{journeyGroup}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classjourneyGroup_a33b592eabdbabac62fcf73ef755ca854}{
+{\bfseries journeyGroup} (\hyperlink{classjourneyGroup}{journeyGroup} const \&newJourneyGroup)}
+\label{classjourneyGroup_a33b592eabdbabac62fcf73ef755ca854}
+
+\item 
+\hypertarget{classjourneyGroup_aa4a8495262df8b472c9e31b8add8246c}{
+{\bfseries journeyGroup} (int totalNumJourneys)}
+\label{classjourneyGroup_aa4a8495262df8b472c9e31b8add8246c}
+
+\item 
+\hypertarget{classjourneyGroup_aaa88a57ee228049be3b779acd3ecd0d5}{
+{\bfseries journeyGroup} (vector$<$ \hyperlink{classjourneyInfo}{journeyInfo} $>$ const \&journeysInformation)}
+\label{classjourneyGroup_aaa88a57ee228049be3b779acd3ecd0d5}
+
+\item 
+\hypertarget{classjourneyGroup_a02e53531314abbbb091f7d2d9941dfca}{
+int {\bfseries numJourneys} () const }
+\label{classjourneyGroup_a02e53531314abbbb091f7d2d9941dfca}
+
+\item 
+\hypertarget{classjourneyGroup_a93641731772a7b414e6c326ac80aab34}{
+vector$<$ \hyperlink{classjourneyInfo}{journeyInfo} $>$ \hyperlink{classjourneyGroup_a93641731772a7b414e6c326ac80aab34}{returnInfos} () const }
+\label{classjourneyGroup_a93641731772a7b414e6c326ac80aab34}
+
+\begin{DoxyCompactList}\small\item\em accessor \end{DoxyCompactList}\item 
+\hypertarget{classjourneyGroup_a7ac1e75ba6616429a7d87c0f4f0503ff}{
+\hyperlink{classjourneyInfo}{journeyInfo} {\bfseries returnInfo} (int journeyNum) const }
+\label{classjourneyGroup_a7ac1e75ba6616429a7d87c0f4f0503ff}
+
+\item 
+\hypertarget{classjourneyGroup_aec780bd4aecb25d68350cb8c68cbd423}{
+void \hyperlink{classjourneyGroup_aec780bd4aecb25d68350cb8c68cbd423}{set} (vector$<$ \hyperlink{classjourneyInfo}{journeyInfo} $>$ journeysInformation)}
+\label{classjourneyGroup_aec780bd4aecb25d68350cb8c68cbd423}
+
+\begin{DoxyCompactList}\small\item\em mutators \end{DoxyCompactList}\item 
+\hypertarget{classjourneyGroup_abeeade99f92481899b2ade8e3b9bad63}{
+void {\bfseries resetAll} ()}
+\label{classjourneyGroup_abeeade99f92481899b2ade8e3b9bad63}
+
+\item 
+\hypertarget{classjourneyGroup_af68fc2de3e877c379083392dc3279d8b}{
+bool \hyperlink{classjourneyGroup_af68fc2de3e877c379083392dc3279d8b}{hasSharedPath} (int journeyNum) const }
+\label{classjourneyGroup_af68fc2de3e877c379083392dc3279d8b}
+
+\begin{DoxyCompactList}\small\item\em accessors \end{DoxyCompactList}\item 
+\hypertarget{classjourneyGroup_aa5749c94101001dadfa73490cc2b5b5e}{
+\hyperlink{classfloatWInf}{floatWInf} {\bfseries sharedCost} (int journeyNum) const }
+\label{classjourneyGroup_aa5749c94101001dadfa73490cc2b5b5e}
+
+\item 
+\hypertarget{classjourneyGroup_ad3ac8bcdf40479d0f5cb2bb23d81efb0}{
+\hyperlink{classpath}{path} const \& {\bfseries sharedPath} (int journeyNum) const }
+\label{classjourneyGroup_ad3ac8bcdf40479d0f5cb2bb23d81efb0}
+
+\item 
+\hypertarget{classjourneyGroup_a15eb55fa3469f70a05e7653c474af67e}{
+vector$<$ int $>$ const \& {\bfseries sharedActualPath} (int journeyNum) const }
+\label{classjourneyGroup_a15eb55fa3469f70a05e7653c474af67e}
+
+\item 
+\hypertarget{classjourneyGroup_a25f60bff8ea6ae171b787c361c97bfd0}{
+void \hyperlink{classjourneyGroup_a25f60bff8ea6ae171b787c361c97bfd0}{setSharedPath} (int journeyNum, \hyperlink{classpath}{path} const \&newPath)}
+\label{classjourneyGroup_a25f60bff8ea6ae171b787c361c97bfd0}
+
+\begin{DoxyCompactList}\small\item\em mutators \end{DoxyCompactList}\item 
+\hypertarget{classjourneyGroup_a853b5d0f757dfe16cf5e97962be9f845}{
+void {\bfseries setSharedCost} (int journeyNum, \hyperlink{classfloatWInf}{floatWInf} const \&newCost)}
+\label{classjourneyGroup_a853b5d0f757dfe16cf5e97962be9f845}
+
+\item 
+\hypertarget{classjourneyGroup_a3659e96ce0929680b6fa2338fff4bcc7}{
+void {\bfseries reset} (int journeyNum)}
+\label{classjourneyGroup_a3659e96ce0929680b6fa2338fff4bcc7}
+
+\item 
+\hypertarget{classjourneyGroup_a61760e1d31b091dc4d8c264cd8ee0085}{
+int {\bfseries getSource} (int journeyNum) const }
+\label{classjourneyGroup_a61760e1d31b091dc4d8c264cd8ee0085}
+
+\item 
+\hypertarget{classjourneyGroup_ae1bd6f0c0d25dcc773c7cf4b22ae416d}{
+int {\bfseries getDestination} (int journeyNum) const }
+\label{classjourneyGroup_ae1bd6f0c0d25dcc773c7cf4b22ae416d}
+
+\item 
+\hypertarget{classjourneyGroup_a6106a60747c418c55aad8f55c22ecd8f}{
+bool \hyperlink{classjourneyGroup_a6106a60747c418c55aad8f55c22ecd8f}{hasSinglePath} (int journeyNum) const }
+\label{classjourneyGroup_a6106a60747c418c55aad8f55c22ecd8f}
+
+\begin{DoxyCompactList}\small\item\em accessors \end{DoxyCompactList}\item 
+\hypertarget{classjourneyGroup_a090ed700dc75f7eb34d8a22ec79a64da}{
+\hyperlink{classfloatWInf}{floatWInf} {\bfseries singleCost} (int journeyNum) const }
+\label{classjourneyGroup_a090ed700dc75f7eb34d8a22ec79a64da}
+
+\item 
+\hypertarget{classjourneyGroup_a5a2806f64b3dae07acfe428dbde2f075}{
+\hyperlink{classpath}{path} const \& {\bfseries singlePath} (int journeyNum) const }
+\label{classjourneyGroup_a5a2806f64b3dae07acfe428dbde2f075}
+
+\item 
+\hypertarget{classjourneyGroup_af3d7cd1584e249ae21fdcabd05f8472f}{
+vector$<$ int $>$ const \& {\bfseries singleActualPath} (int journeyNum) const }
+\label{classjourneyGroup_af3d7cd1584e249ae21fdcabd05f8472f}
+
+\item 
+\hypertarget{classjourneyGroup_ae70103bd1f197f1d48ae8c9aaddc1d32}{
+void \hyperlink{classjourneyGroup_ae70103bd1f197f1d48ae8c9aaddc1d32}{setSinglePath} (int journeyNum, \hyperlink{classpath}{path} const \&newPath)}
+\label{classjourneyGroup_ae70103bd1f197f1d48ae8c9aaddc1d32}
+
+\begin{DoxyCompactList}\small\item\em mutators \end{DoxyCompactList}\item 
+\hypertarget{classjourneyGroup_a44972c06b63d6bcfa21084d6e8c5fa8c}{
+void {\bfseries setSAD} (\hyperlink{classjourneyInfo}{journeyInfo} newInformation)}
+\label{classjourneyGroup_a44972c06b63d6bcfa21084d6e8c5fa8c}
+
+\item 
+\hypertarget{classjourneyGroup_aced2b1e7a796a719ce350a200ebf3c7a}{
+const \hyperlink{classjourney}{journey} \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const int) const }
+\label{classjourneyGroup_aced2b1e7a796a719ce350a200ebf3c7a}
+
+\item 
+\hypertarget{classjourneyGroup_af21be1d763c947b9bf6b1107c9e64407}{
+\hyperlink{classfloatWInf}{floatWInf} {\bfseries saving} (int journeyNum) const }
+\label{classjourneyGroup_af21be1d763c947b9bf6b1107c9e64407}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+journeyGroup.h\item 
+journeyGroup.cpp\end{DoxyCompactItemize}
