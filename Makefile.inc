@@ -38,17 +38,16 @@ BISONFIX = ./bisonfix
 LEX = flex
 LFLAGS = -+
 
-# For normal compiling
-CXXFLAGS = -g -Wno-write-strings $(Includes)
-LDFLAGS = -g -lrt
+COMMONCXXFLAGS = -g -Wno-write-strings
+COMMONLDFLAGS = -g
 
-# For debugging and debug flags
-#CXXFLAGS = -g -Wno-write-strings -DDEBUG $(Includes)
-#LDFLAGS = -g -lrt
+#COMMONCXXFLAGS = -O3 -Wno-write-strings
+#COMMONLDFLAGS = -O3
 
-# For compiler and linker optimizations
-#CXXFLAGS = -O3 -Wno-write-strings $(Includes)
-#LDFLAGS = -O3 -lrt
+#COMMONCXXFLAGS = -g -DDEBUG
+
+CXXFLAGS = $(COMMONCXXFLAGS) $(Includes)
+LDFLAGS = $(COMMONLDFLAGS) -lrt
 
 # Makedepend
 DEP = makedepend

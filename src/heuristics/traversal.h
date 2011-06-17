@@ -5,6 +5,12 @@
 #include <utility>
 using namespace std;
 
+#define MAX_COMPUTATION 100
+
+int Ceilog(int base, int n) {
+    return ceil(log10((long double)n) / log10((long double)base));
+}
+
 graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journeyInfo>& listOfJourneys) {
 
     // create the graph group
@@ -19,10 +25,14 @@ graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journe
 
     vector<int> solution;
 
-    treeNode* t = new treeNode(journeys, g);
+    int DEPTH_VALUE = max(1, Ceilog(journeys.size(), MAX_COMPUTATION));
+
+    //cout << "Depth: " << DEPTH_VALUE << endl;
+
+    treeNode* t = new treeNode(DEPTH_VALUE, journeys, g);
     {
-        pair<int,vector<int> > val = t->search(DEPTH_VALUE);
-        t = t->child(val.second[0]);
+        pair<int,vector<int> > val = t->search();
+        t = t->findChild(val.second[0]);
         g.addJourneySP(val.second[0]);
         solution.push_back(val.second[0]);
         for(int i = 0; i < journeys.size(); i++) {
@@ -38,7 +48,6 @@ graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journe
     // solution contains the journeys that have been routed and in which order.
     // t points to the node that is about to be searched.
     for(int trialNum = 0; journeys.size() > 1; trialNum++) {
-
         if(t->numChildren() == 0) {
             break; // Do Nothing
         }
@@ -48,16 +57,17 @@ graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journe
             break;
         }
         else {
-//             cout << "Trial " << trialNum << ":\n";
-//             t->print(); cout << endl;
-//             cout << "Journeys: ";
-//             outputVector(journeys);
-// 
-//             cout << "Solution: ";
-//             outputVector(solution);
 
             pair<int, vector<int> > val = t->search(DEPTH_VALUE);
-            t = t->findChild(val.second[0]);
+            treeNode* oldT = t;
+            for(int i = 0; i < oldT->numChildren(); i++) {
+                if(oldT->child(i)->journeyNumber() == val.second[0]) {
+                    t = oldT->child(i);
+                }
+                else {
+                    delete oldT->child(i);
+                }
+            }
             g.addJourneySP(val.second[0]);
             solution.push_back(val.second[0]);
             for(int i = 0; i < journeys.size(); i++) {

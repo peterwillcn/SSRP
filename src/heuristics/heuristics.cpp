@@ -1,6 +1,8 @@
 #include <limits.h>
 #include <string>
 #include <vector>
+#include "STGroup.hpp"
+#include <cmath>
 
 using namespace std;
 
@@ -9,7 +11,6 @@ using namespace std;
 #include "debug.h"
 #include "FWGroup.h"
 #include "nashTest.hpp"
-#include "STGroup.hpp"
 #include "heuristics.h"
 #include "options.h"
 #include "treeSearch.h"

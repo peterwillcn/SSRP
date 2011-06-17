@@ -27,7 +27,7 @@ using namespace std;
  *
  *        The ANSI Terminal Output for the Given Code
  */
-extern const string ansi(string code);
+const string ansi(string code);
 
 // Foreground Color Codes
 extern const string FGBLACK;
