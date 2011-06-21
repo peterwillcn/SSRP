@@ -12,8 +12,6 @@
  * @section todo To Do:
  *
  * Create documentation for remaining parts of project:
- *    - src/basicEdgeGroup/*
- *    - src/basicStructures/*
  *    - src/commandParser/*
  *    - src/debug/*
  *    - src/edge/*
@@ -30,9 +28,7 @@
  *    - src/options/*
  *    - src/path/*
  *    - src/rand/*
- *    - src/STGroup/*
  *    - src/treeSearch/*
- *    - src/vertex/*
  *    - src/main.cpp
  *    - src/messages.h
  *
@@ -43,4 +39,18 @@
  * <a href="http://www.gnu.org/software/flex/">Flex</a>
  *
  * <a href="http://www.gnu.org/software/bison/">Bison</a>
+ *
+ * @section heuristics Heuristics Information
+ *
+ * For information on the currently used heuristics, see 'src/messages.h'
+ *
+ * For information on how to add heuristics see 'src/heuristics/heuristics.h'.
+ *
+ * @section compiling Compiling
+ *
+ * To compile, ensure that you have installed the following tools:
+ *      bison, flex, make, makedepend
+ * Then run `make` in the project directory.
+ *
+ * If you would like to change compilation options, change them in 'Makefile.inc'.
  */

@@ -22,7 +22,7 @@ using namespace std;
 
 #include "messages.h"
 
-#define ONE_BILLION 1000000000.0
+const long ONE_BILLION = 1000000000;
 
 int yyparse();
 
@@ -113,8 +113,8 @@ void doStats() {
             clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &eTime);
 
             //convert time
-            double startTime = sTime.tv_sec + ((double)sTime.tv_nsec/ ONE_BILLION);
-            double endTime = eTime.tv_sec + ((double)eTime.tv_nsec/ ONE_BILLION);
+            double startTime = sTime.tv_sec + (double(sTime.tv_nsec)/ ONE_BILLION);
+            double endTime = eTime.tv_sec + (double(eTime.tv_nsec)/ ONE_BILLION);
 
             //print graph PDF
             dumpGraph(g,heuristics[i].name);
