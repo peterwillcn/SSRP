@@ -1,12 +1,13 @@
 #include "nashTest.hpp"
 #include "debug.h"
 #include "ioFunctions.h"
+#include "options.h"
 
 /*
     * this function will run until an equilibrium has been found.
     * it is believed, but not known, that an equilibrium will be found for any SSP game from any arbitrary begining strategy profile
 */
-bool nashEquilibrium(graphGroup& g, bool pareto) 
+bool nashEquilibrium(graphGroup& g) 
 {
     bool result = true;
     int count = 0;
@@ -47,7 +48,7 @@ bool nashEquilibrium(graphGroup& g, bool pareto)
         if( x < final_costs[j]) 
         {
             //if looking for pareto optima check if the social cost has increased
-            if(pareto)
+            if(usePareto)
                 if(next_social_cost > final_social_cost)
                     continue;
                 

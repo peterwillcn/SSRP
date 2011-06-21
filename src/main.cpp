@@ -106,7 +106,7 @@ void doStats() {
                                               listOfJourneys);
 
             if(heuristics[i].useNashAlgorithm)
-                nashEquilibrium(g, false);
+                nashEquilibrium(g);
 
             //timer end
             timespec eTime;
@@ -272,6 +272,8 @@ int main(int argc, char* argv[]) {
             int shortestPathCost = 0;
             for(int i = 0; i < heuristics.size(); i++) {
                 graphGroup g = heuristics[i].func(mainGraph, listOfJourneys);
+                if(heuristics[i].useNashAlgorithm)
+                    nashEquilibrium(g);
                 dumpGraph(g,heuristics[i].name);
                 int result = 0;
                 for(int n = 0; n < listOfJourneys.size(); n++)

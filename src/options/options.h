@@ -64,6 +64,7 @@ extern bool dumpGraphToFile;
 extern bool biSharing;
 extern bool printHeuristicsInfo;
 extern int DEPTH_VALUE;
+extern bool usePareto;
 
 // Stuff for Dease algorithm
 extern int weight_threshold;

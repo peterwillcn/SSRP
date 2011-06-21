@@ -60,6 +60,8 @@ String("Modes:\n", Color::White) +
 "        --dease INT INT INT\n" +
 "            Specify the weight thresdhold, number of passes, and journey\n" +
 "            threshold, respectively, for the dease algorithm.\n" +
+"        --pareto\n" +
+"            Use pareto equilibriums in the nash equilibrium finder.\n" +
 "\n" +
 "    " + String("For information on heuristics, run ", Color::White) +
 String("graph --heuristics-info", Color::Green) + "\n";

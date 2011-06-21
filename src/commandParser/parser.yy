@@ -36,6 +36,7 @@ int numberUnreportedErrors = 0;
 %token BISHARING
 %token DEASEFLAG
 %token HEURISTICSINFO
+%token PARETOFLAG
 
 %union {
     int int_val;
@@ -163,6 +164,10 @@ COMMONARG
             weight_threshold = $2;
             num_passes = $3;
             journey_threshold = $4;
+        }
+    | PARETOFLAG
+        {
+            usePareto = true;
         }
     ;
 

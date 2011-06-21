@@ -24,6 +24,7 @@ bool dumpGraphToFile = false;
 bool biSharing = false;
 bool printHeuristicsInfo = false;
 int DEPTH_VALUE = 2;
+bool usePareto = false;
 
 // Stuff for Dease
 

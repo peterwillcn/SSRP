@@ -46,8 +46,12 @@ demo            { return DEMOMODE; }
 
 "--heuristics-info" { return HEURISTICSINFO; }
 
+"--pareto"      { return PARETOFLAG; }
+
 [a-zA-Z0-9.]*   { yylval.str_val = new string(yytext); return STRING; }
 
 \ |\t|\n        { ; }
+
+.               { ; }
 
 %%
