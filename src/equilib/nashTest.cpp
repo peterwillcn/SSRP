@@ -60,7 +60,7 @@ bool nashEquilibrium(graphGroup& g, bool pareto)
             
             final_paths = g.returnSharedPaths();
             final_costs = g.returnSharedCosts();
-            
+            final_social_cost  = 0;
             for(int q = 0; q < final_costs.size(); ++q)
             {
                 final_social_cost += final_costs[q]; 
