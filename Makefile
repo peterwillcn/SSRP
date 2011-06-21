@@ -2,9 +2,7 @@
 
 .PHONY: clean realclean linecount deleteGraphs doc
 
-EXE =	graph
-
-graph: Makefile.dep
+sspp: Makefile.dep
 	make --no-print-directory -f Makefile.real graph
 
 include Makefile.inc
