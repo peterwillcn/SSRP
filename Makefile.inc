@@ -38,11 +38,11 @@ BISONFIX = ./bisonfix
 LEX = flex
 LFLAGS = -+
 
-COMMONCXXFLAGS = -g -Wno-write-strings
-COMMONLDFLAGS = -g
+#COMMONCXXFLAGS = -g -Wno-write-strings
+#COMMONLDFLAGS = -g
 
-#COMMONCXXFLAGS = -O3 -Wno-write-strings
-#COMMONLDFLAGS = -O3
+COMMONCXXFLAGS = -O3 -Wno-write-strings
+COMMONLDFLAGS = -O3
 
 #COMMONCXXFLAGS = -g -DDEBUG
 

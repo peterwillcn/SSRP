@@ -5,8 +5,11 @@
  * This file holds the definitions for the heuristic type's members and
  * the definitions of the built-in heuristics.
  *
+ * @section newHeuristics Adding New Heuristics
+ * 
  * To add new heuristics, create a heuristic function of type:
  *      graphGroup f(graphGroup, const vector<journeyInfo>&);
+ * 
  * After this is done, create a constant heuristic with this function and a name,
  * then push it onto the heuristics vector inside setupHeuristics().
  */
