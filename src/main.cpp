@@ -106,7 +106,7 @@ void doStats() {
                                               listOfJourneys);
 
             if(heuristics[i].useNashAlgorithm)
-                nashEquilibrium(mainGraph);
+                nashEquilibrium(g, false);
 
             //timer end
             timespec eTime;
