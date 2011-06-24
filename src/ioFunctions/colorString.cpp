@@ -27,13 +27,13 @@ string colorToStr(int c) {
 }
 
 string String(string& data, int color) {
-    string temp = colorToStr(color) + data + ENDC;
-    return temp;
+    //string temp = colorToStr(color) + data + ENDC;
+    return data;
 }
 
 string String(const char* data, int color) {
-    string temp = colorToStr(color) + data + ENDC;
-    return temp;
+    //string temp = colorToStr(color) + data + ENDC;
+    return data;
 }
 
 colorString::colorString()
