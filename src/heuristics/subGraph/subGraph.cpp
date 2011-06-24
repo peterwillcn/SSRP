@@ -28,12 +28,12 @@ graphGroup subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<jou
     vector<int> endPoints(listOfJourneys.size());
 
     // Find the endpoints
-    for(int i = 0; i < listOfJourneys.size(); i++) {
+    for(unsigned i = 0; i < listOfJourneys.size(); i++) {
         startPoints[i] = listOfJourneys[i].source();
         endPoints[i] = listOfJourneys[i].destination();
     }
 
-    for(int i = 0; i < listOfJourneys.size(); i++) {
+    for(unsigned i = 0; i < listOfJourneys.size(); i++) {
         path p = mainGraph.findSP(endPoints[i], endPoints[(i+1)%listOfJourneys.size()]);
 
         midPoints[i] = p.getElement(p.length()/2);
@@ -42,7 +42,7 @@ graphGroup subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<jou
     // Now we have the mid points, the start point, and the ending points for all the journeys.
     // We can start to reduce the graph.
 
-    for(int i = 0; i < listOfJourneys.size(); i++) {
+    for(unsigned i = 0; i < listOfJourneys.size(); i++) {
         path p = mainGraph.findSP(endPoints[i], midPoints[i]);
 
         //cout << "Adding edge (" << endPoints[i] << ", " << midPoints[i] << ", " << p.cost() << ")\n";
@@ -56,7 +56,7 @@ graphGroup subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<jou
         subGraph.addEdge(endPoints[(i+1)%listOfJourneys.size()], midPoints[i], p.cost());
     }
 
-    for(int i = 0; i < midPoints.size(); i++) {
+    for(unsigned i = 0; i < midPoints.size(); i++) {
         path p = mainGraph.findSP(startPoint, midPoints[i]);
 
         //cout << "Adding edge (" << startPoint << ", " << midPoints[i] << ", " << p.cost() << ")\n";
@@ -64,7 +64,7 @@ graphGroup subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<jou
         subGraph.addEdge(midPoints[i], startPoint, p.cost());
     }
 
-    for(int i = 0; i < startPoints.size(); i++) {
+    for(unsigned i = 0; i < startPoints.size(); i++) {
         path p = mainGraph.findSP(startPoints[i], startPoint);
 
         subGraph.addEdge(startPoints[i], startPoint, p.cost());
@@ -73,7 +73,7 @@ graphGroup subGraphHeuristicHelper(const graphGroup& mainGraph, const vector<jou
 
     newGraph.set(subGraph, listOfJourneys);
 
-    for(int i = 0; i < listOfJourneys.size(); i++) {
+    for(unsigned i = 0; i < listOfJourneys.size(); i++) {
         newGraph.addJourneySP(i);
         newGraph.refindSharedCosts();
     }
@@ -90,11 +90,11 @@ graphGroup runSubGraphHeuristic(const graphGroup mainGraph, const vector<journey
 
     int bestStart = 0;
     int bestCost = INT_MAX;
-    for(int startPoint = 0; startPoint < mainGraph.returnN(); startPoint++) {
+    for(unsigned startPoint = 0; startPoint < mainGraph.returnN(); startPoint++) {
 
         graphGroup g = subGraphHeuristicHelper(mainGraph, listOfJourneys, startPoint);
         int cost = 0;
-        for(int i = 0; i < listOfJourneys.size(); i++)
+        for(unsigned i = 0; i < listOfJourneys.size(); i++)
             cost += g.returnSharedCost(i).value();
 
         if(cost < bestCost) {

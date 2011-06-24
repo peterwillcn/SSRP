@@ -26,6 +26,15 @@ int inputInt(const string& prompt) {
     return item;
 }
 
+// Reads in an unsigned integer from cin
+unsigned inputUnsignedInt(const string& prompt){
+    if(not(readFromFile))
+        cout << prompt << " ";
+    unsigned item;
+    (*inFile) >> item;
+    return item;
+}
+
 // Reads in an integer in the range [low, high) from cin
 int inputBoundedInt(const string& prompt, int low, int high) {
     while(true) {
@@ -114,7 +123,7 @@ void outputGreen(const string& s, const string& suffix) {
 }
 
 // Outputs a string to cout with a particular alignment and width
-void outputLeft(const string& s, int w) {
+void outputLeft(const string& s, unsigned w) {
     if(w <= s.size())
         cout << s;
     else {
@@ -122,7 +131,7 @@ void outputLeft(const string& s, int w) {
         cout << " ";
     }
 }
-void outputRight(const string& s, int w) {
+void outputRight(const string& s, unsigned w) {
     if(w <= s.size())
         cout << s;
     else {
@@ -130,7 +139,7 @@ void outputRight(const string& s, int w) {
         outputRight(s, w-1);
     }
 }
-void outputCenter(const string& s, int w) {
+void outputCenter(const string& s, unsigned w) {
     if(w <= s.size())
         cout << s;
     else if(w == s.size()+1)
@@ -142,7 +151,7 @@ void outputCenter(const string& s, int w) {
     }
 }
 
-void outputGreenLeft(const string& s, int w) {
+void outputGreenLeft(const string& s, unsigned w) {
     if(w <= s.size())
         cout << FGGREEN << s << ENDC;
     else {
@@ -151,7 +160,7 @@ void outputGreenLeft(const string& s, int w) {
     }
 }
 
-void outputGreenRight(const string& s, int w) {
+void outputGreenRight(const string& s, unsigned w) {
     if(w <= s.size())
         cout << FGGREEN << s << ENDC;
     else {
@@ -160,7 +169,7 @@ void outputGreenRight(const string& s, int w) {
     }
 }
 
-void outputGreenCenter(const string& s, int w) {
+void outputGreenCenter(const string& s, unsigned w) {
     if(w <= s.size())
         cout << FGGREEN << s << ENDC;
     else if(w == s.size()+1)
@@ -172,7 +181,7 @@ void outputGreenCenter(const string& s, int w) {
     }
 }
 
-void outputRedLeft(const string& s, int w) {
+void outputRedLeft(const string& s, unsigned w) {
     if(w <= s.size())
         cout << FGRED << s << ENDC;
     else {
@@ -181,7 +190,7 @@ void outputRedLeft(const string& s, int w) {
     }
 }
 
-void outputRedRight(const string& s, int w) {
+void outputRedRight(const string& s, unsigned w) {
     if(w <= s.size())
         cout << FGRED << s << ENDC;
     else {
@@ -190,7 +199,7 @@ void outputRedRight(const string& s, int w) {
     }
 }
 
-void outputRedCenter(const string& s, int w) {
+void outputRedCenter(const string& s, unsigned w) {
     if(w <= s.size())
         cout << FGRED << s << ENDC;
     else if(w == s.size()+1)
@@ -202,8 +211,8 @@ void outputRedCenter(const string& s, int w) {
     }
 }
 
-void pad(const string& s, int w) {
-    if(w <= 0)
+void pad(const string& s, unsigned w) {
+    if(w == 0)
         return;
     else {
         cout << s;
@@ -311,7 +320,7 @@ void readGraph(basicEdgeGroup & inputGroup)
 // void readGraphs(vector< basicEdgeGroup > & inputGroups) {
 //     int numGraphs = inputInt("How many graphs are there?");
 //     inputGroups.resize(numGraphs);
-//     for(int i = 0; i < inputGroups.size(); i++)
+//     for(unsigned i = 0; i < inputGroups.size(); i++)
 //         readGraph(inputGroups[i]);
 // }
 
@@ -339,9 +348,12 @@ void readGraphFromFile(basicEdgeGroup & inputGroup)
     */
 
     string fileName = "aa.txt";  //holds file name of file for input
-    int n;  //number of vertices
-    int type;  //type of graph
-    int style;  //style of graph
+    unsigned n;  //number of vertices
+
+    // unused:
+    // int type;  //type of graph
+    // int style;  //style of graph
+
     floatWInf infiniteWeight(true, 0);  //float used to hold infinity
     string infinitySymbol; //holds symbol of infinity in file
     fstream fin;
@@ -357,8 +369,8 @@ void readGraphFromFile(basicEdgeGroup & inputGroup)
     inputGroup.setStyle(0);
 
     //read in graph info
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
+    for(unsigned i = 0; i < n; i++) {
+        for(unsigned j = 0; j < n; j++) {
             string temp;
             fin >> temp;
             if(temp == infinitySymbol)
@@ -391,8 +403,8 @@ void exportGraph(basicEdgeGroup& outputGroup){
     fout << -1 << " ";
     //now the graph info
 
-    for(int i = 0; i < outputGroup.returnN(); i++){
-        for(int j = 0; j < outputGroup.returnN(); j++){
+    for(unsigned i = 0; i < outputGroup.returnN(); i++){
+        for(unsigned j = 0; j < outputGroup.returnN(); j++){
             floatWInf edge_cost = outputGroup.cost(i,j);
             if(edge_cost.isInfinity())
                 fout << -1 << " ";
@@ -426,15 +438,15 @@ void dumpGraph(const graphGroup& g, const string& fileLabel) {
 
         if(useDoubleEndpoints) {
             fout << "\tnode [shape=doublecircle] ";
-            for(int i =0 ; i < paths.size(); i++) {\
+            for(unsigned i = 0; i < paths.size(); i++) {\
                 fout << paths[i].actualPath()[0] << " " << paths[i].actualPath()[paths[i].actualPath().size()-1] << " ";
             }
         }
         fout << "\n\tnode [shape=circle];\n";
 
         if(g.directed()) {
-            for(int i = 0; i < g.returnN(); i++) {
-                for(int j = 0; j < g.returnN(); j++) {
+            for(unsigned i = 0; i < g.returnN(); i++) {
+                for(unsigned j = 0; j < g.returnN(); j++) {
                     if(not(g.totalEdgeCost(i, j).isInfinity())) {
                         if(i != j) {
                             fout << "\t" << i << " -> " << j << " ";
@@ -443,10 +455,10 @@ void dumpGraph(const graphGroup& g, const string& fileLabel) {
                             fout << "len = " << g.totalEdgeCost(i, j).value() << ".0 ";
                             bool edgeUsed = false;
                             vector<string> edgeColors;
-                            for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
-                                for(int pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
-                                    if((paths[pathNum].actualPath()[pathPart] == j &&
-                                        paths[pathNum].actualPath()[pathPart-1] == i)) {
+                            for(unsigned pathNum = 0; pathNum < paths.size(); pathNum++) {
+                                for(unsigned pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
+                                    if((unsigned(paths[pathNum].actualPath()[pathPart]) == j &&
+                                        unsigned(paths[pathNum].actualPath()[pathPart-1]) == i)) {
                                         edgeColors.push_back(colors[pathNum%colors.size()]);
                                         edgeUsed = true;
                                     }
@@ -454,7 +466,7 @@ void dumpGraph(const graphGroup& g, const string& fileLabel) {
                             }
                             if(edgeUsed) {
                                 fout << "color=\"";
-                                for(int i = 0; i < edgeColors.size(); i++) {
+                                for(unsigned i = 0; i < edgeColors.size(); i++) {
                                     fout << edgeColors[i];
                                     if(i < edgeColors.size()-1)
                                         fout << ":";
@@ -468,20 +480,20 @@ void dumpGraph(const graphGroup& g, const string& fileLabel) {
             }
         }
         else {
-            for(int i = 0; i < g.returnN(); i++) {
-                for(int j = i+1; j < g.returnN(); j++) {
+            for(unsigned i = 0; i < g.returnN(); i++) {
+                for(unsigned j = i+1; j < g.returnN(); j++) {
                     if(not(g.totalEdgeCost(i, j).isInfinity())) {
                         fout << "\t" << i << " -- " << j << " ";
                         fout << " [ ";
                         fout << "label = \"" << g.totalEdgeCost(i, j).value() << "\" ";
                         bool edgeUsed = false;
                         vector<string> edgeColors;
-                        for(int pathNum = 0; pathNum < paths.size(); pathNum++) {
-                            for(int pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
-                                if((paths[pathNum].actualPath()[pathPart] == j &&
-                                    paths[pathNum].actualPath()[pathPart-1] == i) ||
-                                    (paths[pathNum].actualPath()[pathPart] == i &&
-                                    paths[pathNum].actualPath()[pathPart-1] == j)) {
+                        for(unsigned pathNum = 0; pathNum < paths.size(); pathNum++) {
+                            for(unsigned pathPart = 1; pathPart < paths[pathNum].actualPath().size(); pathPart++) {
+                                if((unsigned(paths[pathNum].actualPath()[pathPart]) == j &&
+                                    unsigned(paths[pathNum].actualPath()[pathPart-1]) == i) ||
+                                    (unsigned(paths[pathNum].actualPath()[pathPart]) == i &&
+                                    unsigned(paths[pathNum].actualPath()[pathPart-1]) == j)) {
                                     edgeColors.push_back(colors[pathNum%colors.size()]);
                                     edgeUsed = true;
                                 }
@@ -489,7 +501,7 @@ void dumpGraph(const graphGroup& g, const string& fileLabel) {
                         }
                         if(edgeUsed) {
                             fout << "color=\"";
-                            for(int i = 0; i < edgeColors.size(); i++) {
+                            for(unsigned i = 0; i < edgeColors.size(); i++) {
                                 fout << edgeColors[i];
                                 if(i < edgeColors.size()-1)
                                     fout << ":";
@@ -503,7 +515,7 @@ void dumpGraph(const graphGroup& g, const string& fileLabel) {
         }
 
         if(printLabelNodes) {
-            for(int i = 0; i < paths.size(); i++) {
+            for(unsigned i = 0; i < paths.size(); i++) {
                 fout << "node [shape=circle ";
                 fout << "label=\"Journey " << i << "\\n";
                 fout << paths[i].actualPath()[0] << " -> " << paths[i].actualPath()[paths[i].actualPath().size()-1];
@@ -532,9 +544,9 @@ void printGraph(const graphGroup& g) {
     output("Printing graph with current costs:");
     //output(str(g.returnN()) + " vertices");
 
-    for(int i = 0; i < g.returnN(); i++)
+    for(unsigned i = 0; i < g.returnN(); i++)
     {
-        for(int j = 0; j < g.returnN(); j++)
+        for(unsigned j = 0; j < g.returnN(); j++)
         {
             if(g.totalEdgeCost(i, j).isInfinity() == true) {
 
@@ -571,18 +583,18 @@ void readJourneys(vector< journeyInfo > & journeysInformation, const basicEdgeGr
         readJourneysFromFile(journeysInformation);
     else
     {
-        int numJourneys = inputInt("How many journeys to create?");
+        unsigned numJourneys = inputUnsignedInt("How many journeys to create?");
         if(getChoice("Create random journeys?"))
         {
             journeysInformation.resize(numJourneys);
-            for(int i = 0; i < numJourneys; i++)
+            for(unsigned i = 0; i < numJourneys; i++)
                 journeysInformation[i].setJourneyNum(i);
             generateJourneys(journeysInformation, numberVertices);
         }
         else
         {
             journeysInformation.resize(numJourneys);
-            for(int i = 0; i < numJourneys; i++)
+            for(unsigned i = 0; i < numJourneys; i++)
             {
                 journeysInformation[i].setJourneyNum(i);
                 journeysInformation[i].setSource(inputInt("Source of journey "+str(i)+":"));
@@ -612,11 +624,14 @@ void readJourneysFromFile(vector< journeyInfo > & journeysInformation) {
     *   .           .
     *   source(n-1) destination(n-1)
     */
-    char usersAnswer;   //holds user's answer
+
+    // unused:
+    //char usersAnswer;   //holds user's answer
+    //int testNumber;     //holds file/test number
+
     string fileName;    // holds the filename of the input file
-    int testNumber;     //holds file/test number
     int tempVertex = 0; //holds vertex number while reading from file
-    int numJourneys;    //number of journeys
+    unsigned numJourneys;    //number of journeys
     fstream fin;
 
     fileName = inputString("Input filename to read from: ");
@@ -626,7 +641,7 @@ void readJourneysFromFile(vector< journeyInfo > & journeysInformation) {
     journeysInformation.resize(numJourneys);
 
     //read in journeys
-    for(int i = 0; i < numJourneys; i++) {
+    for(unsigned i = 0; i < numJourneys; i++) {
         fin >> tempVertex;
         journeysInformation[i].setSource(tempVertex);
         fin >> tempVertex;
@@ -637,7 +652,7 @@ void readJourneysFromFile(vector< journeyInfo > & journeysInformation) {
 
 // print all info on journeys
 void printJourneys(const journeyGroup& jgroup) {
-    for(int i = 0; i < jgroup.numJourneys(); i++) {
+    for(unsigned i = 0; i < jgroup.numJourneys(); i++) {
         output("Journey " + str(i) + ":");
         printJourney(jgroup[i]);
     }
@@ -653,7 +668,7 @@ void printJourney(const journey& j) {
 void printJourneyPaths(const journeyGroup& jgroup) {
 
     cout << "Paths for journeys: " << endl;
-    for(int i = 0; i < jgroup.numJourneys(); i++)
+    for(unsigned i = 0; i < jgroup.numJourneys(); i++)
         printJourneyPath(jgroup[i]);
 
 }
@@ -663,7 +678,7 @@ void printJourneyPath(const journey& j) {
 
     cout << "\tSingle Path: ";
     if(j.hasSinglePath() == true) {
-        for(int i = 0; i < j.singleActualPath().size(); i++)
+        for(unsigned i = 0; i < j.singleActualPath().size(); i++)
             cout << j.singleActualPath()[i] << " ";
     }
     else {
@@ -674,7 +689,7 @@ void printJourneyPath(const journey& j) {
 
     cout << "\tShared Path: ";
     if(j.hasSharedPath() == true) {
-        for(int i = 0; i < j.sharedActualPath().size(); i++)
+        for(unsigned i = 0; i < j.sharedActualPath().size(); i++)
             cout << j.sharedActualPath()[i] << " ";
     }
     else {
@@ -689,7 +704,7 @@ void printJourneyPath(const journey& j) {
 void printJourneyCosts(const journeyGroup& jgroup) {
 
     cout << "Costs for journeys: " << endl;
-    for(int i = 0; i < jgroup.numJourneys(); i++)
+    for(unsigned i = 0; i < jgroup.numJourneys(); i++)
         printJourneyCost(jgroup[i]);
 
 }

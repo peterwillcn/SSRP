@@ -10,13 +10,13 @@
 bool nashEquilibrium(graphGroup& g) 
 {
     bool result = true;
-    int count = 0;
+    unsigned count = 0;
     
     vector<path> final_paths = g.returnSharedPaths();
     vector<floatWInf> final_costs = g.returnSharedCosts();
     floatWInf final_social_cost = 0;
     
-    for(int q = 0; q < final_costs.size(); ++q)
+    for(unsigned q = 0; q < final_costs.size(); ++q)
     {
         final_social_cost += final_costs[q]; 
     }
@@ -26,7 +26,7 @@ bool nashEquilibrium(graphGroup& g)
  
     
     //loop through all journeys
-    int j = 0; 
+    unsigned j = 0;
     while(j < g.numJourneys()) 
     {
         //remove journey from graph
@@ -38,7 +38,7 @@ bool nashEquilibrium(graphGroup& g)
         floatWInf next_social_cost = 0;
         
         //check social cost
-        for(int q = 0; q < g.returnSharedCosts().size(); ++q)
+        for(unsigned q = 0; q < g.returnSharedCosts().size(); ++q)
         {
             next_social_cost += g.returnSharedCosts()[q]; 
         }
@@ -67,7 +67,7 @@ bool nashEquilibrium(graphGroup& g)
             final_paths = g.returnSharedPaths();
             final_costs = g.returnSharedCosts();
             final_social_cost  = 0;
-            for(int q = 0; q < final_costs.size(); ++q)
+            for(unsigned q = 0; q < final_costs.size(); ++q)
             {
                 final_social_cost += final_costs[q]; 
             }

@@ -32,14 +32,14 @@ YACC = bison
 YFLAGS = -d
 
 # Bisonfix
-BISONFIX = ./bisonfix
+BISONFIX = bin/bisonfix
 
 # Flex
 LEX = flex
 LFLAGS = -+
 
-#COMMONCXXFLAGS = -g -Wno-write-strings
-#COMMONLDFLAGS = -g
+#COMMONCXXFLAGS = -g -Wall -Wno-write-strings
+#COMMONLDFLAGS = -g -Wall
 
 COMMONCXXFLAGS = -O3 -Wno-write-strings
 COMMONLDFLAGS = -O3

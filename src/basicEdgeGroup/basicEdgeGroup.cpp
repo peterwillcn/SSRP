@@ -24,7 +24,7 @@ using namespace std;
 //
 //O(1)
 basicEdgeGroup::basicEdgeGroup()
-  :group(), type(0), style(0)
+  : type(0), style(0), group()
 {
   
 }
@@ -45,8 +45,8 @@ basicEdgeGroup::basicEdgeGroup(const basicEdgeGroup& newGroup)
   
   setN(newGroup.returnN());
   
-  for(int i = 0; i < returnN(); i++)
-    for(int j = 0; j < returnN(); j++)
+  for(unsigned i = 0; i < returnN(); i++)
+    for(unsigned j = 0; j < returnN(); j++)
       addEdge(i, j, newGroup.cost(i, j));
   
 }
@@ -99,7 +99,7 @@ basicEdgeGroup::basicEdgeGroup(int numVertices, int newType, int newStyle)
 // -returns n
 //
 //O(1)
-int basicEdgeGroup::returnN() const
+unsigned basicEdgeGroup::returnN() const
 {
   
   return group.size();
@@ -168,10 +168,10 @@ floatWInf basicEdgeGroup::returnEdgeCost(int i, int j) const
 void basicEdgeGroup::reverse(basicEdgeGroup & reversee) const
 {
   
-  int n = returnN();
+  unsigned n = returnN();
   reversee.setN(n);
-  for(int i = 0; i < n; i++)
-    for(int j = 0; j < n; j++)
+  for(unsigned i = 0; i < n; i++)
+    for(unsigned j = 0; j < n; j++)
       reversee.addEdge(j, i, cost(i, j));
 
   
@@ -191,11 +191,11 @@ bool basicEdgeGroup::directed() const {
 // -number of vertices in graph is equal to newN
 //
 //O(newN ^2)
-void basicEdgeGroup::setN(int newN)
+void basicEdgeGroup::setN(unsigned newN)
 {
   
   group.resize(newN);
-  for(int i = 0; i < newN; i++)
+  for(unsigned i = 0; i < newN; i++)
     group[i].resize(newN);
   
 }

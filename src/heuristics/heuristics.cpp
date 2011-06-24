@@ -58,5 +58,4 @@ void setupHeuristics() {
     heuristics.push_back(nashEquilibriumH);
     heuristics.push_back(deaseAlgH);
     heuristics.push_back(spanningNashH);
-    heuristics.push_back(traversalH);
 }

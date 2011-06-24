@@ -41,7 +41,7 @@ class path
   int returnEnd() const;
   bool isSingleEdge() const;
   bool isNull() const;
-  int length() const;
+  unsigned length() const;
   int getElement(int ref) const;
 
   //general path member func's

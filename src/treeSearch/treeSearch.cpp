@@ -15,11 +15,11 @@ treeNode::treeNode(int depth,
                    graphGroup& associatedGraph,
                    int DepthValue
                   )
-    : journey(journeyNum),
+    : graph(associatedGraph),
       journeys(journeysNotRouted),
-      graph(associatedGraph),
-      depthValue(DepthValue),
-      depthBelow(0)
+      journey(journeyNum),
+      depthBelow(0),
+      depthValue(DepthValue)
 {
     //cout << "Creating node for " << journeyNum << " at depth " << depth << endl;
     createUpToDepth(depth);
@@ -47,7 +47,7 @@ void treeNode::createUpToDepth(int depth) const {
     if(depthBelow != 0)
     {
         // Have our children create down to the depth-1
-        for(int i = 0; i < children.size(); i++)
+        for(unsigned i = 0; i < children.size(); i++)
         {
             children[i]->createUpToDepth(depth-1);
         }
@@ -58,7 +58,7 @@ void treeNode::createUpToDepth(int depth) const {
     {
         // Then create new nodes for our children,
         // Recursively having them create down to the depth-1
-        for(int i = 0; i < journeys.size(); i++)
+        for(unsigned i = 0; i < journeys.size(); i++)
         {
             vector<int> temp = journeys;
             temp.erase(temp.begin()+i);
@@ -72,18 +72,18 @@ void treeNode::createUpToDepth(int depth) const {
 treeNode::treeNode(int depth,
                    vector<int> journeysNotRouted,
                    graphGroup& associatedGraph)
-    : journey(-1),
+    : graph(associatedGraph),
       journeys(journeysNotRouted),
-      graph(associatedGraph),
-      depthValue(depth),
-      depthBelow(0)
+      journey(-1),
+      depthBelow(0),
+      depthValue(depth)
 {
     //cout << "Creating root node at depth " << depth << endl;
     createUpToDepth(depth);
 }
 
 treeNode::~treeNode() {
-    for(int i = 0; i < children.size(); i++) {
+    for(unsigned i = 0; i < children.size(); i++) {
         delete children[i];
     }
 }
@@ -92,7 +92,7 @@ void treeNode::print() const {
     cout << "( " << journey << " ";
     if(children.size() > 0) {
         cout << "{ ";
-        for(int i =0 ; i < children.size(); i++) {
+        for(unsigned i =0 ; i < children.size(); i++) {
             children[i]->print();
             if(i < children.size()-1)
                 cout << ", ";
@@ -102,7 +102,7 @@ void treeNode::print() const {
     cout << ") ";
 }
 
-int treeNode::numChildren() const {
+unsigned treeNode::numChildren() const {
     if(children.size() == 0 && journeys.size() > 0)
         createUpToDepth(1);
     return children.size();
@@ -111,7 +111,7 @@ int treeNode::numChildren() const {
 treeNode* treeNode::findChild(int journeyNumber) {
     if(children.size() == 0 && journeys.size() > 0)
         createUpToDepth(1);
-    for(int i = 0; i < numChildren(); i++) {
+    for(unsigned i = 0; i < numChildren(); i++) {
         if(child(i)->journeyNumber() == journeyNumber)
             return child(i);
     }
@@ -155,7 +155,7 @@ pair<int,vector<int> > treeNode::search(int d) {
     if(d == 0) {
         int bestCost;
         int bestChild;
-        for(int i = 0; i < numChildren(); i++) {
+        for(unsigned i = 0; i < numChildren(); i++) {
             graph.addJourneySP(child(i)->journeyNumber());
             if(graph.totalSharedCost() < bestCost || i == 0) {
                 bestCost = graph.totalSharedCost().value();
@@ -169,7 +169,7 @@ pair<int,vector<int> > treeNode::search(int d) {
     else {
         int bestCost;
         vector<int> bestPath;
-        for(int i = 0; i < numChildren(); i++) {
+        for(unsigned i = 0; i < numChildren(); i++) {
             graph.addJourneySP(child(i)->journeyNumber());
             pair<int,vector<int> > temp = child(i)->search(d-1);
             if(temp.first < bestCost || i == 0) {

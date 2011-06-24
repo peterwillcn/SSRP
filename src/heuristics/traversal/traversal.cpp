@@ -36,7 +36,7 @@ graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journe
     // Initialize journeys
     vector<int> journeys(listOfJourneys.size());
 
-    for(int i = 0; i < journeys.size(); i++)
+    for(unsigned i = 0; i < journeys.size(); i++)
         journeys[i] = i;
 
     vector<int> solution;
@@ -51,7 +51,7 @@ graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journe
         t = t->findChild(val.second[0]);
         g.addJourneySP(val.second[0]);
         solution.push_back(val.second[0]);
-        for(int i = 0; i < journeys.size(); i++) {
+        for(unsigned i = 0; i < journeys.size(); i++) {
             if(journeys[i] == val.second[0]) {
                 journeys.erase(journeys.begin()+i);
                 break;
@@ -63,7 +63,7 @@ graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journe
     // journeys contains a list of all the journey numbers that have yet to be routed.
     // solution contains the journeys that have been routed and in which order.
     // t points to the node that is about to be searched.
-    for(int trialNum = 0; journeys.size() > 1; trialNum++) {
+    for(unsigned trialNum = 0; journeys.size() > 1; trialNum++) {
         if(t->numChildren() == 0) {
             break; // Do Nothing
         }
@@ -76,7 +76,7 @@ graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journe
 
             pair<int, vector<int> > val = t->search(DEPTH_VALUE);
             treeNode* oldT = t;
-            for(int i = 0; i < oldT->numChildren(); i++) {
+            for(unsigned i = 0; i < oldT->numChildren(); i++) {
                 if(oldT->child(i)->journeyNumber() == val.second[0]) {
                     t = oldT->child(i);
                 }
@@ -86,7 +86,7 @@ graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journe
             }
             g.addJourneySP(val.second[0]);
             solution.push_back(val.second[0]);
-            for(int i = 0; i < journeys.size(); i++) {
+            for(unsigned i = 0; i < journeys.size(); i++) {
                 if(journeys[i] == val.second[0]) {
                     journeys.erase(journeys.begin()+i);
                     break;
@@ -102,7 +102,7 @@ graphGroup runTraversalHeuristic(const graphGroup mainGraph, const vector<journe
     graphGroup soln;
     soln.set(mainGraph.returnGraph(), listOfJourneys);
 
-    for(int i = 0; i < solution.size(); i++) {
+    for(unsigned i = 0; i < solution.size(); i++) {
         soln.addJourneySP(solution[i]);
     }
 

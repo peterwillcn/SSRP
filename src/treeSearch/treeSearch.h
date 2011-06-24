@@ -40,7 +40,7 @@ public:
 
     void print() const;
 
-    int numChildren() const;
+    unsigned numChildren() const;
 
     treeNode* findChild(int journeyNumber);
 

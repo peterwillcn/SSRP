@@ -12,7 +12,7 @@ STGroup::~STGroup(void)
 }
 
 //find a minimum spanning tree using prim's algorithim with a specified start vertex
-void STGroup::findMinSpanningTree(const basicEdgeGroup& graph, int startvertex)
+void STGroup::findMinSpanningTree(const basicEdgeGroup& graph, unsigned startvertex)
 {
   //the resultant tree will have v - 1 edges
   this->resultantTree = basicEdgeGroup(graph.returnN());
@@ -22,7 +22,7 @@ void STGroup::findMinSpanningTree(const basicEdgeGroup& graph, int startvertex)
   std::vector<bool> inTree(graph.returnN(), false);
   curVerticies.push_back(startvertex);
   inTree[startvertex] = true;
-  int edgesAdded = 0;
+  unsigned edgesAdded = 0;
 
   //loop until tree is full
   while(edgesAdded < graph.returnN() - 1)
@@ -33,11 +33,11 @@ void STGroup::findMinSpanningTree(const basicEdgeGroup& graph, int startvertex)
     floatWInf curMinCost = floatWInf(true, 0);
     
     //check each of the verticies already in the tree
-    for(int j = 0; j < curVerticies.size(); ++j)
+    for(unsigned j = 0; j < curVerticies.size(); ++j)
     {
-      int curVertex = curVerticies[j];
+      unsigned curVertex = curVerticies[j];
       //check all adjacent verticies
-      for(int i = 0; i < graph.returnN(); ++i)
+      for(unsigned i = 0; i < graph.returnN(); ++i)
       {
         
         //no edge to this vertex

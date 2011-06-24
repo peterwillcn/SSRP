@@ -52,7 +52,7 @@ void doStats() {
 
     // Output formatting
     pad(" ", 10); output("|", "");
-    for(int i = 0; i < heuristics.size(); i++){
+    for(unsigned i = 0; i < heuristics.size(); i++){
         outputCenter(heuristics[i].name, heuristics[i].name.size()+2);
         output("|", "");
     }
@@ -64,7 +64,7 @@ void doStats() {
                                                                                0.0));
 
     //Run through each case(newly generated graph)
-    for(int caseNumber = 0; caseNumber < STATcount; caseNumber++) {
+    for(unsigned caseNumber = 0; caseNumber < STATcount; caseNumber++) {
         //print case #
         int graphNum = getGraphNumber();
         output("Case:", "");
@@ -84,7 +84,7 @@ void doStats() {
 
         //generate random journeys
         listOfJourneys.resize(STATjourneys);
-        for(int i = 0; i < STATjourneys; i++)
+        for(unsigned i = 0; i < STATjourneys; i++)
             listOfJourneys[i].setJourneyNum(i);
         generateJourneys(listOfJourneys, STATvertices);
         mainGraph.set(g, listOfJourneys);
@@ -96,7 +96,7 @@ void doStats() {
         vector<double> times(heuristics.size(), 0.0);
 
         //run each "heuristic"
-        for(int i = 0; i < heuristics.size(); i++) {
+        for(unsigned i = 0; i < heuristics.size(); i++) {
             //timer start
             timespec sTime;
             clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &sTime);
@@ -130,7 +130,7 @@ void doStats() {
         //find best(lowest total cost) "heuristic"(s)
         floatWInf best = floatWInf(true, 0);
         int numBest = 0;
-        for(int i = 0; i < heuristics.size(); i++) {
+        for(unsigned i = 0; i < heuristics.size(); i++) {
             if(results[i] < best) {
                 best = results[i];
                 numBest = 1;
@@ -143,7 +143,7 @@ void doStats() {
         //calculate the total time taken for the heuristics on case,
         //print results and time
         double totalTime = 0;
-        for(int i = 0; i < heuristics.size(); i++) {
+        for(unsigned i = 0; i < heuristics.size(); i++) {
             totalTime += times[i];
             if(results[i] == best) {
                 numberCorrect[i].first++;
@@ -166,7 +166,7 @@ void doStats() {
     //output heuristic names for totals data
     outputLeft("Totals:", 10);
     output("|", "");
-    for(int i = 0; i < heuristics.size(); i++) {
+    for(unsigned i = 0; i < heuristics.size(); i++) {
         outputCenter(heuristics[i].name, heuristics[i].name.size()+2);
         output("|", "");
     }
@@ -175,7 +175,7 @@ void doStats() {
     //output total wins for each heuristic
     pad(" ", 10);
     output("|", "");
-    for(int i = 0; i < heuristics.size(); i++) {
+    for(unsigned i = 0; i < heuristics.size(); i++) {
         output(str(numberCorrect[i].first), "");
         outputRight(str(numberCorrect[i].second, 4),
                     heuristics[i].name.size()+2
@@ -188,7 +188,7 @@ void doStats() {
     outputLeft("Time (s):", 10);
     output("|", "");
     double totalTime = 0;
-    for(int i = 0; i < heuristics.size(); i++) {
+    for(unsigned i = 0; i < heuristics.size(); i++) {
         outputRight(str(double(numberCorrect[i].third)),
                     heuristics[i].name.size()+2);
         output("|", "");
@@ -199,7 +199,7 @@ void doStats() {
     //output time percentage for each heuristic
     outputLeft("Time (%):", 10);
     output("|", "");
-    for(int i = 0; i < heuristics.size(); i++) {
+    for(unsigned i = 0; i < heuristics.size(); i++) {
         outputRight(str(((double(numberCorrect[i].third)) * 100.0)  / totalTime),
                     heuristics[i].name.size()+2);
         output("|", "");
@@ -213,7 +213,7 @@ int main(int argc, char* argv[]) {
     output(welcomeHeader);
 
     ostringstream temp;
-    for(int i = 1; i < argc; i++) {
+    for(unsigned i = 1; i < unsigned(argc); i++) {
         temp << argv[i] << " ";
     }
     istringstream* yyin = new istringstream(temp.str());
@@ -257,7 +257,7 @@ int main(int argc, char* argv[]) {
             readGraph(basicGraph);
             readJourneys(listOfJourneys, basicGraph);
 
-            for(int i = 0; i < listOfJourneys.size(); i++) {
+            for(unsigned i = 0; i < listOfJourneys.size(); i++) {
                 output("Journey " +str(i)+ ": ", "");
                 output(str(listOfJourneys[i].source()) + " -> " +
                        str(listOfJourneys[i].destination()));
@@ -265,18 +265,18 @@ int main(int argc, char* argv[]) {
 
             // Set the journey numbers for each journey:
             // Journey i's journey number is i
-            for(int i = 0; i < listOfJourneys.size(); i++)
+            for(unsigned i = 0; i < listOfJourneys.size(); i++)
                 listOfJourneys[i].setJourneyNum(i);
             mainGraph.set(basicGraph, listOfJourneys);
 
             int shortestPathCost = 0;
-            for(int i = 0; i < heuristics.size(); i++) {
+            for(unsigned i = 0; i < heuristics.size(); i++) {
                 graphGroup g = heuristics[i].func(mainGraph, listOfJourneys);
                 if(heuristics[i].useNashAlgorithm)
                     nashEquilibrium(g);
                 dumpGraph(g,heuristics[i].name);
                 int result = 0;
-                for(int n = 0; n < listOfJourneys.size(); n++)
+                for(unsigned n = 0; n < listOfJourneys.size(); n++)
                     result += g.returnSharedCost(n).value();
                 if(i == 0)
                     shortestPathCost = result;

@@ -1,0 +1,47 @@
+#!/bin/bash
+
+make
+
+# Big Graph
+#echo -e "\e[1\;33mBig Graph\e[0m"
+#sspp stat -v 500 -j 100 -w 10 100
+
+# Medium Graph
+echo -e "\e[1;33mMedium Graph\e[0m"
+sspp stat -v 100 -j 20 -w 10 50
+
+# Small Graph
+echo -e "\e[1;33mSmall Graph\e[0m"
+sspp stat -v 20 -j 4 -w 1 10
+
+# More Counts
+echo -e "\e[1;33mMore counts\e[0m"
+sspp stat -v 100 -j 20 -w 10 50 -c 20
+
+# Fewer Counts
+echo -e "\e[1;33mFewer counts\e[0m"
+sspp stat -v 100 -j 20 -w 10 50 -c 5
+
+# Bi-directional sharing
+echo -e "\e[1;33mBi-directional sharing\e[0m"
+sspp stat -v 100 -j 20 -w 10 50 -b
+
+# Printing
+echo -e "\e[1;33mPrinting\e[0m"
+sspp stat -v 100 -j 20 -w 10 50 -p
+
+# Directed
+echo -e "\e[1;33mDirected\e[0m"
+sspp stat -v 100 -j 20 -w 10 50 -d
+
+# Dease
+echo -e "\e[1;33mDease\e[0m"
+sspp stat -v 100 -j 20 -w 10 50 --dease 0 10 5
+
+# Pareto
+echo -e "\e[1;33mPareto\e[0m"
+sspp stat -v 100 -j 20 -w 10 50 --pareto
+
+# All
+echo -e "\e[1;33mAll\e[0m"
+sspp stat -v 100 -j 20 -w 10 50 -c 20 -b -p -d --dease 0 10 5 --pareto

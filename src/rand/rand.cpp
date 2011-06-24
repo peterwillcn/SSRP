@@ -55,7 +55,7 @@ int randomWeight(int min, int max)
 //post:
 // -inputGroup has been set randomly with user selected properties
 void generateGraphs(vector< basicEdgeGroup > & randomGraphs) {
-    for(int i = 0; i < randomGraphs.size(); i++)
+    for(unsigned i = 0; i < randomGraphs.size(); i++)
         generateGraph(randomGraphs[i]);
 }
 
@@ -110,7 +110,7 @@ void generateGraph(basicEdgeGroup & randomGraph) {
 void generateFiniteWeightedGraph(basicEdgeGroup& randomGraph) {
     //finite weights
 
-    int numberVertices = inputInt("How many vertices does the graph have?");
+    unsigned numberVertices = inputUnsignedInt("How many vertices does the graph have?");
     randomGraph.setN(numberVertices);
 
     int numOfRanges;
@@ -120,7 +120,7 @@ void generateFiniteWeightedGraph(basicEdgeGroup& randomGraph) {
         numOfRanges = 1;
 
     vector<vector<int> > ranges(numOfRanges);
-    for(int m = 0; m < ranges.size(); m++) {
+    for(unsigned m = 0; m < ranges.size(); m++) {
         ranges[m].resize(2);
         //first is min, second is max
         ranges[m][0] = inputInt("What is min of range "+str(m)+"?");
@@ -136,10 +136,10 @@ void generateFiniteWeightedGraph(basicEdgeGroup& randomGraph) {
     else
         randomGraph.setUndirected();
 
-    for(int k = 0; k < numberVertices; k++) {
+    for(unsigned k = 0; k < numberVertices; k++) {
         if(numOfRanges == 1) {
             //only one range
-            for(int l = 0; l < numberVertices; l++) {
+            for(unsigned l = 0; l < numberVertices; l++) {
                 //select random weights
                 if(k == l)
                     randomGraph.addEdge(k, l, 0);
@@ -155,15 +155,15 @@ void generateFiniteWeightedGraph(basicEdgeGroup& randomGraph) {
             //multiple ranges
 
             //select order for vertices
-            vector<int> vertexList(numberVertices);
-            vector<int> whichRange(numberVertices);
+            vector<unsigned> vertexList(numberVertices);
+            vector<unsigned> whichRange(numberVertices);
 
             // !! vertex list is backwards !!
-            for(int l = 0; l < numberVertices; l++)
+            for(unsigned l = 0; l < numberVertices; l++)
                 vertexList[l] = numberVertices - l - 1;
 
             //set random ranges (whichRange at the end of the loop has all vertices listed in a random order)
-            for(int l = 0; l < whichRange.size(); l++) {
+            for(unsigned l = 0; l < whichRange.size(); l++) {
                 int tempValue = randomGenerator(vertexList.size()-1);
                 whichRange[l] = vertexList[tempValue];
                 vertexList[tempValue] = vertexList[vertexList.size() - 1];
@@ -175,7 +175,7 @@ void generateFiniteWeightedGraph(basicEdgeGroup& randomGraph) {
             int rangeIncrement = (numberVertices - k - 1) / numOfRanges;
             if(rangeIncrement <= 0) // watch divide by zero
                 rangeIncrement = 1;
-            for(int l = 0; l < numberVertices; l++) {
+            for(unsigned l = 0; l < numberVertices; l++) {
                 if(k == whichRange[l])
                     randomGraph.addEdge(k, whichRange[l], 0);
                 else {
@@ -195,7 +195,7 @@ void generateFiniteWeightedGraph(basicEdgeGroup& randomGraph) {
 void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
     // some random infinite weights
 
-    int numberVertices = inputInt("How many vertices does the graph have?");
+    unsigned numberVertices = inputUnsignedInt("How many vertices does the graph have?");
     randomGraph.setN(numberVertices);
 
     int numOfRanges;
@@ -205,7 +205,7 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
         numOfRanges = 1;
 
     vector<vector<int> > ranges(numOfRanges);
-    for(int m = 0; m < ranges.size(); m++) {
+    for(unsigned m = 0; m < ranges.size(); m++) {
         ranges[m].resize(2);
         //first is min, second is max
         ranges[m][0] = inputInt("What is min of range "+str(m)+"?");
@@ -221,10 +221,10 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
     else
         randomGraph.setUndirected();
 
-    for(int k = 0; k < numberVertices; k++) {
+    for(unsigned k = 0; k < numberVertices; k++) {
         if(numOfRanges == 1) {
             //only one range
-            for(int l = 0; l < numberVertices; l++) {
+            for(unsigned l = 0; l < numberVertices; l++) {
                 //select random weights
                 if(k == l)
                     randomGraph.addEdge(k, l, 0);
@@ -240,15 +240,15 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
             //multiple ranges
 
             //select order for vertices
-            vector<int> vertexList(numberVertices);
-            vector<int> whichRange(numberVertices);
+            vector<unsigned> vertexList(numberVertices);
+            vector<unsigned> whichRange(numberVertices);
 
             // !! vertex list is backwards !!
-            for(int l = 0; l < numberVertices; l++)
+            for(unsigned l = 0; l < numberVertices; l++)
                 vertexList[l] = numberVertices - l - 1;
 
             //set random ranges (whichRange at the end of the loop has all vertices listed in a random order)
-            for(int l = 0; l < whichRange.size(); l++) {
+            for(unsigned l = 0; l < whichRange.size(); l++) {
                 int tempValue = randomGenerator(vertexList.size()-1);
                 whichRange[l] = vertexList[tempValue];
                 vertexList[tempValue] = vertexList[vertexList.size() - 1];
@@ -260,7 +260,7 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
             int rangeIncrement = (numberVertices - k - 1) / numOfRanges;
             if(rangeIncrement <= 0) // watch divide by zero
                 rangeIncrement = 1;
-            for(int l = 0; l < numberVertices; l++) {
+            for(unsigned l = 0; l < numberVertices; l++) {
                 if(k == whichRange[l])
                     randomGraph.addEdge(k, whichRange[l], 0);
                 else {
@@ -283,15 +283,15 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
     int numberInfiniteEdges = (numberVertices * (numberVertices-1) / 2) *  (infinitePercent/100.0);
 
     vector<pair<int, int> > notInfinity;
-    for(int i = 0; i < numberVertices; i++) {
-        for(int j = 0; j < numberVertices; j++) {
+    for(unsigned i = 0; i < numberVertices; i++) {
+        for(unsigned j = 0; j < numberVertices; j++) {
             if(i != j)
                 notInfinity.push_back(pair<int,int>(i,j));
         }
     }
 
     //select random infinite edges
-    for(int numberOfEdgesLeft = numberInfiniteEdges; numberOfEdgesLeft > 0; numberOfEdgesLeft--) {
+    for(unsigned numberOfEdgesLeft = numberInfiniteEdges; numberOfEdgesLeft > 0; numberOfEdgesLeft--) {
         int r = randomGenerator(notInfinity.size()-1);
         randomGraph.addEdge(notInfinity[r].first, notInfinity[r].second, infinity);
         if(undirected)
@@ -303,7 +303,7 @@ void generateInfiniteWeigtedGraph(basicEdgeGroup& randomGraph) {
 void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
     //limited directional movement
 
-    int numberVertices = inputInt("How many vertices does the graph have?");
+    unsigned numberVertices = inputUnsignedInt("How many vertices does the graph have?");
     randomGraph.setN(numberVertices);
 
     //read in information
@@ -328,10 +328,10 @@ void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
     ranges[0][1] = inputInt("What is Maximum weight?");
 
     //begin work
-    for(int k = 0; k < numberVertices; k++){
+    for(unsigned k = 0; k < numberVertices; k++){
         if(directed == true) {
             //directed graph
-            for(int l = 0; l < numberVertices; l++) {
+            for(unsigned l = 0; l < numberVertices; l++) {
                 //select random weights
                 if(k == l)
                     randomGraph.addEdge(k, l, 0);
@@ -343,7 +343,7 @@ void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
         }
         else {
             //undirected graph
-            int l = (directed ? 0 : k);
+            unsigned l = (directed ? 0 : k);
             for(; l < numberVertices; l++) {
                 //select random weights
                 if(k == l)
@@ -368,14 +368,14 @@ void generateLimitedDirectionalGraph(basicEdgeGroup& randomGraph) {
 
 void generateHighwaySystem(basicEdgeGroup& randomGraph) {
 
-    int numberVertices = inputInt("How many vertices does the graph have?");
+    unsigned numberVertices = inputUnsignedInt("How many vertices does the graph have?");
     randomGraph.setN(numberVertices);
 
     //highway system
 
     //read in information
     cout << "All highways are undirected." << endl;
-    int highway = inputInt("How many vertices are in the highway? ");
+    unsigned highway = inputUnsignedInt("How many vertices are in the highway? ");
     randomGraph.setUndirected();
 
     vector<vector<int> > ranges(2, vector<int>(2));
@@ -385,7 +385,7 @@ void generateHighwaySystem(basicEdgeGroup& randomGraph) {
     ranges[1][1] = inputInt("What is the maximum weight between a highway vertex and a non-highway vertex? ");
 
     //begin work
-    for(int k = 0; k < highway; k++) {
+    for(unsigned k = 0; k < highway; k++) {
         randomGraph.addEdge(k, k, 0);
 
         //select weights for edges along highway
@@ -397,7 +397,7 @@ void generateHighwaySystem(basicEdgeGroup& randomGraph) {
         }
 
         //select weights for edges not along highway
-        for(int l = highway; l < numberVertices; l++) {
+        for(unsigned l = highway; l < numberVertices; l++) {
             int tempValue = randomWeight(ranges[1][0], ranges[1][1]);
             randomGraph.addEdge(k, l, tempValue);
             randomGraph.addEdge(l, k, tempValue);
@@ -407,27 +407,27 @@ void generateHighwaySystem(basicEdgeGroup& randomGraph) {
 
 void generateThreadedGrid(basicEdgeGroup& randomGraph) {
 
-    int numberVertices = inputInt("How many vertices does the graph have?");
+    unsigned numberVertices = inputUnsignedInt("How many vertices does the graph have?");
     randomGraph.setN(numberVertices);
 
     //read in work
     output("All threaded grids are undirected.");
-    int levels = inputInt("How many levels? (number per level is equal for all levels)");
-    int jumping = inputInt("How many levels can a vertices connect to above or below? ");
-    int perLevel = numberVertices / levels;
+    unsigned levels = inputUnsignedInt("How many levels? (number per level is equal for all levels)");
+    unsigned jumping = inputUnsignedInt("How many levels can a vertices connect to above or below? ");
+    unsigned perLevel = numberVertices / levels;
 
     vector<vector<int> > ranges(jumping + 1, vector<int>(2));
     ranges[0][0] = inputInt("What is the minimum weight between vertices on the same level?");
     ranges[0][1] = inputInt("What is the maximum weight between vertices on the same level?");
 
-    for(int i = 1; i < jumping + 1; i++) {
+    for(unsigned i = 1; i < jumping + 1; i++) {
         ranges[i][0] = inputInt("What is the minimum weight between vertices "+str(i)+" level(s) distant?");
         ranges[i][1] = inputInt("What is the maximum weight between vertices "+str(i)+" level(s) distant?");
     }
 
     //begin work
-    for(int k = 0; k < numberVertices; k++) {
-        for(int l = k; l < numberVertices; l++) {
+    for(unsigned k = 0; k < numberVertices; k++) {
+        for(unsigned l = k; l < numberVertices; l++) {
             //select random weights for:
             if(k == l)  //same vertex
                 randomGraph.addEdge(k, l, 0);
@@ -439,14 +439,14 @@ void generateThreadedGrid(basicEdgeGroup& randomGraph) {
             }
             else {
                 //different levels
-                int currentLevel1 = k / perLevel;
-                int currentLevel2 = l / perLevel;
+                unsigned currentLevel1 = k / perLevel;
+                unsigned currentLevel2 = l / perLevel;
                 if(currentLevel1 >= levels)
                     currentLevel1--;
                 if(currentLevel2 >= levels)
                     currentLevel2--;
 
-                int levelDifference = abs(currentLevel1 - currentLevel2);
+                unsigned levelDifference = abs(int(currentLevel1) - int(currentLevel2));
                 if(levelDifference <= jumping) {
                     int tempValue = randomWeight(ranges[levelDifference][0], ranges[levelDifference][1]);
                     randomGraph.addEdge(k, l, tempValue);
@@ -459,10 +459,10 @@ void generateThreadedGrid(basicEdgeGroup& randomGraph) {
 
 void generateSparseGraph(basicEdgeGroup& graph) {
 
-    int numberVertices = inputInt("How many vertices are there?");
+    unsigned numberVertices = inputUnsignedInt("How many vertices are there?");
     bool directed = getChoice("Is the graph directed?");
-    int minWeight = inputInt("What is the minimum weight?");
-    int maxWeight = inputInt("what is the maximum weight?");
+    unsigned minWeight = inputUnsignedInt("What is the minimum weight?");
+    unsigned maxWeight = inputUnsignedInt("what is the maximum weight?");
     bool undirected = not(directed);
 
     if(directed)
@@ -472,24 +472,24 @@ void generateSparseGraph(basicEdgeGroup& graph) {
 
     graph.setN(numberVertices);
 
-    for(int i = 0; i < numberVertices; i++)
+    for(unsigned i = 0; i < numberVertices; i++)
          graph.addEdge(i, i, 0);
 
     if(directed) {
         vector<int> copy(0);
-        for(int i = 0; i < numberVertices; i++)
+        for(unsigned i = 0; i < numberVertices; i++)
             copy.push_back(i);
 
         const vector<int> vertices = copy;
 
         vector<int> randomVertices;
-        for(int i = 0; i < vertices.size(); i++) {
+        for(unsigned i = 0; i < vertices.size(); i++) {
             //int rand = randomGenerator(copy.size()-1);
             randomVertices.push_back(copy[i]);
             //copy.erase(copy.begin()+rand);
         }
 
-        for(int i = 1; i < vertices.size(); i++) {
+        for(unsigned i = 1; i < vertices.size(); i++) {
             int j = randomGenerator(i-1);
             int k = randomGenerator(i-1);
 
@@ -499,19 +499,19 @@ void generateSparseGraph(basicEdgeGroup& graph) {
     }
     else {
         vector<int> copy(0);
-        for(int i = 0; i < numberVertices; i++)
+        for(unsigned i = 0; i < numberVertices; i++)
             copy.push_back(i);
 
         const vector<int> vertices = copy;
 
         vector<int> randomVertices;
-        for(int i = 0; i < vertices.size(); i++) {
+        for(unsigned i = 0; i < vertices.size(); i++) {
             int rand = randomGenerator(copy.size()-1);
             randomVertices.push_back(copy[rand]);
             copy.erase(copy.begin()+rand);
         }
 
-        for(int i = 1; i < vertices.size(); i++) {
+        for(unsigned i = 1; i < vertices.size(); i++) {
             int j = randomGenerator(i-1);
             int weight = randomWeight(minWeight, maxWeight);
 
@@ -537,7 +537,7 @@ void generateSparseGraph(basicEdgeGroup& graph) {
     }
 }
 
-void generateSparseGraph(basicEdgeGroup& graph, int numberVertices, bool directed, int minWeight, int maxWeight) {
+void generateSparseGraph(basicEdgeGroup& graph, unsigned numberVertices, bool directed, int minWeight, int maxWeight) {
     bool undirected = not(directed);
 
     if(directed)
@@ -547,24 +547,24 @@ void generateSparseGraph(basicEdgeGroup& graph, int numberVertices, bool directe
 
     graph.setN(numberVertices);
 
-    for(int i = 0; i < numberVertices; i++)
+    for(unsigned i = 0; i < numberVertices; i++)
          graph.addEdge(i, i, 0);
 
     if(directed) {
         vector<int> copy(0);
-        for(int i = 0; i < numberVertices; i++)
+        for(unsigned i = 0; i < numberVertices; i++)
             copy.push_back(i);
 
         const vector<int> vertices = copy;
 
         vector<int> randomVertices;
-        for(int i = 0; i < vertices.size(); i++) {
+        for(unsigned i = 0; i < vertices.size(); i++) {
             //int rand = randomGenerator(copy.size()-1);
             randomVertices.push_back(copy[i]);
             //copy.erase(copy.begin()+rand);
         }
 
-        for(int i = 1; i < vertices.size(); i++) {
+        for(unsigned i = 1; i < vertices.size(); i++) {
             int j = randomGenerator(i-1);
             int k = randomGenerator(i-1);
 
@@ -574,19 +574,19 @@ void generateSparseGraph(basicEdgeGroup& graph, int numberVertices, bool directe
     }
     else {
         vector<int> copy(0);
-        for(int i = 0; i < numberVertices; i++)
+        for(unsigned i = 0; i < numberVertices; i++)
             copy.push_back(i);
 
         const vector<int> vertices = copy;
 
         vector<int> randomVertices;
-        for(int i = 0; i < vertices.size(); i++) {
+        for(unsigned i = 0; i < vertices.size(); i++) {
             int rand = randomGenerator(copy.size()-1);
             randomVertices.push_back(copy[rand]);
             copy.erase(copy.begin()+rand);
         }
 
-        for(int i = 1; i < vertices.size(); i++) {
+        for(unsigned i = 1; i < vertices.size(); i++) {
             int j = randomGenerator(i-1);
             int weight = randomWeight(minWeight, maxWeight);
 
@@ -626,19 +626,19 @@ void generateSparseGraph(basicEdgeGroup& graph, int numberVertices, bool directe
 //post:
 // -journeysInformation has generated journeys
 //
-void generateJourneys(vector< journeyInfo > & journeysInformation, int numVertices)
+void generateJourneys(vector< journeyInfo > & journeysInformation, unsigned numVertices)
 {
 
     vector<pair<int,int> > pairs;
-    for(int i = 0; i < numVertices; i++) {
-        for(int j = 0; j < numVertices; j++) {
+    for(unsigned i = 0; i < numVertices; i++) {
+        for(unsigned j = 0; j < numVertices; j++) {
             if(i != j) {
                 pairs.push_back(pair<int,int>(i, j));
             }
         }
     }
 
-    for(int i = 0; i < journeysInformation.size(); i++) {
+    for(unsigned i = 0; i < journeysInformation.size(); i++) {
         int r = randomGenerator(pairs.size()-1);
         journeysInformation[i].setSource(pairs[r].first);
         journeysInformation[i].setDestination(pairs[r].second);

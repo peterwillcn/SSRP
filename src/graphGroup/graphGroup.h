@@ -41,10 +41,10 @@ public:
     //group accessor member func's
 
     // returns the number of vertices
-    int returnN() const;
+    unsigned returnN() const;
 
 
-    int numJourneys() const;
+    unsigned numJourneys() const;
 
     const journey& getJourney(const int) const;
     const journeyGroup& getJourneys() const;
