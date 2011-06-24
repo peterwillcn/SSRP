@@ -17,6 +17,9 @@ extern const bool NO;
 // Reads in an integer from cin
 int inputInt(const string& prompt);
 
+// Reads in an unsigned integer from cin
+unsigned inputUnsignedInt(const string& prompt);
+
 // Reads in a string from cin
 string inputString(const string& prompt);
 
@@ -47,19 +50,19 @@ string colorGreen(const string&);
 string colorRed(const string&);
 
 // Outputs a string to cout with a particular alignment and width
-void outputLeft(const string&, int);
-void outputRight(const string&, int);
-void outputCenter(const string&, int);
+void outputLeft(const string&, unsigned);
+void outputRight(const string&, unsigned);
+void outputCenter(const string&, unsigned);
 
-void outputGreenLeft(const string&, int);
-void outputGreenRight(const string&, int);
-void outputGreenCenter(const string&, int);
+void outputGreenLeft(const string&, unsigned);
+void outputGreenRight(const string&, unsigned);
+void outputGreenCenter(const string&, unsigned);
 
-void outputRedLeft(const string&, int);
-void outputRedRight(const string&, int);
-void outputRedCenter(const string&, int);
+void outputRedLeft(const string&, unsigned);
+void outputRedRight(const string&, unsigned);
+void outputRedCenter(const string&, unsigned);
 
-void pad(const string&, int);
+void pad(const string&, unsigned);
 
 // Reads in a boolean answer from cin.
 // Yes/No answer

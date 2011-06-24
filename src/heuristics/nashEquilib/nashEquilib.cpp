@@ -20,12 +20,14 @@ using namespace std;
 graphGroup runNashEquilibriumHeuristic(graphGroup mainGraph,
                                        const vector<journeyInfo>& listOfJourneys) {
 
+    // unused:
+    //bool show_reroutings = false;
+    //int num_passes = 5;
+    //int journey_threshold = 3;
+    //bool coalition_one = false;
+    //bool outsider_one = false;
+
     bool printGraphInfo = false;
-    bool show_reroutings = false;
-    int num_passes = 5;
-    int journey_threshold = 3;
-    bool coalition_one = false;
-    bool outsider_one = false;
 
     vector< vector< floatWInf > > minSavings;
     vector< vector< floatWInf > > maxSavings;
@@ -35,7 +37,7 @@ graphGroup runNashEquilibriumHeuristic(graphGroup mainGraph,
     FWGroup FloydPaths;
     vector<int> journeysNum;
 
-    for(int j = 0; j < listOfJourneys.size(); j++)
+    for(unsigned j = 0; j < listOfJourneys.size(); j++)
         journeysNum.push_back(listOfJourneys[j].journeyNum());
 
     FloydPaths.set(journeysNum, mainGraph);
@@ -47,7 +49,7 @@ graphGroup runNashEquilibriumHeuristic(graphGroup mainGraph,
         printGraph(mainGraph);
 
     //route each journey by it's FW path
-    for(int j = 0; j < listOfJourneys.size(); j++){
+    for(unsigned j = 0; j < listOfJourneys.size(); j++){
         mainGraph.addJourney(listOfJourneys[j].journeyNum(),
                              FloydPaths.returnPath(listOfJourneys[j].source(),
                                                    listOfJourneys[j].destination()));

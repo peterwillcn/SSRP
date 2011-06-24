@@ -50,7 +50,7 @@ class edgeGroup
   
   //group accessors
   path findSP(journeyInfo information) const;
-  int returnN() const;
+  unsigned returnN() const;
   int numJourneys() const;
 
   //mutators
@@ -58,7 +58,7 @@ class edgeGroup
   void addJourney(int journeyNum, path const & newPath);
   void removeJourney(int journeyNum);
   void removeAllJourneys();
-  void set(basicEdgeGroup const & newGraph, int newNumJourneys);
+  void set(basicEdgeGroup const & newGraph, unsigned newNumJourneys);
   void update_edge_cost(int i, int j, floatWInf new_cost);
 };
 

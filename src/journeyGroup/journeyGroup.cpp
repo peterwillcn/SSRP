@@ -45,7 +45,7 @@ journeyGroup::journeyGroup(journeyGroup const & newJourneyGroup)
   set(newJourneyGroup.returnInfos());
   
   //set single and (possibly) shared paths
-  for(int i = 0; i < numJourneys(); i++)
+  for(unsigned i = 0; i < numJourneys(); i++)
     {
       if(newJourneyGroup.hasSinglePath(i))
 	{
@@ -89,7 +89,7 @@ journeyGroup::journeyGroup(vector< journeyInfo > const & journeysInformation)
    
   internalJourneys.resize(journeysInformation.size());
   
-  for(int i = 0; i < numJourneys(); i++)
+  for(unsigned i = 0; i < numJourneys(); i++)
     internalJourneys[i] = journey(journeysInformation[i].source(), journeysInformation[i].destination());
   
 }
@@ -104,7 +104,7 @@ journeyGroup::journeyGroup(vector< journeyInfo > const & journeysInformation)
 // -returns number of journeys
 //
 //O(1)
-int journeyGroup::numJourneys() const
+unsigned journeyGroup::numJourneys() const
 {
   
   return internalJourneys.size();
@@ -125,7 +125,7 @@ vector< journeyInfo > journeyGroup::returnInfos() const
 {
   vector< journeyInfo > answers(numJourneys());
   
-  for(int i = 0; i < numJourneys(); i++)
+  for(unsigned i = 0; i < numJourneys(); i++)
     answers[i] = returnInfo(i);
 
   return answers;
@@ -164,7 +164,7 @@ void journeyGroup::set(vector< journeyInfo > journeysInformation)
   
   internalJourneys.resize(journeysInformation.size());
 
-  for(int i = 0; i < numJourneys(); i++)
+  for(unsigned i = 0; i < numJourneys(); i++)
     internalJourneys[i].setSAD(journeysInformation[i].source(), journeysInformation[i].destination());
   
 }
@@ -182,7 +182,7 @@ void journeyGroup::set(vector< journeyInfo > journeysInformation)
 void journeyGroup::resetAll()
 {
   
-  for(int i = 0; i < numJourneys(); i++)
+  for(unsigned i = 0; i < numJourneys(); i++)
     reset(i);
   
 }

@@ -30,7 +30,7 @@ class journeyGroup
   journeyGroup(vector< journeyInfo > const & journeysInformation);
   
   //group accessor member func
-  int numJourneys() const;
+  unsigned numJourneys() const;
  
 
  

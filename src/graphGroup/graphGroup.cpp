@@ -37,7 +37,7 @@ using namespace std;
 //
 //O(1)
 graphGroup::graphGroup()
-:edges(), journeys(), graph()
+: journeys(), edges(), graph()
 {
 
 }
@@ -75,7 +75,7 @@ graphGroup::graphGroup(const graphGroup& other)
 // -returns number of vertices
 //
 //O(1)
-int graphGroup::returnN() const
+unsigned graphGroup::returnN() const
 {
 
     return edges.returnN();
@@ -92,7 +92,7 @@ int graphGroup::returnN() const
 // -returns number of journeys
 //
 //O(1)
-int graphGroup::numJourneys() const
+unsigned graphGroup::numJourneys() const
 {
 
     return journeys.numJourneys();
@@ -359,7 +359,7 @@ vector< vector< path > > graphGroup::Dijkstra(int ii, int journeyNum)
     //prepare vertices for Dijkstra
     vertices.resize(returnN());
 
-    for(int i = 0; i < returnN(); i++)
+    for(unsigned i = 0; i < returnN(); i++)
     {
         greater=false;
         vertices[i].setCost(infiniteFloat);  //set cost to infinity
@@ -370,18 +370,18 @@ vector< vector< path > > graphGroup::Dijkstra(int ii, int journeyNum)
 
     //if Q[i] == true, then vertex i has not yet been extracted
     bool Q[returnN()];
-    for(int i = 0; i < returnN(); i++)
+    for(unsigned i = 0; i < returnN(); i++)
         Q[i] = true;
-    int u; //current vertex being looked at
+    unsigned u; //current vertex being looked at
     intWInf tempU;
 
     //Dijkstra's algorithm:
-    for(int j = 0; j < returnN(); j++)
+    for(unsigned j = 0; j < returnN(); j++)
     {
         u = ii;
 
         //select lowest cost vertex to reach
-        for(int i = 0; i < returnN(); i++)
+        for(unsigned i = 0; i < returnN(); i++)
             if((Q[i] == true)                                    //if ( (Q[i] is true)
         &&((Q[u] == false)                                 //and ( (Q[u] is false)
         ||(vertices[i].cost() < vertices[u].cost())))      //or (i < u)))
@@ -392,7 +392,7 @@ vector< vector< path > > graphGroup::Dijkstra(int ii, int journeyNum)
         Q[u] = false;
 
         //relax other vertices
-        for(int v = 0; v < returnN(); v++)
+        for(unsigned v = 0; v < returnN(); v++)
         {
             if(vertices[v].cost() > (vertices[u].cost() + graph.cost(u, v)))  //(v > u + w(u, v))
         {
@@ -416,11 +416,11 @@ vector< vector< path > > graphGroup::Dijkstra(int ii, int journeyNum)
     //costs = vertices;
 
     answers.resize(returnN());
-    for(int i(0); i < returnN(); i++)
+    for(unsigned i(0); i < returnN(); i++)
         answers[i].resize(1);
 
     //find and return paths:
-        for(int v = 0; v < returnN(); v++)
+        for(unsigned v = 0; v < returnN(); v++)
         {
             actualPath.resize(0);
 
@@ -431,9 +431,9 @@ vector< vector< path > > graphGroup::Dijkstra(int ii, int journeyNum)
         }
 
         /*cout << "\n\nANSWERS IN DIJKSTRA***: \n";
-         *    for(int i(0); i<answers.size(); i++)
+         *    for(unsigned i(0); i<answers.size(); i++)
          *    {
-         *    for(int j(0); j<answers[i].size(); j++)
+         *    for(unsigned j(0); j<answers[i].size(); j++)
          *    {
          *        for( int k(0); k< answers[i][j].length(); k++)
          *            cout << answers[i][j].returnVertex(k) << "  ";
@@ -469,7 +469,7 @@ void graphGroup::dijkstraCost(int ii, int journeyNum, vector< vertex > & vertice
     //prepare vertices for Dijkstra
     vertices.resize(returnN());
 
-    for(int i = 0; i < returnN(); i++)
+    for(unsigned i = 0; i < returnN(); i++)
     {
         greater=false;
         vertices[i].setCost(infiniteFloat);  //set cost to infinity
@@ -480,18 +480,18 @@ void graphGroup::dijkstraCost(int ii, int journeyNum, vector< vertex > & vertice
 
     //if Q[i] == true, then vertex i has not yet been extracted
     bool Q[returnN()];
-    for(int i = 0; i < returnN(); i++)
+    for(unsigned i = 0; i < returnN(); i++)
         Q[i] = true;
-    int u; //current vertex being looked at
+    unsigned u; //current vertex being looked at
     intWInf tempU;
 
     //Dijkstra's algorithm:
-    for(int j = 0; j < returnN(); j++)
+    for(unsigned j = 0; j < returnN(); j++)
     {
         u = ii;
 
         //select lowest cost vertex to reach
-        for(int i = 0; i < returnN(); i++)
+        for(unsigned i = 0; i < returnN(); i++)
             if((Q[i] == true)                                    //if ( (Q[i] is true)
         &&((Q[u] == false)                                 //and ( (Q[u] is false)
         ||(vertices[i].cost() < vertices[u].cost())))      //or (i < u)))
@@ -502,7 +502,7 @@ void graphGroup::dijkstraCost(int ii, int journeyNum, vector< vertex > & vertice
         Q[u] = false;
 
         //relax other vertices
-        for(int v = 0; v < returnN(); v++)
+        for(unsigned v = 0; v < returnN(); v++)
         {
             if(vertices[v].cost() > (vertices[u].cost() + graph.cost(u, v)))  //(v > u + w(u, v))
         {
@@ -546,15 +546,15 @@ vector< vector< path > > graphGroup::groupDijkstras(vector< journeyInfo > & jour
     dijkstraJourneys.resize(0);
 
     //sets 2D vector with dijkstra paths
-    for(int i(0); i<journeysInformation.size(); i++)
+    for(unsigned i(0); i<journeysInformation.size(); i++)
     {
         temp = (Dijkstra(journeysInformation[i].source(), journeysInformation[i].journeyNum()));
         dijkstraJourneys.push_back(temp[journeysInformation[i].destination()]);
     }
 
     //finds shared vertices between dijkstra paths of journeys
-    for(int i(0); i<dijkstraJourneys.size(); i++)
-        for(int j(i+1); j<dijkstraJourneys.size(); j++)
+    for(unsigned i(0); i<dijkstraJourneys.size(); i++)
+        for(unsigned j(i+1); j<dijkstraJourneys.size(); j++)
         {
             match commonPaths(dijkstraJourneys[i], dijkstraJourneys[j]);
 
@@ -566,7 +566,7 @@ vector< vector< path > > graphGroup::groupDijkstras(vector< journeyInfo > & jour
 
             //Compares newGroupings with Groupings and determines whether or not a group should collaborate with another already
                 //created group, or if it should be added as a completely new group
-                for(int u(0); u<newGroupings.size(); u++)
+                for(unsigned u(0); u<newGroupings.size(); u++)
                 {
                     int ngIndex;
                     path subset;
@@ -579,11 +579,11 @@ vector< vector< path > > graphGroup::groupDijkstras(vector< journeyInfo > & jour
         //Tests what is recorded in groupings, during the process of collaborating newGroupings with groupings
         cout << "\n\nTHIS IS WHAT'S IN GROUPINGS:\n\n";
 
-        for(int i(0); i<groupings.size(); i++)
+        for(unsigned i(0); i<groupings.size(); i++)
         {
-            for(int j(0); j<groupings[i].size(); j++)
+            for(unsigned j(0); j<groupings[i].size(); j++)
             {
-                for(int k(0); k<groupings[i][j].length(); k++)
+                for(unsigned k(0); k<groupings[i][j].length(); k++)
                     cout << groupings[i][j].returnVertex(k) << " ";
                 cout << endl;
             }
@@ -606,7 +606,7 @@ vector< vector< path > > graphGroup::groupDijkstras(vector< journeyInfo > & jour
 void checkOverlap(vector< vector< path > > & groupings, vector< vector< path > > & newGroupings, path & subset, int ngIndex)
 {
 
-    for(int v(0); v<groupings.size(); v++)
+    for(unsigned v(0); v<groupings.size(); v++)
     {
         path textpath, patternpath;
         vector< int > text, pattern;
@@ -624,11 +624,11 @@ void checkOverlap(vector< vector< path > > & groupings, vector< vector< path > >
         }
 
         //puts paths into vector to be used in KMP
-        for(int k(0); k<patternpath.length(); k++)
+        for(unsigned k(0); k<patternpath.length(); k++)
             pattern.push_back(patternpath.returnVertex(k));
 
         //puts paths into vector to be used in KMP
-            for(int k(0); k<textpath.length(); k++)
+            for(unsigned k(0); k<textpath.length(); k++)
                 text.push_back(textpath.returnVertex(k));
 
             //sets subset to hold the overlapping vertices between two already formed groups
@@ -666,7 +666,7 @@ void checkOverlap(vector< vector< path > > & groupings, vector< vector< path > >
 
                     bool createOverlap=true;
 
-                    for(int k(0); k<groupings.size(); k++)
+                    for(unsigned k(0); k<groupings.size(); k++)
                         if(groupings[k][0]==subset)
                             createOverlap=false;
 
@@ -680,7 +680,7 @@ void checkOverlap(vector< vector< path > > & groupings, vector< vector< path > >
 
                 bool createGroup=true;
 
-                for(int k(0); k<groupings.size(); k++)
+                for(unsigned k(0); k<groupings.size(); k++)
                     if(groupings[k][0]==newGroupings[ngIndex][0])
                         createGroup=false;
 
@@ -703,7 +703,7 @@ void checkOverlap(vector< vector< path > > & groupings, vector< vector< path > >
 void originalGroup(vector< vector< path > > & groupings, vector< vector< path > > & newGroupings, int ngIndex)
 {
     groupings.resize(groupings.size()+1);
-    for(int k(0); k<newGroupings[ngIndex].size(); k++)
+    for(unsigned k(0); k<newGroupings[ngIndex].size(); k++)
         groupings[groupings.size()-1].push_back(newGroupings[ngIndex][k]);
 }
 
@@ -722,11 +722,11 @@ void repeatedGroup(vector< vector< path > > & groupings, vector< vector< path > 
     //Adds information to a group already created in groupings
 
     //Copies unrecorded journeys into the journey registry (the second element of the second dimension) of groupings
-    for(int i(0); i<newGroupings[ngIndex][1].length(); i++)
+    for(unsigned i(0); i<newGroupings[ngIndex][1].length(); i++)
     {
         bool repeatedJourney=false;
 
-        for(int j(0); j<groupings[gIndex][1].length(); j++)
+        for(unsigned j(0); j<groupings[gIndex][1].length(); j++)
             if(newGroupings[ngIndex][1].returnVertex(i)==groupings[gIndex][1].returnVertex(j))
                 repeatedJourney=true;
 
@@ -735,11 +735,11 @@ void repeatedGroup(vector< vector< path > > & groupings, vector< vector< path > 
     }
 
     //Copies unrecorded journeys paths into the group
-    for(int i(2); i<newGroupings[ngIndex].size(); i++)
+    for(unsigned i(2); i<newGroupings[ngIndex].size(); i++)
     {
         bool repeatedPath=false;
 
-        for(int j(2); j<groupings[gIndex].size(); j++)
+        for(unsigned j(2); j<groupings[gIndex].size(); j++)
             if(newGroupings[ngIndex][i]==groupings[gIndex][j])
                 repeatedPath=true;
 
@@ -765,7 +765,7 @@ void subsetGroup(vector< vector< path > > & groupings, vector< vector< path > > 
 
     bool createGroup=true;
 
-    for(int k(0); k<groupings.size(); k++)
+    for(unsigned k(0); k<groupings.size(); k++)
         if(groupings[k][0]==newGroupings[ngIndex][0])
             createGroup=false;
 
@@ -776,11 +776,11 @@ void subsetGroup(vector< vector< path > > & groupings, vector< vector< path > > 
                 groupings[groupings.size()-1]=newGroupings[ngIndex];
 
                 //Copies unrecorded journeys into the journey registry (the second element of the second dimension) of groupings
-                for(int i(0); i<groupings[gIndex][1].length(); i++)
+                for(unsigned i(0); i<groupings[gIndex][1].length(); i++)
                 {
                     bool repeatedJourney=false;
 
-                    for(int j(0); j<groupings[groupings.size()-1][1].length(); j++)
+                    for(unsigned j(0); j<groupings[groupings.size()-1][1].length(); j++)
                         if(groupings[gIndex][1].returnVertex(i)==groupings[groupings.size()-1][1].returnVertex(j))
                             repeatedJourney=true;
 
@@ -789,11 +789,11 @@ void subsetGroup(vector< vector< path > > & groupings, vector< vector< path > > 
                 }
 
                 //pushes unrecorded paths onto the new group
-                for(int i(2); i<groupings[gIndex].size(); i++)
+                for(unsigned i(2); i<groupings[gIndex].size(); i++)
                 {
                     bool originalPath=true;
 
-                    for(int j(2); j<newGroupings[ngIndex].size(); j++)
+                    for(unsigned j(2); j<newGroupings[ngIndex].size(); j++)
                         if(groupings[gIndex][i]==newGroupings[ngIndex][j])
                         {
                             originalPath=false;
@@ -808,11 +808,11 @@ void subsetGroup(vector< vector< path > > & groupings, vector< vector< path > > 
     {
 
         //Copies unrecorded journeys into the journey registry (the second element of the second dimension) of groupings
-        for(int i(0); i<newGroupings[ngIndex][1].length(); i++)
+        for(unsigned i(0); i<newGroupings[ngIndex][1].length(); i++)
         {
             bool repeatedJourney=false;
 
-            for(int j(0); j<groupings[gIndex][1].length(); j++)
+            for(unsigned j(0); j<groupings[gIndex][1].length(); j++)
                 if(newGroupings[ngIndex][1].returnVertex(i)==groupings[gIndex][1].returnVertex(j))
                     repeatedJourney=true;
 
@@ -821,11 +821,11 @@ void subsetGroup(vector< vector< path > > & groupings, vector< vector< path > > 
         }
 
         //pushes unrecorded paths onto the pre-existing group
-        for(int i(2); i<newGroupings[ngIndex].size(); i++)
+        for(unsigned i(2); i<newGroupings[ngIndex].size(); i++)
         {
             bool originalPath=true;
 
-            for(int j(2); j<groupings[gIndex].size(); j++)
+            for(unsigned j(2); j<groupings[gIndex].size(); j++)
                 if(newGroupings[ngIndex][i]==groupings[gIndex][j])
                 {
                     originalPath=false;
@@ -851,15 +851,15 @@ void intersectionGroup(vector< vector< path > > & groupings, vector< vector< pat
 {
 
     //Adds the information from one group to this new overlap group
-    for(int i(1); i<groupings[gIndex].size(); i++)
+    for(unsigned i(1); i<groupings[gIndex].size(); i++)
         groupings[groupings.size()-1].push_back(groupings[gIndex][i]);
 
     //Copies unrecorded journeys into the journey registry (the second element of the second dimension) of groupings
-        for(int i(0); i<newGroupings[ngIndex][1].length(); i++)
+        for(unsigned i(0); i<newGroupings[ngIndex][1].length(); i++)
         {
             bool repeatedJourney=false;
 
-            for(int j(0); j<groupings[gIndex][1].length(); j++)
+            for(unsigned j(0); j<groupings[gIndex][1].length(); j++)
                 if(newGroupings[ngIndex][1].returnVertex(i)==groupings[groupings.size()-1][1].returnVertex(j))
                     repeatedJourney=true;
 
@@ -868,11 +868,11 @@ void intersectionGroup(vector< vector< path > > & groupings, vector< vector< pat
         }
 
         //Copies unrecorded journeys paths into the group
-        for(int i(2); i<newGroupings[ngIndex].size(); i++)
+        for(unsigned i(2); i<newGroupings[ngIndex].size(); i++)
         {
             bool repeatedPath=false;
 
-            for(int j(2); j<groupings[groupings.size()-1].size(); j++)
+            for(unsigned j(2); j<groupings[groupings.size()-1].size(); j++)
                 if(newGroupings[ngIndex][i]==groupings[groupings.size()-1][j])
                     repeatedPath=true;
 
@@ -903,135 +903,138 @@ void graphGroup::backtrackPaths(vector< journeyInfo > & journeysInformation, vec
 
     vector< int > vertexShared;//keeps track of if a journey wants to backtrack to the current vertex
     vertexShared.resize(dijkstraGroup[1].length());
-    for(int i(0); i<vertexShared.size(); i++)
+    for(unsigned i(0); i<vertexShared.size(); i++)
         vertexShared[i]=-1;
     floatWInf infiniteFloat;
 
     path commonGroup;
     commonGroup=dijkstraGroup[0];
-    int numSharing(dijkstraGroup[1].length());//number of journeys sharing the next edge
+    unsigned numSharing(dijkstraGroup[1].length());//number of journeys sharing the next edge
 
 
     //goes through each vertex to find the most beneficial one to move a group of journeys to
-    for(int i(0); i<returnN(); i++)
+    for(unsigned i(0); i<returnN(); i++)
         //picks a vertex that is actually connected, and can be backtracked to
     {
         bool inGroup=false;
-        for(int k(0); k<commonGroup.length(); k++)
-            if(i==commonGroup.returnVertex(k))
+        for(unsigned k(0); k<commonGroup.length(); k++)
+            if(commonGroup.returnVertex(k) != -1 && i == unsigned(commonGroup.returnVertex(k)))
                 inGroup=true;
-            if((!(returnGraph().cost(startVertex, i)==infiniteFloat))&&(!inGroup))
-                //if i is an adjacent vertex
+        if((!(returnGraph().cost(startVertex, i)==infiniteFloat))&&(!inGroup))
+            //if i is an adjacent vertex
+        {
+            cout << "start vertex: " << startVertex;
+            cout << "\n\nCHECKING ADJACENT VERTEX " << i << "\n\n";
+
+            vector< vertex > backtrackVertices;//helps find the cost of backtracking with a group
+            vector< vertex > dijkstraVertices;//holds the cost of an individual journey's dijkstra path
+            vector< double > backtrackCost;
+            backtrackCost.resize(numSharing);
+            double sharedGroupCost(0);//keeps track of cost of common group for each journey sharing it
+
+            vector< int > journeysSharing;//keeps track of which journeys want to backtrack
+            journeysSharing.resize(0);
+            for(unsigned k(0); k<numSharing; k++)
+                journeysSharing.push_back(dijkstraGroup[1].returnVertex(k));
+
+            for(unsigned k(0); k<(commonGroup.length()-1); k++)
             {
-                cout << "start vertex: " << startVertex;
-                cout << "\n\nCHECKING ADJACENT VERTEX " << i << "\n\n";
+                sharedGroupCost += graph.cost(commonGroup.returnVertex(k), commonGroup.returnVertex(k+1)).value();
+            }
 
-                vector< vertex > backtrackVertices;//helps find the cost of backtracking with a group
-                vector< vertex > dijkstraVertices;//holds the cost of an individual journey's dijkstra path
-                vector< double > backtrackCost;
-                backtrackCost.resize(numSharing);
-                double sharedGroupCost(0);//keeps track of cost of common group for each journey sharing it
+            sharedGroupCost/=numSharing;
+            //now sharedGroupCost contains the cost of one journey to cross the shared path
 
-                vector< int > journeysSharing;//keeps track of which journeys want to backtrack
-                journeysSharing.resize(0);
-                for(int k(0); k<numSharing; k++)
-                    journeysSharing.push_back(dijkstraGroup[1].returnVertex(k));
+            for(unsigned k(0); k<numSharing; k++)
+                backtrackCost[k]=sharedGroupCost;
 
-                for(int k(0); k<(commonGroup.length()-1); k++)
+            //This gives me the cost of their dijkstra split between the journeys
+            for(unsigned k(0); k<numSharing; k++)
+            {
+                //adds the cost of extending the common path to this vertex
+                backtrackCost[k]+=(returnGraph().returnEdgeCost(startVertex, i).value()/numSharing);
+
+                //adding cost of their paths before the shared portion
+                backtrackVertices.resize(0);
+                dijkstraCost(journeysInformation[journeysSharing[k]].source(), journeysSharing[k], backtrackVertices);
+                backtrackCost[k]+=backtrackVertices[i].cost().value();
+
+                //adding cost of their paths after the shared portion
+                backtrackVertices.resize(0);
+                dijkstraCost(endVertex, journeysSharing[k], backtrackVertices);
+                backtrackCost[k]+=backtrackVertices[journeysInformation[journeysSharing[k]].destination()].cost().value();
+            }
+
+            bool journeysDefect=true;//notifies when no one else wants to defect
+
+            while(numSharing>1 && journeysDefect)
+            {
+                for(unsigned k(0); k<journeysSharing.size(); k++)
                 {
-                    sharedGroupCost += graph.cost(commonGroup.returnVertex(k), commonGroup.returnVertex(k+1)).value();
+
+                    //gets dijkstra cost to compare new backtracked cost to
+                    dijkstraCost(journeysInformation[journeysSharing[k]].source(), journeysSharing[k], dijkstraVertices);
+
+                    //comparing costs
+                    if(backtrackCost[k]<dijkstraVertices[journeysInformation[journeysSharing[k]].destination()].cost().value())
+                    {
+                        //if the backtracked cost is better then we reset the backtracked vertex of this journey to this vertex
+                        vertexShared[journeysSharing[k]]=i;
+                        cout << "\n\nJourney "<< journeysSharing[k] << " backtrack cost better on vertex "<< i << "\n\n";
+                    }
+                    else
+                        vertexShared[journeysSharing[k]]=-1;
                 }
 
-                sharedGroupCost/=numSharing;
-                //now sharedGroupCost contains the cost of one journey to cross the shared path
+                //counts how many journeys still want to share this group
+                unsigned newNumSharing(0);
+                for(unsigned k(0); k<vertexShared.size(); k++)
+                    if(vertexShared[k]==int(i))
+                        newNumSharing++;
 
-                for(int k(0); k<numSharing; k++)
-                    backtrackCost[k]=sharedGroupCost;
+                if(newNumSharing>0)
+                {
 
-                //This gives me the cost of their dijkstra split between the journeys
-                    for(int k(0); k<numSharing; k++)
+                    vector< int > temp;
+                    temp.resize(0);
+                    unsigned prevJournSharing=journeysSharing.size();
+                    //update journeysSharing
+                    for(unsigned k(0); k<prevJournSharing; k++)
                     {
-                        //adds the cost of extending the common path to this vertex
-                        backtrackCost[k]+=(returnGraph().returnEdgeCost(startVertex, i).value()/numSharing);
-
-                        //adding cost of their paths before the shared portion
-                        backtrackVertices.resize(0);
-                        dijkstraCost(journeysInformation[journeysSharing[k]].source(), journeysSharing[k], backtrackVertices);
-                        backtrackCost[k]+=backtrackVertices[i].cost().value();
-
-                        //adding cost of their paths after the shared portion
-                        backtrackVertices.resize(0);
-                        dijkstraCost(endVertex, journeysSharing[k], backtrackVertices);
-                        backtrackCost[k]+=backtrackVertices[journeysInformation[journeysSharing[k]].destination()].cost().value();
+                        if(vertexShared[journeysSharing[k]]==-1)
+                            //remove this journey from journeySharing
+                        {
+                            cout << "\n\nJourney "<< journeysSharing[k] << " has defected from vertex "<< i << "\n\n";
+                            for(unsigned j(0); j<journeysSharing.size(); j++)
+                                if(journeysSharing[k]!=journeysSharing[j])
+                                    temp.push_back(journeysSharing[j]);
+                                journeysSharing=temp;
+                        }
+                        if(k>journeysSharing.size())
+                            break;
                     }
 
-                    bool journeysDefect=true;//notifies when no one else wants to defect
-
-                    while(numSharing>1&&journeysDefect)
-                    {
-                        for(int k(0); k<journeysSharing.size(); k++)
+                    //update backtrackCost according to the number of journeys that still want to backtrack
+                    for(unsigned k(0); k<vertexShared.size(); k++)
+                        if(vertexShared[k]==int(i))
                         {
-
-                            //gets dijkstra cost to compare new backtracked cost to
-                            dijkstraCost(journeysInformation[journeysSharing[k]].source(), journeysSharing[k], dijkstraVertices);
-
-                            //comparing costs
-                            if(backtrackCost[k]<dijkstraVertices[journeysInformation[journeysSharing[k]].destination()].cost().value())
-                            {
-                                //if the backtracked cost is better then we reset the backtracked vertex of this journey to this vertex
-                                vertexShared[journeysSharing[k]]=i;
-                                cout << "\n\nJourney "<< journeysSharing[k] << " backtrack cost better on vertex "<< i << "\n\n";
-                            }
-                            else
-                                vertexShared[journeysSharing[k]]=-1;
+                            backtrackCost[k]-=returnGraph().returnEdgeCost(startVertex, i).value()/numSharing;
+                            backtrackCost[k]+=returnGraph().returnEdgeCost(startVertex, i).value()/newNumSharing;
                         }
 
-                        //counts how many journeys still want to share this group
-                        int newNumSharing(0);
-                        for(int k(0); k<vertexShared.size(); k++)
-                            if(vertexShared[k]==i)
-                                newNumSharing++;
+                        //No journeys defected
+                        if(numSharing==newNumSharing)
+                            journeysDefect=false;
+                }
 
-                            if(newNumSharing>0)
-                            {
+                // originally:
+                // numSharing==newNumSharing;
 
-                                vector< int > temp;
-                                temp.resize(0);
-                                int prevJournSharing=journeysSharing.size();
-                                //update journeysSharing
-                                for(int k(0); k<prevJournSharing; k++)
-                                {
-                                    if(vertexShared[journeysSharing[k]]==-1)
-                                        //remove this journey from journeySharing
-                                    {
-                                        cout << "\n\nJourney "<< journeysSharing[k] << " has defected from vertex "<< i << "\n\n";
-                                        for(int j(0); j<journeysSharing.size(); j++)
-                                            if(journeysSharing[k]!=journeysSharing[j])
-                                                temp.push_back(journeysSharing[j]);
-                                            journeysSharing=temp;
-                                    }
-                                    if(k>journeysSharing.size())
-                                        break;
-                                }
-
-                                //update backtrackCost according to the number of journeys that still want to backtrack
-                                for(int k(0); k<vertexShared.size(); k++)
-                                    if(vertexShared[k]==i)
-                                    {
-                                        backtrackCost[k]-=returnGraph().returnEdgeCost(startVertex, i).value()/numSharing;
-                                        backtrackCost[k]+=returnGraph().returnEdgeCost(startVertex, i).value()/newNumSharing;
-                                    }
-
-                                    //No journeys defected
-                                    if(numSharing==newNumSharing)
-                                        journeysDefect=false;
-                            }
-
-                            numSharing==newNumSharing;
-                    }
+                // corrected:
+                numSharing = newNumSharing;
             }
+        }
     }
-
 }
 
 
@@ -1060,7 +1063,7 @@ vector< vector< path > > graphGroup::reversedDijkstra(int jj, int journeyNum) co
     //prepare vertices for Dijkstra
     vertices.resize(returnN());
 
-    for(int i = 0; i < returnN(); i++)
+    for(unsigned i = 0; i < returnN(); i++)
     {
         vertices[i].setCost(infiniteFloat);  //set cost to infinity
         vertices[i].setPredecessor(infiniteInt);  //set predecessor to null
@@ -1070,18 +1073,18 @@ vector< vector< path > > graphGroup::reversedDijkstra(int jj, int journeyNum) co
 
     //if Q[i] == true, then vertex i has not yet been extracted
     bool Q[returnN()];
-    for(int i = 0; i < returnN(); i++)
+    for(unsigned i = 0; i < returnN(); i++)
         Q[i] = true;
     int v; //current vertex being looked at
     intWInf tempU;
 
     //Dijkstra's algorithm:
-    for(int j = 0; j < returnN(); j++)
+    for(unsigned j = 0; j < returnN(); j++)
     {
         v = jj;
 
         //select lowest cost vertex to reach
-        for(int i = 0; i < returnN(); i++)
+        for(unsigned i = 0; i < returnN(); i++)
             if((Q[i] == true)                                    //if ( (Q[i] is true)
         &&((Q[v] == false)                                 //and ( (Q[v] is false)
         ||(vertices[i].cost() < vertices[v].cost())))      //or (i < v)))
@@ -1092,7 +1095,7 @@ vector< vector< path > > graphGroup::reversedDijkstra(int jj, int journeyNum) co
         Q[v] = false;
 
         //relax other vertices
-        for(int u = 0; u < returnN(); u++)
+        for(unsigned u = 0; u < returnN(); u++)
             if(vertices[u].cost() > (vertices[v].cost() + currentEdgeCost(u, v, journeyNum)))  //(u > v + w(u, v))
         {
             vertices[u].setCost(vertices[v].cost() + currentEdgeCost(u, v, journeyNum));
@@ -1102,17 +1105,17 @@ vector< vector< path > > graphGroup::reversedDijkstra(int jj, int journeyNum) co
     }
 
     answers.resize(returnN());
-    for(int i(0); i < returnN(); i++)
+    for(unsigned i(0); i < returnN(); i++)
         answers[i].resize(1);
 
     //find and return paths:
-        for(int u = 0; u < returnN(); u++)
+        for(unsigned u = 0; u < returnN(); u++)
         {
             actualPath.resize(0);
             findReversedPath(u, jj, vertices, actualPath, answers, u);
             //add source
             actualPath.resize(actualPath.size() + 1);
-            for(int v = actualPath.size() - 1; v > 0; v--)
+            for(unsigned v = actualPath.size() - 1; v > 0; v--)
                 actualPath[v] = actualPath[v - 1];
             actualPath[0] = u;
             answers[u][0].setPath(actualPath, vertices[u].cost());
@@ -1162,7 +1165,7 @@ vector< floatWInf > graphGroup::returnSharedCosts() const
 
     answers.resize(numJourneys());
 
-    for(int i = 0; i < numJourneys(); i++)
+    for(unsigned i = 0; i < numJourneys(); i++)
         answers[i] = returnSharedCost(i);
 
     return answers;
@@ -1204,7 +1207,7 @@ vector< path > graphGroup::returnSharedPaths() const
 
     answers.resize(numJourneys());
 
-    for(int i = 0; i < numJourneys(); i++)
+    for(unsigned i = 0; i < numJourneys(); i++)
         answers[i] = returnSharedPath(i);
 
     return answers;
@@ -1231,7 +1234,7 @@ path const & graphGroup::returnSharedPath(int journeyNum) const
 
 floatWInf graphGroup::totalSharedCost() const {
     floatWInf final_total_cost = 0;
-    for(int j = 0; j < numJourneys(); j++)
+    for(unsigned j = 0; j < numJourneys(); j++)
         final_total_cost += returnSharedCost(j);
 
     return final_total_cost;
@@ -1273,7 +1276,7 @@ vector< floatWInf > graphGroup::returnSingleCosts() const
 
     answers.resize(numJourneys());
 
-    for(int i = 0; i < numJourneys(); i++)
+    for(unsigned i = 0; i < numJourneys(); i++)
         answers[i] = returnSingleCost(i);
 
     return answers;
@@ -1315,7 +1318,7 @@ vector< path > graphGroup::returnSinglePaths() const
 
     answers.resize(numJourneys());
 
-    for(int i = 0; i < numJourneys(); i++)
+    for(unsigned i = 0; i < numJourneys(); i++)
         answers[i] = returnSinglePath(i);
 
     return answers;
@@ -1357,7 +1360,7 @@ vector< floatWInf > graphGroup::returnSavings() const
 
     answers.resize(numJourneys());
 
-    for(int i = 0; i < numJourneys(); i++)
+    for(unsigned i = 0; i < numJourneys(); i++)
         answers[i] = returnSaving(i);
 
     return answers;
@@ -1417,7 +1420,7 @@ path graphGroup::findSP(int source, int destination) const {
 void graphGroup::refindSharedCosts()
 {
 
-    for(int i = 0; i < numJourneys(); i++)
+    for(unsigned i = 0; i < numJourneys(); i++)
         refindSharedCost(i);
 
 }
@@ -1455,7 +1458,7 @@ void graphGroup::refindSharedCost(int journeyNum)
 void graphGroup::addJourneysSP(vector< int > journeysNum)
 {
 
-    for(int i = 0; i < journeysNum.size(); i++)
+    for(unsigned i = 0; i < journeysNum.size(); i++)
         addJourneySP(journeysNum[i]);
 
 }
@@ -1494,14 +1497,14 @@ void graphGroup::addJourneySP(int journeyNum)
 void graphGroup::addJourneys(vector< int > journeysNum, vector< path > const & newPaths)
 {
 
-    for(int i = 0; i < journeysNum.size(); i++)
+    for(unsigned i = 0; i < journeysNum.size(); i++)
         addJourney(journeysNum[i], newPaths[i]);
 
 }
 
 //same as above but adds all journeys
 void graphGroup::addJourneys(vector<path> const& newPaths){
-    for(int i = 0; i < newPaths.size(); i++)
+    for(unsigned i = 0; i < newPaths.size(); i++)
         addJourney(i, newPaths[i]);
 }
 
@@ -1564,7 +1567,7 @@ void graphGroup::removeJourney(int journeyNum)
 void graphGroup::removeAllJourneys()
 {
 
-    for(int i = 0; i < numJourneys(); i++)
+    for(unsigned i = 0; i < numJourneys(); i++)
         removeJourney(i);
 
 }
@@ -1606,7 +1609,7 @@ void graphGroup::set(vector< journeyInfo > const & journeysInformation)
 
     journeys.set(journeysInformation);
 
-    for(int i = 0; i < numJourneys(); i++)
+    for(unsigned i = 0; i < numJourneys(); i++)
         journeys.setSinglePath(i, findSP(i));
 
 }
@@ -1624,7 +1627,7 @@ void graphGroup::set(vector< journeyInfo > const & journeysInformation)
 // O(returnN()^2 * length of "changed_journey_numbers"
 void graphGroup::update_journeys(vector<journeyInfo> const& listOfJourneys,
                                  vector<int> const& changed_journey_numbers){
-    for(int i = 0; i < changed_journey_numbers.size(); i++){
+    for(unsigned i = 0; i < changed_journey_numbers.size(); i++){
         journeys.setSAD(listOfJourneys[changed_journey_numbers[i]]);
     }
 }
@@ -1663,7 +1666,7 @@ vector< path > graphGroup::tryJourneys(vector< int > journeysNum)
     needToReplace.resize(0);
 
     //save current paths
-    for(int i = 0; i < numJourneys(); i++){
+    for(unsigned i = 0; i < numJourneys(); i++){
         needToReplace.push_back(returnSharedPath(i));
         numToReplace.push_back(i);
     }
@@ -1677,7 +1680,7 @@ vector< path > graphGroup::tryJourneys(vector< int > journeysNum)
     /*cout << "journey" << journeysNum[0] << endl;
         *    printJourney(journeysNum[0]);*/
     //save new paths
-    for(int i = 0; i < journeysNum.size(); i++)
+    for(unsigned i = 0; i < journeysNum.size(); i++)
         answers.push_back(returnSharedPath(journeysNum[i]));
 
     //write over new paths with previous (current) paths
@@ -1705,7 +1708,7 @@ void graphGroup::findPath(int source, int destination, vector< vertex > const & 
     {
         if(source != destination)
         {
-            int size;
+            unsigned size;
             size = vertices[destination].predecessors().size();
             if(size==1)
             {
@@ -1715,7 +1718,7 @@ void graphGroup::findPath(int source, int destination, vector< vertex > const & 
                     actualPath.push_back(source);
                     vector< int > temp;
                     temp.resize(0);
-                    for(int i(actualPath.size()); i>0; i--)
+                    for(unsigned i(actualPath.size()); i>0; i--)
                         temp.push_back(actualPath[i-1]);
                     actualPath=temp;
                     if(!(answers[v][answers[v].size()-1].isNull()))
@@ -1731,17 +1734,17 @@ void graphGroup::findPath(int source, int destination, vector< vertex > const & 
             else if(size!=0)
                 //tiedDijkstra(source, destination, vertices, actualPath, answers, v);
             {
-                for(int i(0); i<size; i++)
+                for(unsigned i(0); i<size; i++)
                 {
                     //cout << "\nNumber of Predecessors for vertex " << destination << ": " << size << "\n";
-                    for(int j(0); j<answers[vertices[destination].predecessors(i).value()].size(); j++)//
+                    for(unsigned j(0); j<answers[vertices[destination].predecessors(i).value()].size(); j++)//
                     {
                         //cout << "\nNumber of Predecessors for vertex " << vertices[destination].predecessors(i).value() << ": " << answers[vertices[destination].predecessors(i).value()].size() << "\n";
                         int index;
                         index=vertices[destination].predecessors(i).value();
                         vector< int > temp;
                         temp=answers[index][answers[index].size()-(j+1)].actualPath();
-                        for(int k(0); k<actualPath.size(); k++)
+                        for(unsigned k(0); k<actualPath.size(); k++)
                             temp.push_back(actualPath[actualPath.size()-(k+1)]);
                         if(!(answers[v][answers[v].size()-1].isNull()))
                             answers[v].resize(answers[v].size()+1);
@@ -1796,14 +1799,14 @@ path KMP(vector< int > const & text, vector< int > const & pattern)
 {
 
      path intersection;
-	vector< int > newPattern;
-	newPattern=pattern;
+    vector< int > newPattern;
+    newPattern=pattern;
      //finds consecutively matched vertices
      while(newPattern.size()>1)
      {
      //creates shift table
      vector< int > T(newPattern.size() + 1, -1);
-     for(int i = 1; i <= newPattern.size(); i++)
+     for(unsigned i = 1; i <= newPattern.size(); i++)
      {
           int pos = T[i - 1];
           while(pos != -1 && newPattern[pos] != newPattern[i - 1])
@@ -1814,20 +1817,23 @@ path KMP(vector< int > const & text, vector< int > const & pattern)
      //finds consecutively matched vertices
      path matches;
      path temp;
-     int textp = 0;
      int patternp = 0;
-     while(textp < text.size())
+     for(unsigned textp = 0; textp < text.size(); textp++)
      {
-          while(patternp != -1 && (patternp == newPattern.size() || newPattern[patternp] != text[textp]))
+          while(
+              patternp != -1
+              &&
+                (patternp == int(newPattern.size())
+                ||
+                newPattern[patternp] != text[textp]))
                patternp = T[patternp];
-          if((newPattern[patternp] == text[textp]) && (patternp != -1))
+          if((patternp != -1) && (newPattern[patternp] == text[textp]))
                matches = matches+newPattern[patternp];
 
-          if(patternp == newPattern.size())
+          if(patternp == int(newPattern.size()))
                break;
 
           patternp++;
-          textp++;
      }
 
      if(matches.length()>intersection.length())
@@ -1835,7 +1841,7 @@ path KMP(vector< int > const & text, vector< int > const & pattern)
 
      vector< int > tempPattern;
      tempPattern.resize(0);
-     for(int i(1); i<newPattern.size(); i++)
+     for(unsigned i(1); i<newPattern.size(); i++)
           tempPattern.push_back(newPattern[i]);
      newPattern = tempPattern;
      }

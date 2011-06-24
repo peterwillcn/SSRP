@@ -23,7 +23,7 @@ using namespace std;
 // -FWGroup constructed without values
 //
 FWGroup::FWGroup()
-  :sections(), numJ(0)
+  : numJ(0), sections()
 {
   
 }

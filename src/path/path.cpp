@@ -86,7 +86,7 @@ path::path(path const& pathA, path const& pathB){
     int start_position = 0;  //where we start copying from pathB
     if(pathB.actualPath()[0] == internalActualPath[internalActualPath.size()-1])
       start_position = 1;
-    for(int i = start_position; i < pathB.actualPath().size(); i++){
+    for(unsigned i = start_position; i < pathB.actualPath().size(); i++){
       internalActualPath.push_back(pathB.actualPath()[i]);
     }
     setCost(pathA.cost() + pathB.cost());
@@ -181,7 +181,7 @@ bool path::operator==(path const & other) const
           return false;
      else
      {
-         for(int i(0); i<internalActualPath.size(); i++)
+         for(unsigned i(0); i<internalActualPath.size(); i++)
               if(internalActualPath[i]!=other.returnVertex(i))
                    return false;
          return true;
@@ -304,7 +304,7 @@ bool path::isNull() const
 // -returns the number of vertices in the path
 //
 //O(1)
-int path::length() const
+unsigned path::length() const
 {
   
   return internalActualPath.size();
@@ -347,7 +347,7 @@ void path::setPath(vector< int > const & newPath, floatWInf newCost)
 {
   internalActualPath.resize(newPath.size());
   internalCost = newCost;
-  for(int i = 0; i < length(); i++)
+  for(unsigned i = 0; i < length(); i++)
     {
       internalActualPath[i] = newPath[i];
     }

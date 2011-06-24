@@ -21,7 +21,7 @@ graphGroup runSpanningTreeHeuristic(graphGroup g, const vector<journeyInfo>& jou
 
     graphGroup spanningTree(st.returnMinSpanningTree(), journeyInfos);
 
-    for(int i = 0; i < journeyInfos.size(); i++) {
+    for(unsigned i = 0; i < journeyInfos.size(); i++) {
         spanningTree.addJourneySP(i);
         spanningTree.refindSharedCosts();
     }

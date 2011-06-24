@@ -53,13 +53,13 @@ extern string inFileName;
 
 extern yyFlexLexer* scanner;
 
-extern int STATcount;
-extern int STATvertices;
-extern int STATjourneys;
-extern int STATminWeight;
-extern int STATmaxWeight;
+extern unsigned STATcount;
+extern unsigned STATvertices;
+extern unsigned STATjourneys;
+extern unsigned STATminWeight;
+extern unsigned STATmaxWeight;
 extern bool STATdirected;
-extern int numErrors;
+extern unsigned numErrors;
 extern bool dumpGraphToFile;
 extern bool biSharing;
 extern bool printHeuristicsInfo;
@@ -68,5 +68,5 @@ extern bool usePareto;
 
 // Stuff for Dease algorithm
 extern int weight_threshold;
-extern int num_passes;
+extern unsigned num_passes;
 extern int journey_threshold;

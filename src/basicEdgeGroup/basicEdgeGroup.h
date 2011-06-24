@@ -32,14 +32,14 @@ class basicEdgeGroup
   
   //group member func's
   ///accessors
-  int returnN() const;
+  unsigned returnN() const;
   int returnType() const;
   int returnStyle() const;
   floatWInf returnEdgeCost(int i, int j) const;
   void reverse(basicEdgeGroup & reversee) const;
   bool directed() const;
   ///mutators
-  void setN(int newN);
+  void setN(unsigned newN);
   void setType(int newType);
   void setStyle(int newStyle);
   void setDirected();

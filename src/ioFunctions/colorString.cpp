@@ -23,6 +23,8 @@ string colorToStr(int c) {
             return FGWHITE;
         case Color::Black:
             return FGBLACK;
+        default:
+            return "";
     }
 }
 
@@ -84,10 +86,12 @@ int colorString::size() const {
 
 ostream& operator<<(ostream& os, const colorString& str) {
     os << colorToStr(str.myColor) << str.data << ENDC;
+    return os;
 }
 
 istream& operator>>(istream& is, colorString& str) {
     string temp;
     is >> temp;
     str.data = temp;
+    return is;
 }

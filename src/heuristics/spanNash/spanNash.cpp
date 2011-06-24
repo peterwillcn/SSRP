@@ -22,13 +22,13 @@ graphGroup runSpanningNashHeuristic(graphGroup g, const vector<journeyInfo>& jou
 
     graphGroup spanningTree(st.returnMinSpanningTree(), journeyInfos);
 
-    for(int i = 0; i < journeyInfos.size(); i++) {
+    for(unsigned i = 0; i < journeyInfos.size(); i++) {
         spanningTree.addJourneySP(i);
         spanningTree.refindSharedCosts();
     }
 
     // Route the paths back on the original graph
-    for(int i = 0; i < journeyInfos.size(); i++) {
+    for(unsigned i = 0; i < journeyInfos.size(); i++) {
         path p = spanningTree.returnSharedPath(i);
         g.addJourney(i, p);
     }

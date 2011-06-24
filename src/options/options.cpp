@@ -12,13 +12,13 @@ istream* inFile = NULL;
 
 yyFlexLexer* scanner = NULL;
 
-int STATcount = 10;
-int STATvertices = 20;
-int STATjourneys = 4;
-int STATminWeight = 1;
-int STATmaxWeight = 10;
+unsigned STATcount = 10;
+unsigned STATvertices = 20;
+unsigned STATjourneys = 4;
+unsigned STATminWeight = 1;
+unsigned STATmaxWeight = 10;
 bool STATdirected = false;
-int numErrors = 0;
+unsigned numErrors = 0;
 string inFileName = "";
 bool dumpGraphToFile = false;
 bool biSharing = false;
@@ -29,5 +29,5 @@ bool usePareto = false;
 // Stuff for Dease
 
 int weight_threshold = 0;
-int num_passes = 5;
+unsigned num_passes = 5;
 int journey_threshold = 3;
