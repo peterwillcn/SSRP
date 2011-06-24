@@ -49,8 +49,13 @@ bool nashEquilibrium(graphGroup& g)
         {
             //if looking for pareto optima check if the social cost has increased
             if(usePareto)
+            {
                 if(next_social_cost > final_social_cost)
+                {
+                    ++j;
                     continue;
+                }
+            }
                 
             //journey can make a better deicision, defect to this profile and begin again
             if(nash_out)
