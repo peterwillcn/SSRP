@@ -110,7 +110,13 @@ STATARG
             reportErrorYYText("Invalid journey operand: ");
         }
     | DIRECTEDFLAG
+        {
+            STATdirected = true;
+        }
     | UNDIRECTEDFLAG
+        {
+            STATdirected = false;
+        }
     | WEIGHTFLAG INTEGER INTEGER
         {
             STATmaxWeight = max($2,
