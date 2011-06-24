@@ -420,7 +420,7 @@ void edgeGroup::addJourney(int journeyNum, path const & newPath)
     for(unsigned i = 0; i < newPath.length() - 1; i++)
     {
         edges[newPath.returnVertex(i)][newPath.returnVertex(i + 1)].addJourney(journeyNum);
-        if(biSharing)
+        if(biSharing && !STATdirected)
           edges[newPath.returnVertex(i + 1)][newPath.returnVertex(i)].addJourney(journeyNum);
     }
         

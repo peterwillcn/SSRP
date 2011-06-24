@@ -1,0 +1,7 @@
+TODO:
+
+    Fix the edge/vertex ratio in "generateSparseGraph" to be more adaptive (rand/rand.cpp:598)
+
+Of Lesser Importance:
+    
+    Clean up global variables to enhance readability
