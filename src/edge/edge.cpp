@@ -315,4 +315,3 @@ void edge::setTotalNumJourneys(int newNumJourneys)
   journeysThrough.resize(newNumJourneys);
   
 }
-

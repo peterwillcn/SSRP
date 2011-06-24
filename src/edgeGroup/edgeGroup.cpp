@@ -615,4 +615,3 @@ void edgeGroup::findPath(journeyInfo information, vector< vertex > const & verti
             }
 
 }
-

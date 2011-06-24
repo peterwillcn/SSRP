@@ -369,4 +369,3 @@ void path::setCost(floatWInf newCost)
   internalCost = newCost;
   
 }
-

@@ -143,4 +143,3 @@ void journeyInfo::setDestination(int newDestination)
   internalDestination = newDestination;
   
 }
-

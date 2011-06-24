@@ -439,4 +439,3 @@ floatWInf journeyGroup::saving(int journeyNum) const
   return internalJourneys[journeyNum].saving();
   
 }
-
