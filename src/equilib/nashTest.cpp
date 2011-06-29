@@ -6,84 +6,112 @@
 /*
     * this function will run until an equilibrium has been found.
     * it is believed, but not known, that an equilibrium will be found for any SSP game from any arbitrary begining strategy profile
+    * UPDATE: It is now known that this function will always find an equilibrium
 */
-bool nashEquilibrium(graphGroup& g) 
+void nashEquilibrium(graphGroup& g) 
 {
-    bool result = true;
-    unsigned count = 0;
+    unsigned int count = 0;
+    
+    graphGroup testGroup;
     
     vector<path> final_paths = g.returnSharedPaths();
     vector<floatWInf> final_costs = g.returnSharedCosts();
-    floatWInf final_social_cost = 0;
-    
-    for(unsigned q = 0; q < final_costs.size(); ++q)
-    {
-        final_social_cost += final_costs[q]; 
-    }
+    floatWInf final_social_cost = g.totalSharedCost();
 
     if(nash_out)
       output("searching for a nash equilibrium");
  
     
     //loop through all journeys
-    unsigned j = 0;
-    while(j < g.numJourneys()) 
+    unsigned int j = 0;
+    floatWInf bestImprove = 0;
+    int bestJourney = -1;
+    bool noImprove = false;
+    
+    //defect journeys until none can improve
+    while(!noImprove)
     {
-        //remove journey from graph
-        g.removeJourney(j);
+        j = 0;
+        bestJourney = -1;
+        bestImprove = 0;
         
-        //readd journey on its shortest path considering sharing
-        g.addJourneySP(j);
-        
-        floatWInf next_social_cost = 0;
-        
-        //check social cost
-        for(unsigned q = 0; q < g.returnSharedCosts().size(); ++q)
+        //find best journey to defect
+        while(j < g.numJourneys()) 
         {
-            next_social_cost += g.returnSharedCosts()[q]; 
+            
+            testGroup = g;
+            //remove journey from graph
+            testGroup.removeJourney(j);
+            
+            //readd journey on its shortest path considering sharing
+            testGroup.addJourneySP(j);
+            
+            floatWInf next_social_cost = 0;
+            
+            //check social cost
+            next_social_cost = testGroup.totalSharedCost(); 
+                
+            //check if the journey has lowered it's cost
+            floatWInf newCost = testGroup.returnSharedCost(j);
+            if(newCost < final_costs[j]) 
+            {
+                //if looking for pareto optima check if the social cost has increased
+                if(usePareto)
+                {
+                    if(next_social_cost > final_social_cost)
+                    {
+                        ++j;
+                        continue;
+                    }
+                }
+                    
+                //journey can make a better deicision, defect to this profile and begin again
+                if(nash_out)
+                {
+                    output("journey " + str(j) + " has a better strategy");
+                    printJourney(g.getJourney(j));
+                }
+               
+               
+                //if we find a better deviation choose it for now
+                if(final_costs[j] - newCost > bestImprove)
+                {
+                   bestImprove = final_costs[j] - newCost;
+                   bestJourney = j;
+                }
+                
+            }
+            
+            ++j;
         }
         
-        //check if the journey has lowered it's cost
-        floatWInf x = g.returnSharedCost(j);
-        if( x < final_costs[j]) 
-        {
-            //if looking for pareto optima check if the social cost has increased
-            if(usePareto)
-            {
-                if(next_social_cost > final_social_cost)
-                {
-                    ++j;
-                    continue;
-                }
-            }
-                
-            //journey can make a better deicision, defect to this profile and begin again
+        //someone improved
+        if(bestJourney != -1)
+        {    
+            //actually defect journey
+            g.removeJourney(bestJourney);
+            g.addJourneySP(bestJourney);
+            
             if(nash_out)
             {
-              output("journey " + str(j) + " has a better strategy");
-              printJourney(g.getJourney(j));
+                output("journey " + str(bestJourney) + " has the best improvement");
+                printJourney(g.getJourney(bestJourney));
             }
             
             final_paths = g.returnSharedPaths();
             final_costs = g.returnSharedCosts();
             final_social_cost  = 0;
-            for(unsigned q = 0; q < final_costs.size(); ++q)
-            {
-                final_social_cost += final_costs[q]; 
-            }
-
+            final_social_cost += g.totalSharedCost(); 
             
             ++count;
-            j = 0;
-            continue;
         }
-        else // move to the next journey
-          ++j;
+        else
+        {
+            noImprove = true;
+        }
+        
     }
 
     if(nash_out)
       output("Found an NE after " + str(count) + " deviation(s)");
-    
-    result = true;
-    return result;
 }

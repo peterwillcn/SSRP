@@ -6,6 +6,6 @@
 
 //const int nashDepth = 20;
 
-bool nashEquilibrium(graphGroup& g);
+void nashEquilibrium(graphGroup& g);
 
 #endif
