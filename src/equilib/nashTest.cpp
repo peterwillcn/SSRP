@@ -87,7 +87,7 @@ void nashEquilibrium(graphGroup& g)
         
         //someone improved
         if(bestJourney != -1)
-        {    
+        {
             //actually defect journey
             g.removeJourney(bestJourney);
             g.addJourneySP(bestJourney);

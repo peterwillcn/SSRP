@@ -1,0 +1,74 @@
+This file describes the general purpose of each modules and how to add new modules.
+
+List of Modules (alphabetically):
+basicEdgeGroup
+basicStructures
+commandParser
+debug
+edge
+edgeGroup
+equilib
+FWGroup
+graphGroup
+heuristics
+ioFunctions
+journey
+journeyGroup
+journeyInfo
+options
+path
+rand
+STGroup
+treeSearch
+vertex
+
+List of Modules (contextually):
+    Input/Output:
+        debug
+        ioFunctions
+        options
+        rand
+    Graph Data Structures:
+        basicEdgeGroup
+        basicStructures
+        edge
+        edgeGroup
+        FWGroup
+        graphGroup
+        journey
+        journeyGroup
+        journeyInfo
+        path
+        STGroup
+        vertex
+    Heuristics:
+        equilib
+        heuristics
+        treeSearch
+    Command-Line Parser:
+        commandParser
+
+Descriptions of Modules:
+
+basicEdgeGroup:
+    Contains the basic implementation of a weighted graph. This is what you create when
+
+basicStructures
+commandParser
+debug
+edge
+edgeGroup
+equilib
+FWGroup
+graphGroup
+heuristics
+ioFunctions
+journey
+journeyGroup
+journeyInfo
+options
+path
+rand
+STGroup
+treeSearch
+vertex

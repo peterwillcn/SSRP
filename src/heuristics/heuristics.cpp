@@ -31,7 +31,7 @@ heuristic::heuristic(string initName,
 }
 
 #include "shortestPath/shortestPath.h"
-const heuristic shortestPathH("Shortest", runShortestPathHeuristic, false);
+const heuristic shortestPathH("Shortest", runShortestPathHeuristic, true);
 
 #include "nashEquilib/nashEquilib.h"
 const heuristic nashEquilibriumH("Nash-Equilib", runNashEquilibriumHeuristic, true);
@@ -54,8 +54,6 @@ const heuristic traversalH("Traversal", runTraversalHeuristic, true);
 vector<heuristic> heuristics;
 
 void setupHeuristics() {
-    heuristics.push_back(shortestPathH);
-    heuristics.push_back(nashEquilibriumH);
-    heuristics.push_back(deaseAlgH);
+    //heuristics.push_back(shortestPathH);
     heuristics.push_back(spanningNashH);
 }
