@@ -1,6 +1,9 @@
 This file describes the general purpose of each modules and how to add new modules.
 
-List of Modules (alphabetically):
+
+## List of Modules (alphabetically): ##
+
+
 basicEdgeGroup
 basicStructures
 commandParser
@@ -22,7 +25,10 @@ STGroup
 treeSearch
 vertex
 
-List of Modules (contextually):
+
+## List of Modules (contextually): ##
+
+
     Input/Output:
         debug
         ioFunctions
@@ -48,27 +54,84 @@ List of Modules (contextually):
     Command-Line Parser:
         commandParser
 
-Descriptions of Modules:
+
+## Descriptions of Modules: ##
+
 
 basicEdgeGroup:
     Contains the basic implementation of a weighted graph. This is what you create when
 
-basicStructures
-commandParser
-debug
-edge
-edgeGroup
-equilib
-FWGroup
-graphGroup
-heuristics
-ioFunctions
-journey
+basicStructures:
+    Contains the definition of intWInf and floatWInf to store infinite numbers.
+
+commandParser:
+    Contains the parser for command line options.
+
+debug:
+    Contains debugging tools.
+
+edge:
+    Contains the definition of the edge and it's associated classes.
+
+edgeGroup:
+    Contains the edgeGroup class.
+
+equilib:
+    Contains the nash equilibrium finding algorithm.
+
+FWGroup:
+    Contains the FWGroup class, used to implement the Floyd-Warshall algorithm.
+
+graphGroup:
+    Contains graphGroup, the main class used for the project.
+
+heuristics:
+    Contains definitions of heuristics and description on adding new heuristics.
+
+ioFunctions:
+    Contains helper functions and tools for input and output.
+
+journey:
+    Contains the definition of a journey.
+
 journeyGroup
-journeyInfo
-options
-path
-rand
-STGroup
-treeSearch
-vertex
+    Contains the definition for a set of journeys. (Essentially a vector of journeys.)
+
+journeyInfo:
+    Contains the associated information for a journey (i.e. start and endpoint.)
+    (A journey is a journeyInfo with a path)
+
+options:
+    Contians definitions and descriptions of the options that are used in the project.
+
+path:
+    Contains the definition of a path.
+
+rand:
+    Contains the graph generation algorithms with helper functions to generate random numbers.
+
+STGroup:
+    Contains the definition of the STGroup, the tool for the spanning tree algorithm.
+
+treeSearch:
+    Contains an implementation of the nash finding algorithm by using a heuristic-guided search of a planning tree of defections.
+    (Not used anymore)
+
+vertex:
+    Contains the definition of a vertex.
+
+
+## The Design: ##
+
+
+As a result of several years of developers that were unable to communicate with
+each other, the design of the project is a little haphazard in it's design, and
+will not be intuitive or easy to learn without help. The basic idea is that
+there are many base classes such as edge, vertex, or journeyInfo, and more
+complicated classes that use these classes and overload the members of the more
+simple classes for their own members. The result is code bloating and a large
+number of unneccessary members in the more complicated classes (especially
+graphGroup). Over the summer of 2011 we've added a good deal of independent code
+(code that does not fit into the object-oriented heirarchy of the project) and
+modified the existing code to use these helper functions, rather than implement
+them as members of each object (e.g. the ioFunctions module).

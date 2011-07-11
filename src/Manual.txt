@@ -1,0 +1,42 @@
+SSRP Manual for Developers:
+
+This document contains information that should be helpful to developers who are
+trying to alter the project in some way.
+
+Background:
+
+Before working on any part of this project, familiarize yourself with the
+following algorithms and graph theory terms:
+
+Graph Theory Terms:
+    Graph
+    Minimum Spanning Tree
+    Journey
+    Path
+
+Shortest Path Algorithms:
+    Dijkstra's Algorithm
+    Floyd-Warshall Algorithm
+
+Minimum Spanning Tree Algorithms:
+    Prim's Algorithm
+
+The following programming tools are in use by the project, and any developer
+should have a good understanding of them:
+
+C++
+C++ STL
+GNU make
+
+`GNU makedepend` is used by the project to create dependency trees for `GNU
+make`. Familiarity with this tool would be helpful.
+
+The following tools are used in the command-parser, but familiarity with them is
+only necessary for altering that particular part of the project:
+
+GNU bison
+GNU flex
+
+(If you want to learn bison or edit the command parser, you must be familiar
+with Context-Free Grammar's first!)
+
